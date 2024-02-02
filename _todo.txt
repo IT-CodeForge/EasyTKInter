@@ -1,0 +1,9 @@
+-eliminate Errors
+
+-documentation and explanition of usage
+
+-deal with user idiocy
+    -adding multiple of same Event without removing
+
+maybe:
+-clean up dicts
