@@ -38,7 +38,7 @@ class TGMainWindow(TGBaseObject,metaclass=ABCMeta):
     self.object_id.title(title)
     self.object_id.geometry(f"{width}x{height}+{posX}+{posY}")
     self.object_id.configure(background='#AAAAAA')
-    self.object_id.protocol("WM_DELETE_WINDOW", self.appClose)
+    self.object_id.protocol("WM_DELETE_WINDOW", self.app_close)
     self.__event_funcs:dict[WindowEvents,Callable[...,None]] = {}
     self.__event_trans:dict[WindowEvents, list[str|Callable[...,None]]] = {
                         WindowEvents.EV_MOUSE_DOWN:["<ButtonPress>", self.__ev_mouse_down, ""],
