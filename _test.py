@@ -1,17 +1,32 @@
-from typing import final, Final
 from math import pi
 from vector2d import vector2d
 
-@final
 class Test:
-    TEST: Final[int] = 0
+    def __init__(self) -> None:
+        self.my_list = [1, 2]
+        print("Test" ,self.my_list)
+
+class Test1(Test):
+    TEST = 0
+    def __init__(self) -> None:
+        super().__init__()
+
+    def foo(self):
+        self.my_list = [2,3]
+        print("Test 1",self.my_list)
+
+class Test2(Test):
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def foo(self):
+        print("Test 2",self.my_list)
 
 def foo(value):
-    return round(value * 180 / pi, 5)
+    value()
 
 if __name__ == "__main__":
-    temp = {1:"hi", 2:"hallo"}
-    if 1 in temp:
-        print(1)
-    if "hi" in temp:
-        print(2)
+    temp1 = Test1()
+    temp2 = Test2()
+    temp1.foo()
+    temp2.foo()

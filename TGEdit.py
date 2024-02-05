@@ -1,4 +1,5 @@
-from TGBaseWidget import TGBaseWidget, BaseEvents
+from TGBaseWidget import TGBaseWidget
+from TGBaseObject import BaseEvents
 from typing   import Any, Callable
 from enum     import Enum
 from vector2d import vector2d
@@ -12,9 +13,12 @@ class TGEdit(TGBaseWidget):
         self.object_id:Entry = Entry(myTk, bg='#FFFFFF', fg='#000000')
         self.object_id.insert(0,txt)
         super().__init__(vector2d(posX, posY), vector2d(width, height))
-        self.__event_funcs:dict[EditEvents, Callable[...,None]] = {}
-        self.__event_trans:dict[EditEvents, list[str|Callable[...,None]]] = {
-                            EditEvents.EV_CHANGED:["<KeyPress>", self.__ev_changed, ""]}
+        self.__event_trans:dict[EditEvents, str] = {
+            EditEvents.EV_CHANGED:"<KeyPress>"
+        }
+        self.__event_truth_funcs:dict[EditEvents, Callable[..., None]] = {
+            EditEvents.EV_CHANGED:lambda event, object_id : object_id.cget("state") != "disabled"
+        }
 
     
     @property
@@ -46,40 +50,21 @@ class TGEdit(TGBaseWidget):
     
     def delete_txt(self, del_str:str):
         self.replace_text(del_str, "")
-
-
-    def add_event(self, event_type:EditEvents|BaseEvents, eventhandler:Callable[...,None]):
+    
+    def add_event(self, event_type: BaseEvents, eventhandler: Callable[..., None]):
         if type(event_type) == EditEvents:
-            self.__event_funcs[event_type] = eventhandler #type:ignore
-            self.__event_trans[event_type][2] = self.object_id.bind(self.__event_trans[event_type][0], self.__event_trans[event_type][1]) #type:ignore
+            super().add_event(event_type, eventhandler, self.__event_trans[event_type], self.__event_truth_funcs[event_type])
         elif type(event_type) == BaseEvents:
-            super().add_event(event_type, eventhandler) #type:ignore
+            super().add_event(event_type, eventhandler)
         else:
-            raise ValueError(f"add_event of Button can only handle events of type BaseEvents and EditEvents. {type(event_type)} is not supported")
-
-    def remove_event(self, event_type:EditEvents|BaseEvents):
+            #Raise Error
+            pass    
+    
+    def remove_event(self, event_type: BaseEvents):
         if type(event_type) == EditEvents:
-            self.object_id.unbind(event_type, funcid=self.__event_trans[event_type][2]) #type:ignore
-            self.__event_funcs.pop(event_type) #type:ignore
+            super().remove_event(event_type, self.__event_trans[event_type])
         elif type(event_type) == BaseEvents:
-            super().remove_event(event_type) #type:ignore
+            super().remove_event(event_type)
         else:
-            raise ValueError(f"remove_event of Button can only handle events of type BaseEvents and EditEvents. {type(event_type)} is not supported")
-        
-    def __ev_changed(self, event:Event):
-        super()._handle_event(self.__event_funcs[EditEvents.EV_CHANGED],EditEvents.EV_CHANGED,event)
-
-
-"""
-    def __ev_input(self, event:Event):
-        if event.char[1:-1] in self.__input_ev_chars:
-            func:function = self.__event_funcs[EditEvents.EV_INPUT]
-            std_arg_len = self.is_class_method(func)
-            if func.__code__.co_argcount == std_arg_len:
-                func()
-            elif func.__code__.co_argcount == std_arg_len + 1:
-                params = {"object_id":self.object_id,"event_type":EditEvents.EV_INPUT,"event":event,"mousepos":vector2d(event.x,event.y)}
-                func(params)
-            else:
-                raise BaseException(f"the event method can only have one parameter in addition to the class. The given function {func.__name__} has {func.__code__.co_argcount - std_arg_len} parameters to many, parameter list: {func.__code__.co_varnames}")
-"""
+            #Raise Error
+            pass

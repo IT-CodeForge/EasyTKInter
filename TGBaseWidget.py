@@ -18,13 +18,6 @@ if LOG:
     my_logger.addHandler(handler)
 #-------------------------------------------------------------------------
 
-
-class BaseEvents(Enum):
-    EV_MOUSE_DOWN   = 0
-    EV_MOUSE_UP     = 1
-    EV_HOVERED      = 2
-    EV_STOP_HOVERED = 3
-
 class TGBaseWidget(TGBaseObject):
     def __init__(self, pos:vector2d, dim:vector2d) -> None:
         self.object_id: Any
@@ -32,12 +25,7 @@ class TGBaseWidget(TGBaseObject):
         self.__object_pos = pos
         self.__dimensions = dim
         self.__place_object(self.__object_pos, self.__dimensions)
-        self.__event_funcs:dict[BaseEvents,Callable[...,None]] = {}
-        self.__event_trans:dict[BaseEvents, list[str|Callable[...,None]]] = {
-                            BaseEvents.EV_MOUSE_DOWN:["<ButtonPress>", self.__ev_mouse_down, ""],
-                            BaseEvents.EV_MOUSE_UP:["<ButtonRelease>", self.__ev_mouse_up, ""],
-                            BaseEvents.EV_HOVERED:["<Enter>", self.__ev_mouse_hovered, ""],
-                            BaseEvents.EV_STOP_HOVERED:["<Leave>", self.__ev_mouse_stop_hovered, ""]}
+        super().__init__()
     
     @property
     def pos(self)->vector2d:
@@ -97,29 +85,3 @@ class TGBaseWidget(TGBaseObject):
         else:
             self.__dimensions = dim
         self.object_id.place(x=pos.x, y=pos.y, width=dim.x, height=dim.y)
-    
-    @abstractmethod
-    def _handle_event(self, func:Callable[...,None], event_type:BaseEvents|Any, event:Event):
-        if self.object_id["state"] == "disabled" and type(event_type) != BaseEvents:
-            return
-        super()._handle_event(func,{"object_id":self.object_id,"event_type":event_type,"event":event,"mousepos":vector2d(event.x,event.y)})
-
-    def add_event(self, event_type:BaseEvents, eventhandler:Callable[...,None]):
-        self.__event_funcs[event_type] = eventhandler
-        self.__event_trans[event_type][2] = self.object_id.bind(self.__event_trans[event_type][0], self.__event_trans[event_type][1])
-
-    def remove_event(self, event_type:BaseEvents):
-        self.object_id.unbind(event_type, funcid=self.__event_trans[event_type][2])
-        self.__event_funcs.pop(event_type)
-
-    def __ev_mouse_down(self, event:Event):
-        self._handle_event(self.__event_funcs[BaseEvents.EV_MOUSE_DOWN], BaseEvents.EV_MOUSE_DOWN, event)
-
-    def __ev_mouse_up(self, event:Event):
-        self._handle_event(self.__event_funcs[BaseEvents.EV_MOUSE_UP], BaseEvents.EV_MOUSE_UP, event)
-
-    def __ev_mouse_hovered(self, event:Event):
-        self._handle_event(self.__event_funcs[BaseEvents.EV_HOVERED], BaseEvents.EV_HOVERED, event)
-    
-    def __ev_mouse_stop_hovered(self, event:Event):
-        self._handle_event(self.__event_funcs[BaseEvents.EV_STOP_HOVERED], BaseEvents.EV_STOP_HOVERED, event)
