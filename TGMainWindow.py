@@ -32,6 +32,8 @@ class WindowEvents(Enum):
 class TGMainWindow(TGBaseObject,metaclass=ABCMeta):
   def __init__(self, posX:int, posY:int, width:int, height:int, title:str= "Tk"):
     if LOG: my_logger.info(f"created MainWindow with geometry: {width}x{height}+{posX}+{posY}")
+    self.__window_pos = vector2d(posX, posY)
+    self.__dimensions = vector2d(width, height)
     self.object_id = Tk()
     self.object_id.title(title)
     self.object_id.geometry(f"{width}x{height}+{posX}+{posY}")
@@ -63,14 +65,46 @@ class TGMainWindow(TGBaseObject,metaclass=ABCMeta):
   def caption(self, value:str):
     self.object_id.title(value)
 
-  def loop_func(self):
-    self.__process_func()
-    end = perf_counter(self.__delta)
-    self.__delta = end - self.__start
-    self.__start = perf_counter()
-    self.loop_func()
+  @property
+  def position(self)->vector2d:
+    return self.__window_pos
+  
+  @position.setter
+  def position(self, value:vector2d):
+    self.__place_window(value)
+  
+  @property
+  def width(self)->int:
+    return self.__dimensions.x
+  
+  @width.setter
+  def width(self, value:int):
+    self.__dimensions.x = value
+    self.__place_window()
+  
+  @property
+  def height(self)->int:
+    return self.__dimensions.y
+  
+  @height.setter
+  def height(self, value:int):
+    self.__dimensions.y = value
+    self.__place_window()
+  
+  def __place_window(self, pos:vector2d|None = None, dim:vector2d|None = None):
+    if pos == None:
+      pos = self.__window_pos
+    else:
+      self.__window_pos = pos
+    
+    if dim == None:
+      dim = self.__dimensions
+    else:
+      self.__dimensions = dim
+    
+    self.object_id.geometry(f"{dim.x}x{dim.y}+{pos.x}+{pos.y}")
 
-  def appClose(self):
+  def app_close(self):
     sys.exit()
 
   def run(self):

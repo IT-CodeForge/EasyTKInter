@@ -43,8 +43,7 @@ class TGBaseWidget(TGBaseObject):
     
     @pos.setter
     def pos(self, value:vector2d):
-        self.__object_pos = value
-        self.__place_object()
+        self.__place_object(value)
     
     @property
     def width(self)->int:
@@ -76,8 +75,12 @@ class TGBaseWidget(TGBaseObject):
     def __place_object(self, pos:vector2d|None=None, dim:vector2d|None=None):
         if pos == None:
             pos = self.__object_pos
+        else:
+            self.__object_pos = pos
         if dim == None:
             dim = self.__dimensions
+        else:
+            self.__dimensions = dim
         self.object_id.place(x=pos.x, y=pos.y, width=dim.x, height=dim.y)
     
     def _handle_event(self, func:Callable[...,None], event_type:BaseEvents|Any, event:Event):

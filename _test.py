@@ -6,16 +6,10 @@ from vector2d import vector2d
 class Test:
     TEST: Final[int] = 0
 
-def foo():
-    print(1)
+def foo(value):
+    return round(value * 180 / pi, 5)
 
 if __name__ == "__main__":
     my_vec = vector2d(1,1)
-    my_vec.rotate(pi,False)
-    print(my_vec)
-    my_vec.rotate(pi)
-    print(my_vec)
-    my_vec.normalize(False)
-    print(my_vec)
-    my_vec.normalize()
-    print(my_vec)
+    my_vec_2 = vector2d(0,1)
+    print(foo(my_vec.get_angle_to_vec(my_vec_2)))

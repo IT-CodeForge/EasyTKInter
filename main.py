@@ -14,6 +14,8 @@ class GUI(TGMainWindow.TGMainWindow):
         super().__init__(posX=0, posY=40, width=1540, height=768)
     
     def add_elements(self):
+        self.myBtn2 = TGButton(self.object_id, "BTN2", 150, 0)
+        self.myBtn2.add_event(ButtonEvents.EV_BTN_PRESSED, self.ev_btn2)
         self.my_tri:TGCanvasItem = self.canvas.draw_oval(vector2d(150,150), 50, 25)
         self.myBtn = TGButton(self.object_id, "BTN", 0, 0)
         self.myBtn.add_event(ButtonEvents.EV_BTN_PRESSED, self.ev_btn)
@@ -25,12 +27,15 @@ class GUI(TGMainWindow.TGMainWindow):
 
     def ev_btn(self):
         self.myLbl.replace_text("I am", "I'm")
+    
+    def ev_btn2(self):
+        self.my_tri.move(vector2d(1,1))
 
     def ev_chb(self, params:dict[str,Any]):
         if params.get("event_type", "") == CheckboxEvents.EV_CHECKED:
             self.my_tri.rotate_with_degrees(45)
         elif params.get("event_type", "") == CheckboxEvents.EV_UNCHECKED:
-            pass
+            self.my_tri.move(vector2d(1,1))
         else:
             print("ERROR")
     

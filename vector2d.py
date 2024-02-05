@@ -2,8 +2,9 @@ from __future__ import annotations
 import math
 from typing import Optional
 
-class vector2d():
+class vector2d:
     def __init__(self, x:Optional[float]=None, y:Optional[float]=None, lenght:Optional[float]=None, radians:Optional[float]=None):
+        
         self.x = 0.0
         self.y = 0.0
 
@@ -186,9 +187,9 @@ class vector2d():
         return vector2d(tempx, tempy)
     
     def get_angle_to_vec(self, vector:vector2d)->float:
-        self.normalize(False)
-        vector.normalize(False)
-        return math.acos(self.dotproduct(vector))
+        calc_vec_self = self.normalize(False)
+        calc_vec_other = vector.normalize(False)
+        return math.acos(calc_vec_self.dotproduct(calc_vec_other))
     
     def dotproduct(self, vector:vector2d)->float:
         try:
