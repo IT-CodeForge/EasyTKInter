@@ -1,3 +1,11 @@
+-add container
+    -can arrange by List
+    -with controllable offset
+    -adjustable dimension, position change dependent on object type
+    -container will treat object as not there when invisible
+
+-visibility (deactivates all events)
+
 -eliminate Errors
 
 -documentation and explanition of usage

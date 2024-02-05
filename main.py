@@ -38,6 +38,9 @@ class GUI(TGMainWindow.TGMainWindow):
             self.my_tri.move(vector2d(1,1))
         else:
             print("ERROR")
+    
+    def process(self):
+        pass
 
         
 
