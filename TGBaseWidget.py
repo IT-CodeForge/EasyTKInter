@@ -1,8 +1,9 @@
+from abc import abstractmethod
 from typing import Any, Callable
 from vector2d  import vector2d
 from TGBaseObject import TGBaseObject
 from enum      import Enum
-from tkinter   import Event
+from tkinter   import Event, Button
 import logging
 
 #this is for logging purposses, if you don't want it, set "log" to False
@@ -27,6 +28,7 @@ class BaseEvents(Enum):
 class TGBaseWidget(TGBaseObject):
     def __init__(self, pos:vector2d, dim:vector2d) -> None:
         self.object_id: Any
+        self.__visibility = True
         self.__object_pos = pos
         self.__dimensions = dim
         self.__place_object(self.__object_pos, self.__dimensions)
@@ -63,6 +65,19 @@ class TGBaseWidget(TGBaseObject):
         self.__dimensions.y = value
         self.__place_object()
     
+    @property
+    def visible(self)->bool:
+        return self.__visibility
+    
+    @visible.setter
+    def visible(self, value:bool):
+        if value:
+            self.__visibility = True
+            self.object_id.place()
+        else:
+            self.__visibility = False
+            self.object_id.place_forget()
+    
     def dissable(self):
         self.object_id["state"] = "disabled"
     
@@ -83,6 +98,7 @@ class TGBaseWidget(TGBaseObject):
             self.__dimensions = dim
         self.object_id.place(x=pos.x, y=pos.y, width=dim.x, height=dim.y)
     
+    @abstractmethod
     def _handle_event(self, func:Callable[...,None], event_type:BaseEvents|Any, event:Event):
         if self.object_id["state"] == "disabled" and type(event_type) != BaseEvents:
             return

@@ -1,3 +1,5 @@
+-fix events (ex. BTN_PRESSED incompatible with MOUSE_DOWN)
+
 -add container
     -can arrange by List
     -with controllable offset

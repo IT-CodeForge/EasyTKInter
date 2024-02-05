@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from utilities import inspect_type #type:ignore
 from typing import Any, Callable
 import logging
@@ -23,6 +24,7 @@ class TGBaseObject:
             return True
     
     def _handle_event(self, func: Callable[..., None], paramdict:dict[str, Any]={}):
+        print(paramdict)
         event_type = paramdict.get("event_type", "ERROR:event_type not found")
         my_id = paramdict.get("object_id", "ERROR:object_id not found")
         if LOG: logging.info(f"handled event {event_type}, from widget with id: {my_id}")

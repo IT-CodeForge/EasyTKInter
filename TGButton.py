@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from typing import Any, Callable
 from enum         import Enum
 from TGBaseWidget import BaseEvents, TGBaseWidget
@@ -47,6 +48,15 @@ class TGButton(TGBaseWidget):
             super().remove_event(event_type) #type:ignore
         else:
             raise ValueError(f"remove_event of Button can only handle events of type BaseEvents and ButtonEvents. {type(event_type)} is not supported")
+    
+
+    @abstractmethod
+    def _handle_event(self, func:Callable[...,None], event_type:BaseEvents|Any, event:Event):
+        if self.object_id["state"] == "disabled" and type(event_type) != BaseEvents:
+            return
+        if event_type == BaseEvents.EV_MOUSE_DOWN and event_type in self.__event_funcs and self.object_id["state"] != "disabled":
+            self.__ev_pressed()
+        super()._handle_event(func, event_type, event_type)
 
 
 #event routing functions    

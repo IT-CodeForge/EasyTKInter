@@ -15,7 +15,10 @@ class GUI(TGMainWindow.TGMainWindow):
     
     def add_elements(self):
         self.myBtn2 = TGButton(self.object_id, "BTN2", 150, 0)
-        self.myBtn2.add_event(ButtonEvents.EV_BTN_PRESSED, self.ev_btn2)
+        #self.myBtn2.add_event(ButtonEvents.EV_BTN_PRESSED, self.ev_btn2)
+        #self.myBtn2.add_event(BaseEvents.EV_MOUSE_DOWN, self.ev_btn_MD)
+        self.myBtn2.object_id.bind("<Button-1>", self.ev_btn2)
+        self.myBtn2.object_id.bind("<Button-1>", self.ev_btn22)
         self.my_tri:TGCanvasItem = self.canvas.draw_oval(vector2d(150,150), 50, 25)
         self.myBtn = TGButton(self.object_id, "BTN", 0, 0)
         self.myBtn.add_event(ButtonEvents.EV_BTN_PRESSED, self.ev_btn)
@@ -25,11 +28,18 @@ class GUI(TGMainWindow.TGMainWindow):
         myChb.add_event(CheckboxEvents.EV_UNCHECKED, self.ev_chb)
         self.myTmr = TGTimer(self.object_id, 500, self.process)
 
+    def ev_btn_MD(self):
+        print("hi")
+
     def ev_btn(self):
         self.myLbl.replace_text("I am", "I'm")
+        self.myBtn2.object_id.place_forget()
     
-    def ev_btn2(self):
-        self.my_tri.move(vector2d(1,1))
+    def ev_btn2(self, event):
+        print("mouse down 1")
+    
+    def ev_btn22(self, event):
+        print("mouse down 2")
 
     def ev_chb(self, params:dict[str,Any]):
         if params.get("event_type", "") == CheckboxEvents.EV_CHECKED:

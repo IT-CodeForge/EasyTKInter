@@ -10,6 +10,8 @@ def foo(value):
     return round(value * 180 / pi, 5)
 
 if __name__ == "__main__":
-    my_vec = vector2d(1,1)
-    my_vec_2 = vector2d(0,1)
-    print(foo(my_vec.get_angle_to_vec(my_vec_2)))
+    temp = {1:"hi", 2:"hallo"}
+    if 1 in temp:
+        print(1)
+    if "hi" in temp:
+        print(2)
