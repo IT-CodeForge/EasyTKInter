@@ -3,16 +3,16 @@ from TGBaseObject import BaseEvents
 from typing   import Any, Callable
 from enum     import Enum
 from vector2d import vector2d
-from tkinter  import Entry, END, Event, Tk
+from tkinter  import END, Text, Tk
 
 class EditEvents(Enum):
     EV_CHANGED = 0
 
 class TGEdit(TGBaseWidget):
-    def __init__(self, myTk:Tk, txt:str, posX:int, posY:int, width:int=80, height:int=17) -> None:
-        self.object_id:Entry = Entry(myTk, bg='#FFFFFF', fg='#000000')
+    def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17) -> None:
+        self.object_id:Text = Text(myTk, bg='#FFFFFF', fg='#000000')
         self.object_id.insert(0,txt)
-        super().__init__(vector2d(posX, posY), vector2d(width, height))
+        super().__init__(vector2d(pos_x, pos_y), vector2d(width, height))
         self.__event_trans:dict[EditEvents, str] = {
             EditEvents.EV_CHANGED:"<KeyPress>"
         }
@@ -60,11 +60,11 @@ class TGEdit(TGBaseWidget):
             #Raise Error
             pass    
     
-    def remove_event(self, event_type: BaseEvents):
+    def remove_event(self, event_type: BaseEvents, eventhandler:Callable[..., None]):
         if type(event_type) == EditEvents:
-            super().remove_event(event_type, self.__event_trans[event_type])
+            super().remove_event(event_type, eventhandler, self.__event_trans[event_type])
         elif type(event_type) == BaseEvents:
-            super().remove_event(event_type)
+            super().remove_event(event_type, eventhandler)
         else:
             #Raise Error
             pass

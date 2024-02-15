@@ -11,9 +11,9 @@ class ButtonEvents(Enum):
     BTN_RELEASED       = auto()
 
 class TGButton(TGBaseWidget):
-    def __init__(self, myTk:Tk, txt:str, posX:int, posY:int, width:int=80, height:int=17) -> None:
+    def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17) -> None:
         self.object_id:Button = Button(myTk, text=txt, bg='#EEEEEE', fg='#000000')
-        super().__init__(vector2d(posX, posY), vector2d(width, height))
+        super().__init__(vector2d(pos_x, pos_y), vector2d(width, height))
         self.__event_trans:dict[ButtonEvents, str] = {
             ButtonEvents.BTN_PRESSED:"<ButtonPress>",
             ButtonEvents.BTN_RELEASED:"<ButtonRelease>"
@@ -31,20 +31,22 @@ class TGButton(TGBaseWidget):
     def text(self, value:str):
         self.object_id.config(text=value)
     
-    def add_event(self, event_type: BaseEvents, eventhandler: Callable[..., None]):
+    def add_event(self, event_type: BaseEvents, eventhandler: Callable[..., None], truth_func:Callable[..., None]|None=None):
         if type(event_type) == ButtonEvents:
             super().add_event(event_type, eventhandler, self.__event_trans[event_type], self.__event_truth_funcs[event_type])
         elif type(event_type) == BaseEvents:
             super().add_event(event_type, eventhandler)
+        elif event_type == "<Custom>":
+            super().add_event(event_type, eventhandler, truth_func=truth_func)
         else:
             #Raise Error
-            pass    
+            pass  
     
-    def remove_event(self, event_type: BaseEvents):
+    def remove_event(self, event_type: BaseEvents, eventhandler:Callable[..., None]):
         if type(event_type) == ButtonEvents:
-            super().remove_event(event_type, self.__event_trans[event_type])
-        elif type(event_type) == BaseEvents:
-            super().remove_event(event_type)
+            super().remove_event(event_type, eventhandler, self.__event_trans[event_type])
+        elif type(event_type) == BaseEvents or event_type == "<Custom>":
+            super().remove_event(event_type, eventhandler)
         else:
             #Raise Error
             pass

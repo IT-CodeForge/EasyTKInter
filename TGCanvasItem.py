@@ -1,5 +1,6 @@
-from tkinter  import Canvas
-from vector2d import vector2d
+from __future__ import annotations
+from tkinter    import Canvas
+from vector2d   import vector2d
 import math
 
 #types: "line" "rectangle" "square" "oval" "circle" "polygon"
@@ -15,10 +16,10 @@ class TGCanvasItem:
         self.item_id = 0
         if item_type == "line":
             self.__gen_line(*args)
-            self.__point_list = [args[0].x, args[0].y, args[1].x, args[1].y]
+            self.point_list = [args[0].x, args[0].y, args[1].x, args[1].y]
             return
-        self.__point_list = self.__generate_pointlist(*args[:-2])
-        self.__make_shape(self.__point_list, *args[-2:])
+        self.point_list = self.__generate_pointlist(*args[:-2])
+        self.__make_shape(self.point_list, *args[-2:])
     
     @property
     def anchor(self)->vector2d:
@@ -67,22 +68,53 @@ class TGCanvasItem:
     
     def rotate_with_radians(self, radians:float):
         coords = self.__my_Canvas.coords(self.item_id)
+        print(coords)
         vec_list = [self.__anchor + (vector2d(coords[index*2], coords[index*2+1]) - self.__anchor).rotate(radians) for index in range(len(coords)//2)]
-        self.__point_list = self.__point_unpacking(vec_list)
-        self.__my_Canvas.coords(self.item_id, self.__point_list)
+        self.point_list = self.__point_unpacking(vec_list)
+        print(self.point_list)
+        self.__my_Canvas.coords(self.item_id, self.point_list)
     
     def rotate_with_degrees(self, degrees:float):
         self.rotate_with_radians(degrees * math.pi / 180)
 
     
     def move(self, mov_vec:vector2d):
-        self.__my_Canvas.move(self.item_id, mov_vec.x, mov_vec.y)
+        self.move_to(self.anchor+mov_vec)
 
     def move_to(self, pos:vector2d):
-        for index, x_or_y in enumerate(self.__point_list):
+        for index, x_or_y in enumerate(self.point_list):
             if index%2:
-                self.__point_list[index] = x_or_y - self.anchor.y + pos.y
+                self.point_list[index] = x_or_y - self.anchor.y + pos.y
             else:
-                self.__point_list[index] = x_or_y - self.anchor.x + pos.x
+                self.point_list[index] = x_or_y - self.anchor.x + pos.x
         self.anchor = pos
-        self.__my_Canvas.coords(self.item_id, self.__point_list)
+        self.__my_Canvas.coords(self.item_id, self.point_list)
+    
+    def find_intersections(self, shape:TGCanvasItem)->list[vector2d]:
+        sol_list = []
+        other_pointlist = shape.point_list.copy()
+        my_pointlist = self.point_list.copy()
+        other_pointlist.append(other_pointlist[:1])
+        my_pointlist.append(my_pointlist[:1])
+        for i in range(len(my_pointlist) // 2 - 1):
+            for n in range(len(other_pointlist) // 2 - 1):
+                st1x = my_pointlist[i * 2]
+                st1y = my_pointlist[i * 2 + 1]
+                st2x = other_pointlist[n * 2]
+                st2y = other_pointlist[n * 2 + 1]
+                sp1x = my_pointlist[i * 2 + 2] - st1x
+                sp1y = my_pointlist[i * 2 + 3] - st1y
+                sp2x = other_pointlist[n * 2 + 2] - st2x
+                sp2y = other_pointlist[n * 2 + 3] - st2y
+                try:
+                    a = ((st1y-st2y)*sp2x-(st1x-st2x)*sp2y)/(sp1y*sp2x-sp1x*sp2y)
+                    if a >= 0 and a <= 1:
+                        ret_vec = vector2d(st1x, st1y)
+                        ret_vec += vector2d(sp1x, sp1y) * a
+                        if (ret_vec - vector2d(st2x,st2y)).lenght >= vector2d(sp2x,sp2y).lenght:
+                            continue	
+                        if ret_vec not in sol_list:
+                            sol_list.append(ret_vec)
+                except:
+                    pass
+        return sol_list

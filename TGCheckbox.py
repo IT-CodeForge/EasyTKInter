@@ -11,10 +11,10 @@ class CheckboxEvents(Enum):
     EV_TOGGLED   = auto()
 
 class TGCheckbox(TGBaseWidget):
-    def __init__(self, myTk:Tk, txt:str, posX:int, posY:int, width:int=80, height:int=17) -> None:
+    def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17) -> None:
         self.__state = IntVar()
         self.object_id:Checkbutton = Checkbutton(myTk, text=txt, bg='#EEEEEE', fg='#000000', variable=self.__state)
-        super().__init__(vector2d(posX, posY), vector2d(width, height))
+        super().__init__(vector2d(pos_x, pos_y), vector2d(width, height))
         self.__event_funcs:dict[CheckboxEvents, Callable[...,None]] = {}
         self.__event_trans:dict[CheckboxEvents, str] = {
             CheckboxEvents.EV_CHECKED:"<ButtonPressed>",
@@ -52,11 +52,11 @@ class TGCheckbox(TGBaseWidget):
             #Raise Error
             pass    
     
-    def remove_event(self, event_type: BaseEvents):
+    def remove_event(self, event_type: BaseEvents, eventhandler:Callable[..., None]):
         if type(event_type) == CheckboxEvents:
-            super().remove_event(event_type, self.__event_trans[event_type])
+            super().remove_event(event_type, eventhandler, self.__event_trans[event_type])
         elif type(event_type) == BaseEvents:
-            super().remove_event(event_type)
+            super().remove_event(event_type, eventhandler)
         else:
             #Raise Error
             pass 

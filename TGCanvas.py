@@ -12,9 +12,9 @@ class DrawMode(Enum):
     BOTTOM_RIGHT_CORNER: Final = 2
 
 class TGCanvas(TGBaseWidget):
-    def __init__(self, myTk:Tk, posX:int, posY:int, width:int = 100, height:int = 100) -> None:
+    def __init__(self, myTk:Tk, pos_x:int=0, pos_y:int=0, width:int=100, height:int=100) -> None:
         self.object_id:Canvas = Canvas(myTk)
-        super().__init__(vector2d(posX, posY), vector2d(width, height))
+        super().__init__(vector2d(pos_x, pos_y), vector2d(width, height))
         self.__draw_mode_trans = {
                         DrawMode.TOP_LEFT_CORNER:lambda pos, width, height : [pos,pos+vector2d(width, height)],
                         DrawMode.BOTTOM_RIGHT_CORNER:lambda pos, width, height : [pos,pos-vector2d(width, height)],
@@ -58,6 +58,8 @@ class TGCanvas(TGBaseWidget):
         
 
     def __gen_col_from_int(self, col:int)->str:
+        if col < 0:
+            return ""
         hold_str = hex(col)[2:]
         if len(hold_str) < 6:
             hold_str = "0"*(6-len(hold_str)) + hold_str

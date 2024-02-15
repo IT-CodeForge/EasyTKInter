@@ -1,7 +1,7 @@
+from asyncio import events
 from enum import Enum, auto
 from abc import abstractmethod
 from tkinter import Event, EventType
-import tkinter
 from typing import Any, Callable
 import logging
 
@@ -22,18 +22,11 @@ class BaseEvents(Enum):
     MOUSE_UP     = auto()
     HOVERED      = auto()
     STOP_HOVERED = auto()
+    CONFIGURED   = auto()
 
 class TGBaseObject:
     def __init__(self) -> None:
         self.object_id
-        self.object_id.bind("<ButtonPress>", self.__eventhandler)
-        self.object_id.bind("<ButtonRelease>", self.__eventhandler)
-        self.object_id.bind("<KeyPress>", self.__eventhandler)
-        self.object_id.bind("<KeyRelease>", self.__eventhandler)
-        self.object_id.bind("<Enter>", self.__eventhandler)
-        self.object_id.bind("<Leave>", self.__eventhandler)
-        self.object_id.bind("<Motion>", self.__eventhandler)
-        self.object_id.bind("<Configure>", self.__eventhandler)
         self._event_lib:dict[str, list[dict[str, Any]]] = {
             "<ButtonPress>":[],
             "<ButtonRelease>":[],
@@ -42,7 +35,8 @@ class TGBaseObject:
             "<Enter>":[],
             "<Leave>":[],
             "<Motion>":[],
-            "<Configure>":[]
+            "<Configure>":[],
+            "<Custom>":[]
         }
         self.__type_trans = {
             EventType.KeyPress:"<KeyPress>",
@@ -58,16 +52,20 @@ class TGBaseObject:
             BaseEvents.MOUSE_DOWN:"<ButtonPress>",
             BaseEvents.MOUSE_UP:"<ButtonRelease>",
             BaseEvents.HOVERED:"<Enter>",
-            BaseEvents.STOP_HOVERED:"<Leave>"
+            BaseEvents.STOP_HOVERED:"<Leave>",
+            BaseEvents.CONFIGURED:"<Configure>"
         }
         self.__event_truth_funcs = {
             BaseEvents.MOUSE_DOWN:lambda event, object_id : True,
             BaseEvents.MOUSE_UP:lambda event, object_id : True,
             BaseEvents.HOVERED:lambda event, object_id : True,
-            BaseEvents.STOP_HOVERED:lambda event, object_id : True
+            BaseEvents.STOP_HOVERED:lambda event, object_id : True,
+            BaseEvents.CONFIGURED:lambda event, object_id : True
         }
     
     def add_event(self, event_type:BaseEvents, eventhandler:Callable[...,None], sequence:str=None, truth_func:Callable[..., None]|None=None):
+        if type(event_type) == str:
+            sequence = event_type
         if sequence == None:
             sequence = self.__event_trans[event_type]
         if truth_func == None:
@@ -78,17 +76,27 @@ class TGBaseObject:
             "truth_func": truth_func
         }
         self._event_lib[sequence].append(append_dict)
+        if len(self._event_lib[sequence]) == 1 and sequence != "<Custom>":
+            self.object_id.bind(sequence, self._eventhandler)
 
-    def remove_event(self, event_type:BaseEvents, sequence:str=None):
+    def remove_event(self, event_type:BaseEvents, eventhandler:Callable[..., None], sequence:str=None):
         if sequence == None:
             sequence = self.__event_trans[event_type]
         for event in self._event_lib[self.__event_trans[event_type]]:
-            if event.get("event_type") == event_type:
+            if event.get("event_type") == event_type and event.get("eventhandler") == eventhandler:
                 self._event_lib[sequence].remove(event)
+                if len(self._event_lib[sequence]) == 0 and sequence != "<Custom>":
+                    self.object_id.unbind(sequence)
                 break
         
-    def __eventhandler(self, event:Event):
-        for dict in self._event_lib[self.__type_trans[event.type]]:
+    def _eventhandler(self, event:Event):
+        event_type = 0
+        if type(event) == Event:
+            event_type = self.__type_trans[event.type]
+        else:
+            event_type = "<Custom>"
+
+        for dict in self._event_lib[event_type]:
             if dict.get("truth_func", lambda event, object_id: False)(event, self.object_id):
                 try:
                     dict.get("eventhandler")(self.object_id, dict.get("event_type"), event)
@@ -105,4 +113,5 @@ class TGBaseObject:
                     dict.get("eventhandler")()
                 except:
                     ret_val = dict.get("eventhandler").__code__.co_varnames
-                    raise BaseException(f"Somethings Gone Wrong, {ret_val}")
+                    name = dict.get("eventhandler").__name__
+                    raise TypeError(f"Invalid parametercount for event function ({name}) (can only be 0,1 or 3 self is not included),parameters: {ret_val}")

@@ -1,9 +1,6 @@
-from abc import abstractmethod
-from typing import Any, Callable
+from typing import Any
 from vector2d  import vector2d
 from TGBaseObject import TGBaseObject
-from enum      import Enum
-from tkinter   import Event, Button
 import logging
 
 #this is for logging purposses, if you don't want it, set "log" to False
@@ -24,9 +21,19 @@ class TGBaseWidget(TGBaseObject):
         self.__visibility = True
         self.__object_pos = pos
         self.__dimensions = dim
+        self.__anchor = vector2d(0,0)
         self.__place_object(self.__object_pos, self.__dimensions)
         super().__init__()
     
+    @property
+    def anchor(self)->vector2d:
+        return self.__anchor
+    
+    @anchor.setter
+    def anchor(self, value:vector2d):
+        self.__anchor = value
+        self.__place_object()
+
     @property
     def pos(self)->vector2d:
         return self.__object_pos
@@ -61,10 +68,12 @@ class TGBaseWidget(TGBaseObject):
     def visible(self, value:bool):
         if value:
             self.__visibility = True
-            self.object_id.place()
+            self.__place_object()
+            self._eventhandler(self)
         else:
             self.__visibility = False
             self.object_id.place_forget()
+            self._eventhandler(self)
     
     def dissable(self):
         self.object_id["state"] = "disabled"
@@ -84,4 +93,4 @@ class TGBaseWidget(TGBaseObject):
             dim = self.__dimensions
         else:
             self.__dimensions = dim
-        self.object_id.place(x=pos.x, y=pos.y, width=dim.x, height=dim.y)
+        self.object_id.place(x=pos.x + self.__anchor.x, y=pos.y + self.__anchor.y, width=dim.x, height=dim.y)

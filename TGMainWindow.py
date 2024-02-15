@@ -25,19 +25,28 @@ class WindowEvents(Enum):
   MOUSE_MOVED    = auto()
   KEY_PRESSED    = auto()
   KEY_RELEASED   = auto()
-  CONFIGURED     = auto()
 
 class TGMainWindow(TGBaseObject,metaclass=ABCMeta):
-  def __init__(self, posX:int, posY:int, width:int, height:int, title:str= "Tk"):
-    if LOG: my_logger.info(f"created MainWindow with geometry: {width}x{height}+{posX}+{posY}")
-    self.__window_pos = vector2d(posX, posY)
+  def __init__(self, pos_x:int=0, pos_y:int=0, width:int=2048, height:int=512, title:str= "Tk"):
+    if LOG: my_logger.info(f"created MainWindow with geometry: {width}x{height}+{pos_x}+{pos_y}")
+    self.__window_pos = vector2d(pos_x, pos_y)
     self.__dimensions = vector2d(width, height)
     self.object_id = Tk()
     self.object_id.title(title)
-    self.object_id.geometry(f"{width}x{height}+{posX}+{posY}")
+    self.object_id.geometry(f"{width}x{height}+{pos_x}+{pos_y}")
     self.object_id.configure(background='#AAAAAA')
     self.object_id.protocol("WM_DELETE_WINDOW", self.app_close)
     self.canvas=TGCanvas(self.object_id, 0, 0, width, height)
+    self.__event_trans = {
+      WindowEvents.MOUSE_MOVED:"<Motion>",
+      WindowEvents.KEY_PRESSED:"<KeyPress>",
+      WindowEvents.KEY_RELEASED:"<KeyRelease>"
+    }
+    self.__event_truth_funcs = {
+      WindowEvents.MOUSE_MOVED:lambda event, object_id : True,
+      WindowEvents.KEY_PRESSED:lambda event, object_id : True,
+      WindowEvents.KEY_RELEASED:lambda event, object_id : True
+    }
 
     self.add_elements()
 
@@ -79,6 +88,26 @@ class TGMainWindow(TGBaseObject,metaclass=ABCMeta):
   def height(self, value:int):
     self.__dimensions.y = value
     self.__place_window()
+  
+  def add_event(self, event_type: BaseEvents|WindowEvents, eventhandler: Callable[..., None], truth_func:Callable[..., None]|None=None):
+    if type(event_type) == WindowEvents:
+      super().add_event(event_type, eventhandler, self.__event_trans[event_type], self.__event_truth_funcs[event_type])
+    elif type(event_type) == BaseEvents:
+      super().add_event(event_type, eventhandler)
+    elif event_type == "<Custom>":
+      super().add_event(event_type, eventhandler, truth_func=truth_func)
+    else:
+        #Raise Error
+        pass  
+    
+  def remove_event(self, event_type: BaseEvents, eventhandler: Callable[..., None]):
+    if type(event_type) == WindowEvents:
+      super().remove_event(event_type, eventhandler, self.__event_trans[event_type])
+    elif type(event_type) == BaseEvents or event_type == "<Custom>":
+      super().remove_event(event_type, eventhandler)
+    else:
+      #Raise Error
+      pass
   
   def __place_window(self, pos:vector2d|None = None, dim:vector2d|None = None):
     if pos == None:

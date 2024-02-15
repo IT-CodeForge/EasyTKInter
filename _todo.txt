@@ -1,12 +1,30 @@
--fix events (ex. BTN_PRESSED incompatible with MOUSE_DOWN)
+Container:
+-done for now except clean up and docu
 
--add container
-    -can arrange by List
-    -with controllable offset
-    -adjustable dimension, position change dependent on object type
-    -container will treat object as not there when invisible
+ListingContainer:
+-done for now except clean up and docu
 
--visibility (deactivates all events)
+Bitmap:
+-line func?
+-curve func??
+
+Canvas:
+-Sprites as Subclass (collection of multiple shapes, maybe also Programm a generator and make a sprite a json)?
+-curve func?
+
+Events:
+-fully add the "<Custom>" Event
+    -multiple types
+
+ObservableTypes:
+-add wrapper to natively get the setter, getter methods
+-more Observable types
+    -int
+    -float
+    -str
+    -...
+
+-clean up Code
 
 -eliminate Errors
 

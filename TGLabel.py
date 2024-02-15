@@ -1,11 +1,11 @@
 from TGBaseWidget import TGBaseWidget
 from vector2d import vector2d
-from tkinter  import Label, Tk
+from tkinter  import Message, Tk
 
 class TGLabel(TGBaseWidget):
-    def __init__(self, myTk:Tk, txt:str, posX:int, posY:int, width:int=80, height:int=17) -> None:
-        self.object_id:Label = Label(myTk, text=txt, bg='#FFFFFF', fg='#000000')
-        super().__init__(vector2d(posX, posY), vector2d(width, height))
+    def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17) -> None:
+        self.object_id:Message = Message(myTk, text=txt, bg='#FFFFFF', fg='#000000')
+        super().__init__(vector2d(pos_x, pos_y), vector2d(width, height))
     
     @property
     def text(self)->str:

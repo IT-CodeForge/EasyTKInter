@@ -15,6 +15,15 @@ class vector2d:
             self.x = x
             self.y = y
     
+    @property
+    def lenght(self)->float:
+        return self.__get_lenght()
+    
+    @lenght.setter
+    def lenght(self, value:float):
+        self.normalize()
+        self *= value
+    
     def __add__(self, other:vector2d)->vector2d:  #defines behaviour on + operand
         try:
             return vector2d(self.x + other.x, self.y + other.y)
@@ -106,7 +115,7 @@ class vector2d:
 
     def __eq__(self, other: int|float|vector2d)->bool:
         if type(other) in [float, int]:
-            return self.get_lenght() == other
+            return self.__get_lenght() == other
         if other == None:
             return False
         try:
@@ -116,7 +125,7 @@ class vector2d:
     
     def __lt__(self, other: int|float|vector2d)->bool:
         if type(other) in [float, int]:
-            return self.get_lenght() < other
+            return self.__get_lenght() < other
         if other == None:
             return False
         try:
@@ -126,7 +135,7 @@ class vector2d:
 
     def __le__(self, other: int|float|vector2d)->bool:
         if type(other) in [float, int]:
-            return self.get_lenght() <= other
+            return self.__get_lenght() <= other
         if other == None:
             return False
         try:
@@ -136,7 +145,7 @@ class vector2d:
 
     def __gt__(self, other: int|float|vector2d)->bool:
         if type(other) in [float, int]:
-            return self.get_lenght() > other
+            return self.__get_lenght() > other
         if other == None:
             return False
         try:
@@ -146,7 +155,7 @@ class vector2d:
 
     def __ge__(self, other: int|float|vector2d)->bool:
         if type(other) in [float, int]:
-            return self.get_lenght() >= other
+            return self.__get_lenght() >= other
         if other == None:
             return False
         try:
@@ -160,16 +169,16 @@ class vector2d:
 
 
     
-    def get_lenght(self)->float:
+    def __get_lenght(self)->float:
         return math.sqrt( self.x**2 + self.y**2)
     
     def get_rotation(self)->float:
         if self.y >= 0:
-            return math.acos(self.x/self.get_lenght())
-        return 2 * math.pi - math.acos(self.x/self.get_lenght())
+            return math.acos(self.x/self.__get_lenght())
+        return 2 * math.pi - math.acos(self.x/self.__get_lenght())
     
     def normalize(self, change_self:bool=True)->vector2d:
-        lenght = self.get_lenght()
+        lenght = self.__get_lenght()
         if not lenght:
             if change_self:
                 self.x,self.y = 0.0,0.0
