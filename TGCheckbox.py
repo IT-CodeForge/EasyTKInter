@@ -4,6 +4,7 @@ from TGBaseWidget import TGBaseWidget
 from TGBaseObject import BaseEvents
 from vector2d     import vector2d
 from tkinter      import Event, IntVar, Tk, Checkbutton
+from Framework_utils import gen_col_from_int
 
 class CheckboxEvents(Enum):
     EV_CHECKED   = auto()
@@ -11,9 +12,11 @@ class CheckboxEvents(Enum):
     EV_TOGGLED   = auto()
 
 class TGCheckbox(TGBaseWidget):
-    def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17) -> None:
+    def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17, fill:int=0xEEEEEE, text_col:int=0x0) -> None:
         self.__state = IntVar()
-        self.object_id:Checkbutton = Checkbutton(myTk, text=txt, bg='#EEEEEE', fg='#000000', variable=self.__state)
+        self.__bg_col = gen_col_from_int(fill)
+        self.__text_col =gen_col_from_int(text_col)
+        self.object_id:Checkbutton = Checkbutton(myTk, text=txt, bg=self.__bg_col, fg=self.__text_col, variable=self.__state)
         super().__init__(vector2d(pos_x, pos_y), vector2d(width, height))
         self.__event_funcs:dict[CheckboxEvents, Callable[...,None]] = {}
         self.__event_trans:dict[CheckboxEvents, str] = {

@@ -19,7 +19,7 @@ class GUI(TGMainWindow.TGMainWindow):
     
     def add_elements(self):
         self.myLbl = TGLabel(self.object_id, "HALLO\nmultiline", 100, 300, 1000,500)
-        self.myBtn2 = TGButton(self.object_id, "BTN2", fill=0x0000FF)
+        self.myBtn2 = TGButton(self.object_id, "BTN2")
         self.myBtn2.add_event(ButtonEvents.BTN_PRESSED, self.ev_btn2)
         self.myBtn = TGButton(self.object_id, "BTN")
         self.myBtn.add_event(BaseEvents.MOUSE_DOWN, self.process)
@@ -34,6 +34,8 @@ class GUI(TGMainWindow.TGMainWindow):
         self.my_oval_2 = self.canvas.draw_oval(vector2d(200,75), 100, 50, None)
         self.my_oval_2.move(vector2d(-40,0))
         self.my_oval_2.rotate_with_degrees(-45)
+        sol = self.my_oval_1.ray_casting(vector2d(50,0), vector2d(0,1))
+        print([str(e) for e in sol])
 
 
 

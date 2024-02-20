@@ -1,10 +1,13 @@
 from TGBaseWidget import TGBaseWidget
 from vector2d import vector2d
 from tkinter  import Message, Tk
+from Framework_utils import gen_col_from_int
 
 class TGLabel(TGBaseWidget):
-    def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17) -> None:
-        self.object_id:Message = Message(myTk, text=txt, bg='#FFFFFF', fg='#000000')
+    def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17, fill:int=0xFFFFFF, text_col:int=0x0) -> None:
+        self.__bg_col = gen_col_from_int(fill)
+        self.__text_col = gen_col_from_int(text_col)
+        self.object_id:Message = Message(myTk, text=txt, bg=self.__bg_col, fg=self.__text_col)
         super().__init__(vector2d(pos_x, pos_y), vector2d(width, height))
     
     @property

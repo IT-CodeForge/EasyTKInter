@@ -2,13 +2,14 @@ from __future__ import annotations
 from tkinter    import Canvas
 from vector2d   import vector2d
 from ast        import literal_eval
+from Framework_utils import gen_col_from_int
 import math
 
 #types: "line" "rectangle" "square" "oval" "circle" "polygon"
 
 class TGCanvasItem:
     def __init__(self, canvas:Canvas, item_type:str, *args) -> None:
-        print(*args)
+        self.__temp_sort_vec = vector2d()
         self.__my_Canvas = canvas
         self.__item_type = item_type.removeprefix("json")
         if type(args[0]) == vector2d:
@@ -46,7 +47,7 @@ class TGCanvasItem:
     def fill(self, value):
         if self.__col == None:
             return
-        self.__col = self.__gen_col_from_int(value)
+        self.__col = gen_col_from_int(value)
 
     @property
     def line_col(self)->int:
@@ -54,7 +55,7 @@ class TGCanvasItem:
     
     @line_col.setter
     def line_col(self, value):
-        self.line_col = self.__gen_col_from_int(value)
+        self.line_col = gen_col_from_int(value)
     
     @property
     def thickness(self)->int|None:
@@ -157,7 +158,33 @@ class TGCanvasItem:
                 if ret_vec != None and ret_vec not in sol_list:
                     sol_list.append(ret_vec)
         return sol_list
+    
+    def ray_casting(self, point:vector2d, direction_vec:vector2d)->list[vector2d]:
+        my_pointlist = self.__point_list.copy()
+        my_pointlist += my_pointlist[:2]
+        p3 = point
+        x_list = [self.__point_list[i * 2] for i in range(len(self.__point_list) // 2)]
+        y_list = [self.__point_list[i * 2 + 1] for i in range(len(self.__point_list) // 2)]
+        distance_to_window_edge = vector2d(
+            max(x_list) if direction_vec.x else min(x_list),
+            max(y_list) if direction_vec.y else min(y_list))
+        
+        sol_list = []
 
+        p4 = point + direction_vec.normalize() * distance_to_window_edge
+        for i in range(len(self.__point_list) // 2):
+            p1 = vector2d(my_pointlist[i *2], my_pointlist[i * 2 + 1])
+            p2 = vector2d(my_pointlist[i * 2 + 2], my_pointlist[i * 2 + 3])
+            sol = self.__find_intersection(p1,p2,p3,p4)
+            if sol == None or sol in sol_list:
+                continue
+            sol_list.append(sol)
+        sol_list.sort(key=self.__sort_list_by_dis_to_vec)
+        return sol_list
+    def __sort_list_by_dis_to_vec(self, vector:vector2d):
+        if vector == None:
+            return vector
+        return (self.__temp_sort_vec - vector).lenght
 
     def __find_intersection(self, p1:vector2d, p2:vector2d, p3:vector2d, p4:vector2d):
         s1 = p2 - p1
@@ -183,11 +210,3 @@ class TGCanvasItem:
     
     def __del__(self):
         self.__my_Canvas.delete(self.item_id)
-
-    def __gen_col_from_int(self, col:int)->str:
-        if col == None:
-            return ""
-        hold_str = hex(col)[2:]
-        if len(hold_str) < 6:
-            hold_str = "0"*(6-len(hold_str)) + hold_str
-        return "#" + hold_str
