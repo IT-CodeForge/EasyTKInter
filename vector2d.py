@@ -195,6 +195,11 @@ class vector2d:
             self.x,self.y = tempx,tempy
         return vector2d(tempx, tempy)
     
+    def switch(self, change_self:bool=True)->vector2d:
+        if change_self:
+            self.x, self.y = self.y, self.x
+        return vector2d(self.y, self.x)
+    
     def get_angle_to_vec(self, vector:vector2d)->float:
         calc_vec_self = self.normalize(False)
         calc_vec_other = vector.normalize(False)

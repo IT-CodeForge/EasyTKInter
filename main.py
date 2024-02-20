@@ -12,32 +12,28 @@ from TGListingContainer import *
 from TGBitmap     import *
 import math
 
-
 class GUI(TGMainWindow.TGMainWindow):
     def __init__(self) -> None:
+        self.my_lines = []
         super().__init__(pos_x=0, pos_y=40, width=1540, height=768)
     
     def add_elements(self):
         self.myLbl = TGLabel(self.object_id, "HALLO\nmultiline", 100, 300, 1000,500)
-        self.myBtn2 = TGButton(self.object_id, "BTN2")
+        self.myBtn2 = TGButton(self.object_id, "BTN2", fill=0x0000FF)
         self.myBtn2.add_event(ButtonEvents.BTN_PRESSED, self.ev_btn2)
         self.myBtn = TGButton(self.object_id, "BTN")
+        self.myBtn.add_event(BaseEvents.MOUSE_DOWN, self.process)
         self.myBtn3 = TGButton(self.object_id, "BTN3", 90, 27)
         self.myBtn3.add_event(BaseEvents.MOUSE_DOWN, self.ev_btn)
-        self.myCon = TGListingContainer(self.myLbl, listing_type=ListingTypes.LEFT_TO_RIGHT)
+        self.myCon = TGListingContainer(listing_type=ListingTypes.LEFT_TO_RIGHT)
+        self.myCon.pos = self.myLbl.pos
         self.myCon2 = TGContainer(self.myLbl)
         self.myCon.elements = [self.myBtn, self.myBtn2]
         self.myCon2.add_element(self.myBtn3, Alignments.MIDDLE_LEFT)
-        self.my_oval_1 = self.canvas.draw_oval(vector2d(125,75), 100, 50, -1)
-        self.my_oval_2 = self.canvas.draw_oval(vector2d(200,75), 100, 50, -1)
-        self.my_oval_2.move(vector2d(0,0))
-        start = perf_counter()
-        sol = self.my_oval_1.find_intersections(self.my_oval_2)
-        end = perf_counter()
-        print(end-start)
-        print([str(x) for x in sol])
-        for vec in sol:
-            self.canvas.draw_line(vector2d(0,0), vec)
+        self.my_oval_1 = self.canvas.draw_oval(vector2d(125,75), 100, 50, None)
+        self.my_oval_2 = self.canvas.draw_oval(vector2d(200,75), 100, 50, None)
+        self.my_oval_2.move(vector2d(-40,0))
+        self.my_oval_2.rotate_with_degrees(-45)
 
 
 
@@ -56,7 +52,13 @@ class GUI(TGMainWindow.TGMainWindow):
             print("ERROR")
     
     def process(self):
-        pass
+        for line in self.my_lines:
+            line.delete()
+        self.my_lines = []
+        self.my_oval_2.rotate_with_degrees(10)
+        sol = self.my_oval_1.find_intersections(self.my_oval_2)
+        for vec in sol:
+            self.my_lines.append(self.canvas.draw_line(vector2d(0,0), vec))
 
         
 

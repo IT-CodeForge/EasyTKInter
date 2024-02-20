@@ -1,3 +1,5 @@
+Log standardmäßig auf true
+
 Container:
 -done for now except clean up and docu
 
@@ -9,7 +11,7 @@ Bitmap:
 -curve func??
 
 Canvas:
--Sprites as Subclass (collection of multiple shapes, maybe also Programm a generator and make a sprite a json)?
+-Sprites as Subclass (Programm a generator?)
 -curve func?
 
 Events:

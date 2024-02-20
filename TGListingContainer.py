@@ -1,4 +1,4 @@
-from typing import Any, Iterable, overload
+from typing import Any, Iterable
 from TGBaseObject import BaseEvents
 from vector2d     import vector2d
 from math         import pi
@@ -13,28 +13,21 @@ class ListingTypes(Enum):
     RIGHT_TO_LEFT = auto()
 
 class TGListingContainer:
-    @overload
-    def __init__(self, pos_x:int, pos_y:int, width:int, height:int, offset:int = 10, alignment:Alignments=Alignments.MIDDLE_LEFT, listing_type:ListingTypes=ListingTypes.TOP_TO_BOTTOM, locked:bool=False) -> None:
-        self.__locked = locked
+    def __init__(self, gui_object=None, offset:int = 10, alignment:Alignments=Alignments.MIDDLE_LEFT, listing_type:ListingTypes=ListingTypes.TOP_TO_BOTTOM):
         self.__my_alignment = alignment
         self.__alignment_type = vector2d(float(alignment.value[1]), float(alignment.value[0]))
         self.__listing_type = listing_type
         self.__offset = offset
-        self.__my_pos = vector2d(pos_x, pos_y)
-        self.__dimensions = vector2d(width, height)
-        self.__anchor = vector2d()
         self.__elements = []
-    
-    def __init__(self, gui_object, offset:int = 10, alignment:Alignments=Alignments.MIDDLE_LEFT, listing_type:ListingTypes=ListingTypes.TOP_TO_BOTTOM, locked:bool=False):
-        self.__locked = locked
-        self.__my_alignment = alignment
-        self.__alignment_type = vector2d(float(alignment.value[1]), float(alignment.value[0]))
-        self.__listing_type = listing_type
-        self.__offset = offset
-        self.__my_pos = gui_object.pos
-        self.__dimensions = vector2d(gui_object.width, gui_object.height)
         self.__anchor = vector2d()
-        self.__elements = []
+        if gui_object == None:
+            self.__my_pos = vector2d()
+            self.__dimensions = vector2d()
+            self.width = None
+            self.height = None
+        else:
+            self.__my_pos = gui_object.pos
+            self.__dimensions = vector2d(gui_object.width, gui_object.height)
     
     @property
     def anchor(self)->vector2d:
@@ -56,19 +49,31 @@ class TGListingContainer:
     
     @property
     def width(self)->int:
+        if self.__dimensions.x == -1:
+            return self.__get_mask_vec_and_dynamic_dim()[1].x
         return self.__dimensions.x
     
     @width.setter
     def width(self, value:int):
+        if type(value) == int and value < 0:
+            raise ValueError("objects must have a positive width")
+        if value == None:
+            value = -1
         self.__dimensions.x = value
         self.__place_elements()
     
     @property
     def height(self)->int:
+        if self.__dimensions.y == -1:
+            return self.__get_mask_vec_and_dynamic_dim()[1].y
         return self.__dimensions.y
     
     @height.setter
     def height(self, value:int):
+        if type(value) == int and value < 0:
+            raise ValueError("objects must have a positive width")
+        if value == None:
+            value = -1
         self.__dimensions.y = value
         self.__place_elements()
     
@@ -117,16 +122,16 @@ class TGListingContainer:
         return ret_val
     
     def __place_elements(self):
-        if self.__listing_type in [ListingTypes.TOP_TO_BOTTOM, ListingTypes.BOTTOM_TO_TOP]:
-            dim_max = max([event.width for event in self.__elements])
-            vec_mask = vector2d(0, 2)
-        if self.__listing_type in [ListingTypes.LEFT_TO_RIGHT, ListingTypes.RIGHT_TO_LEFT]:
-            dim_max = max([event.height for event in self.__elements])
-            vec_mask = vector2d(2, 0)
-        dim_vec_sum = self.__vector_sum([vector2d(e.width, e.height) for e in self.__elements if e.visible]) + vector2d(self.__offset, self.__offset) * (len(self.__elements) - 2)
-        dim_sum = (dim_vec_sum * vec_mask).lenght / 2
-        
-        if dim_max > (self.__dimensions * vec_mask.rotate(0.5*pi, False)).lenght / 2:
+        if len(self.__elements) == 0:
+            return
+        vec_mask, dynamic_dim = self.__get_mask_vec_and_dynamic_dim()
+
+        my_dim = self.__dimensions
+
+        self.__dimensions = vector2d(dynamic_dim.x if self.__dimensions.x == -1 else self.__dimensions.x,
+                                     dynamic_dim.y if self.__dimensions.y == -1 else self.__dimensions.y)
+
+        if (dynamic_dim * vec_mask.switch(False)).lenght > (self.__dimensions * vec_mask.switch(False)).lenght:
             return #raise Error
         
         if self.__listing_type in [ListingTypes.BOTTOM_TO_TOP, ListingTypes.RIGHT_TO_LEFT]:
@@ -137,22 +142,22 @@ class TGListingContainer:
             if not element.visible:
                 continue
             visible_elements.append(element)
-            new_pos = self.__calc_child_pos(index, dim_sum, vec_mask, visible_elements)
+            new_pos = self.__calc_child_pos(index, dynamic_dim * vec_mask, vec_mask, visible_elements)
             if new_pos == None:
                 break
             element.anchor = new_pos
-            if self.__locked:
-                element.pos = vector2d(0,0)
+            element.pos = vector2d(0,0)
             index += 1
         if self.__listing_type in [ListingTypes.BOTTOM_TO_TOP, ListingTypes.RIGHT_TO_LEFT]:
             self.__elements.reverse()
+        
+        self.__dimensions = my_dim
 
-    def __calc_child_pos(self, index:int, dim_sum:int, vec_mask:vector2d, element_list:list)->vector2d:
+    def __calc_child_pos(self, index:int, dynamic_dim:vector2d, vec_mask:vector2d, element_list:list)->vector2d:
         my_element = element_list[-1]
         #calculate the vector that defines the box,
         #that the unary component of the child forms with the lenght of all the listed childs in the other axi
-        bounding_box_dim = vector2d(dim_sum if vec_mask.x else my_element.width,
-                                    dim_sum if vec_mask.y else my_element.height)
+        bounding_box_dim = dynamic_dim * vec_mask + vector2d(my_element.width,my_element.height) * vec_mask.switch(False)
         #adds the widths and heigts of other elemts, to get the offset from the top left if 
         listed_offset_by_index = self.__vector_sum([vector2d(event.width, event.height) for event in element_list[:-1]])
         #apply the offset between the widgets
@@ -162,9 +167,24 @@ class TGListingContainer:
             print(f"Warning, too many elements, were inputted in container, skipping all elemnts after element{index}")
             return None
         #calculate the vector that is dependent on the listing type of the Container
-        case_sensitive_vec = -1 * bounding_box_dim * self.__alignment_type + listed_offset_by_index * vec_mask
+        case_sensitive_vec = -1 * bounding_box_dim * self.__alignment_type + listed_offset_by_index * (vec_mask * 2)
         #calculate the final position of the element
         return self.__my_pos + self.__anchor + (self.__dimensions * self.__alignment_type + case_sensitive_vec) / 2
+    
+    def __get_mask_vec_and_dynamic_dim(self):
+        if self.__listing_type in [ListingTypes.TOP_TO_BOTTOM, ListingTypes.BOTTOM_TO_TOP]:
+            dim_max = max([event.width for event in self.__elements])
+            vec_mask = vector2d(0, 1)
+        if self.__listing_type in [ListingTypes.LEFT_TO_RIGHT, ListingTypes.RIGHT_TO_LEFT]:
+            dim_max = max([event.height for event in self.__elements])
+            vec_mask = vector2d(1, 0)
+        dim_vec_sum = self.__vector_sum([vector2d(e.width, e.height) for e in self.__elements if e.visible])
+        dim_sum = (dim_vec_sum * vec_mask).lenght + self.__offset * (len(self.__elements) - 1)
+
+        dynamic_dim = vector2d(dim_sum if vec_mask.x else dim_max,
+                               dim_sum if vec_mask.y else dim_max)
+        
+        return vec_mask, dynamic_dim
     
     def __ev_visibility_changed(self):
         self.__place_elements()

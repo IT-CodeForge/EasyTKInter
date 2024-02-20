@@ -26,12 +26,6 @@ class TGCanvas(TGBaseWidget):
         my_outline_col = self.__gen_col_from_int(outline_col)
         return TGCanvasItem(self.object_id, "square", top_left, bottom_right, my_fill_col, my_outline_col)
     
-    def draw_rect(self, pos:vector2d, width:int, height:int, fill_col:int=0xFF0000, outline_col:int=0x000000, draw_mode:DrawMode = DrawMode.TOP_LEFT_CORNER)->TGCanvasItem:
-        top_left,bottom_right = self.__draw_mode_trans[draw_mode](pos,width,height)
-        my_fill_col = self.__gen_col_from_int(fill_col)
-        my_outline_col = self.__gen_col_from_int(outline_col)
-        return TGCanvasItem(self.object_id, "rectangle", top_left, bottom_right, my_fill_col, my_outline_col)
-    
     def draw_rect(self, top_left:vector2d, bottom_right:vector2d, fill_col:int=0xFF0000, outline_col:int=0x000000)->TGCanvasItem:
         my_fill_col = self.__gen_col_from_int(fill_col)
         my_outline_col = self.__gen_col_from_int(outline_col)
@@ -54,11 +48,11 @@ class TGCanvas(TGBaseWidget):
     
     def draw_line(self, pos1:vector2d, pos2:vector2d, line_col:int=0x000000, line_thickness:int=2)->TGCanvasItem:
         my_fill_col = self.__gen_col_from_int(line_col)
-        return TGCanvasItem(self.object_id, "line", pos1, pos2, my_fill_col, line_thickness)
+        return TGCanvasItem(self.object_id, "line", [pos1, pos2], my_fill_col, line_thickness)
         
 
     def __gen_col_from_int(self, col:int)->str:
-        if col < 0:
+        if col == None:
             return ""
         hold_str = hex(col)[2:]
         if len(hold_str) < 6:
