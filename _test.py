@@ -42,19 +42,10 @@ class Test:
     
     def __del__(self):
         print("del")
-
-    def detach(self):
-        event(DETACH)
  
 
 if __name__ == "__main__":
-    temp = 0x00FF00
-    test1 = Test()
-    test2 = Test()
-    liste = [test1, test2]
-    for test in liste:
-        test.hallo()
-    print("-"*10)
-    del test1
-    for test in liste:
-        test.hallo()
+    temp = {}
+    temp["h"] = 1
+    print(temp)
+    

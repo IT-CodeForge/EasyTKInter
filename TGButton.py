@@ -39,7 +39,7 @@ class TGButton(TGBaseWidget):
             super().add_event(event_type, eventhandler, self.__event_trans[event_type], self.__event_truth_funcs[event_type])
         elif type(event_type) == BaseEvents:
             super().add_event(event_type, eventhandler)
-        elif event_type == "<Custom>":
+        elif type(event_type) == str:
             super().add_event(event_type, eventhandler, truth_func=truth_func)
         else:
             #Raise Error

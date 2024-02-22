@@ -75,9 +75,12 @@ class TGBaseObject:
             "event_type": event_type,
             "truth_func": truth_func
         }
+        if sequence not in self._event_lib.keys():
+            self._event_lib[sequence] = []
         self._event_lib[sequence].append(append_dict)
-        if len(self._event_lib[sequence]) == 1 and sequence != "<Custom>":
+        if len(self._event_lib[sequence]) == 1 and type(event_type) != str:
             self.object_id.bind(sequence, self._eventhandler)
+        #print(self._event_lib)
 
     def remove_event(self, event_type:BaseEvents, eventhandler:Callable[..., None], sequence:str=None):
         if sequence == None:
@@ -94,7 +97,7 @@ class TGBaseObject:
         if type(event) == Event:
             event_type = self.__type_trans[event.type]
         else:
-            event_type = "<Custom>"
+            event_type = event
 
         for dict in self._event_lib[event_type]:
             if dict.get("truth_func", lambda event, object_id: False)(event, self.object_id):

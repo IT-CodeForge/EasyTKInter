@@ -23,6 +23,7 @@ class TGBaseWidget(TGBaseObject):
         self.__dimensions = dim
         self.__anchor = vector2d(0,0)
         self.__place_object(self.__object_pos, self.__dimensions)
+        self.__state = True
         super().__init__()
     
     @property
@@ -69,17 +70,24 @@ class TGBaseWidget(TGBaseObject):
         if value:
             self.__visibility = True
             self.__place_object()
-            self._eventhandler(self)
+            self._eventhandler("<Visible>")
         else:
             self.__visibility = False
             self.object_id.place_forget()
-            self._eventhandler(self)
+            self._eventhandler("<Visible>")
     
-    def dissable(self):
-        self.object_id["state"] = "disabled"
+    @property
+    def enabled(self)->bool:
+        return self.__state
     
-    def enable(self):
-        self.object_id["state"] = "normal"
+    @enabled.setter
+    def enabled(self, value):
+        self.__state = value
+        print("dis")
+        if self.__state:
+            self.object_id["state"] = "normal"
+        else:
+            self.object_id["state"] = "disabled"
 
     def move(self, mov_vec:vector2d):
         self.pos = self.__object_pos+mov_vec

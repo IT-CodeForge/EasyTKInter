@@ -18,7 +18,7 @@ class GUI(TGMainWindow.TGMainWindow):
         super().__init__(pos_x=0, pos_y=40, width=1540, height=768)
     
     def add_elements(self):
-        self.myLbl = TGLabel(self.object_id, "HALLO\nmultiline", 100, 300, 1000,500)
+        self.myLbl = TGLabel(self.object_id, "HHHHHHHHHHHHHHHHHHHHHHHHHH", 100, 300, 1000,500)
         self.myBtn2 = TGButton(self.object_id, "BTN2")
         self.myBtn2.add_event(ButtonEvents.BTN_PRESSED, self.ev_btn2)
         self.myBtn = TGButton(self.object_id, "BTN")
@@ -35,7 +35,7 @@ class GUI(TGMainWindow.TGMainWindow):
         self.my_oval_2.move(vector2d(-40,0))
         self.my_oval_2.rotate_with_degrees(-45)
         sol = self.my_oval_1.ray_casting(vector2d(125,0), vector2d(0,1))
-        print([str(e) for e in sol])
+        #print([str(e) for e in sol])
 
 
 
@@ -44,6 +44,7 @@ class GUI(TGMainWindow.TGMainWindow):
     
     def ev_btn2(self, params):
         self.myBtn.visible = True
+        #self.myBtn.enabled = not self.myBtn.enabled
 
     def ev_chb(self, params:dict[str,Any]):
         if params.get("event_type", "") == CheckboxEvents.EV_CHECKED:

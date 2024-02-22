@@ -14,7 +14,7 @@ class TGEdit(TGBaseWidget):
         self.__bg_col = gen_col_from_int(fill)
         self.__text_col = gen_col_from_int(text_col)
         self.object_id:Text = Text(myTk, bg=self.__bg_col, fg=self.__text_col)
-        self.object_id.insert(0,txt)
+        self.object_id.insert(END,txt)
         super().__init__(vector2d(pos_x, pos_y), vector2d(width, height))
         self.__event_trans:dict[EditEvents, str] = {
             EditEvents.EV_CHANGED:"<KeyPress>"

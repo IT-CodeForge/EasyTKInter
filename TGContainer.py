@@ -97,14 +97,9 @@ class TGContainer:
         for element in self.__elements:
             if element[0].pos.x + element[0].width > self.__dimensions.x or element[0].pos.y + element[0].height > self.__dimensions.y:
                 continue 
-            element[0].anchor = self.__my_pos + self.anchor
             element_pos = (self.__dimensions - vector2d(element[0].width, element[0].height)) * element[1] / 2
-            element[0].pos = element_pos + element[0].pos
+            element[0].anchor = self.__my_pos + self.anchor + element_pos + element[0].pos
         self.__dimensions = my_dim
     
     def __ev_element_configured(self, params:dict):
-        element = params.get("object_id")
-        for my_element in self.__elements:
-            if my_element[0].object_id == element:
-                if my_element[0].anchor != self.__my_pos:
-                    my_element[0].anchor = self.__my_pos
+        self.__place_elements()
