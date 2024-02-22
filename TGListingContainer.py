@@ -1,5 +1,6 @@
 from typing import Any, Iterable
-from TGBaseObject import BaseEvents
+from TGBaseObject import BaseEvents, TGBaseObject
+from TGBaseWidget import TGBaseWidget
 from vector2d     import vector2d
 from math         import pi
 from enum         import Enum, auto
@@ -190,12 +191,16 @@ class TGListingContainer:
         self.__place_elements()
     
     def __ev_elements_changed(self, my_list):
+        element: TGBaseWidget
         for element in [e for e in my_list if e not in self.__elements]:
             element.add_event("<Custom>", self.__ev_visibility_changed, lambda event, object_id : True)
             element.add_event(BaseEvents.CONFIGURED, self.__ev_element_configured)
         for element in [e for e in self.__elements if e not in my_list]:
             element.remove_event("<Custom>", self.__ev_visibility_changed)
             element.remove_event(BaseEvents.CONFIGURED, self.__ev_element_configured)
+            element.anchor = vector2d(0, 0)
+            element.pos = vector2d(0, 0)
+            element.visible = False
         self.__elements = my_list
         self.__place_elements()
     

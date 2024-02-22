@@ -39,6 +39,12 @@ def gen_col_from_int(col:int)->str:
 class Test:
     def hallo(self):
         print("hallo")
+    
+    def __del__(self):
+        print("del")
+
+    def detach(self):
+        event(DETACH)
  
 
 if __name__ == "__main__":
@@ -49,6 +55,6 @@ if __name__ == "__main__":
     for test in liste:
         test.hallo()
     print("-"*10)
-    del liste[0]
+    del test1
     for test in liste:
         test.hallo()
