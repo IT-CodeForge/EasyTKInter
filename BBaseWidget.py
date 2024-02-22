@@ -102,3 +102,6 @@ class BBaseWidget(BBaseObject):
         else:
             self.__dimensions = dim
         self.object_id.place(x=pos.x + self.__anchor.x, y=pos.y + self.__anchor.y, width=dim.x, height=dim.y)
+    
+    def detach(self):
+        self._eventhandler("<Detach>")

@@ -1,3 +1,4 @@
+from BListingContainer import BListingContainer
 from BNoTKEventBase import BNoTKEventBase
 from BBaseObject import BaseEvents
 from vector2d     import vector2d
@@ -104,9 +105,11 @@ class BContainer(BNoTKEventBase):
     def add_element(self, element, allignment:Alignments=Alignments.TOP_LEFT):
         self.__elements.append([element, vector2d(int(allignment.value[1]), int(allignment.value[0]))])
         self.__place_elements()
+        element.add_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
         element.add_event(BaseEvents.CONFIGURED, self.__ev_element_configured)
     
     def remove_element(self, element):
+        element.remove_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
         element.remove_event(BaseEvents.CONFIGURED)
         for my_element in self.__elements:
             if my_element[0] == element:
@@ -131,3 +134,17 @@ class BContainer(BNoTKEventBase):
     
     def __ev_element_configured(self, params:dict):
         self.__place_elements()
+    
+    def __ev_element_detached(self, params):
+        my_object = params.get("object_id")
+        if type(my_object) not in [BListingContainer, BContainer]:
+            for element in self.__elements:
+                if element.object_id == my_object:
+                    my_object = element
+                    break
+        my_object.anchor = vector2d()
+        my_object.pos = vector2d()
+        my_object.visible = False
+    
+    def detach(self):
+        self._eventhandler("<Detach>")

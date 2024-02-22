@@ -6,7 +6,7 @@ from vector2d     import vector2d
 from math         import pi
 from enum         import Enum, auto
 from ObservableTypes import ObservableList
-from BContainer  import Alignments
+from BContainer  import Alignments, BContainer
 
 class ListingTypes(Enum):
     TOP_TO_BOTTOM = auto()
@@ -220,9 +220,11 @@ class BListingContainer(BNoTKEventBase):
         element: BBaseWidget
         for element in [e for e in my_list if e not in self.__elements]:
             element.add_event("<Visible>", self.__ev_visibility_changed, lambda event, object_id : True)
+            element.add_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
             element.add_event(BaseEvents.CONFIGURED, self.__ev_element_configured)
         for element in [e for e in self.__elements if e not in my_list]:
             element.remove_event("<Visible>", self.__ev_visibility_changed)
+            element.remove_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
             element.remove_event(BaseEvents.CONFIGURED, self.__ev_element_configured)
             element.anchor = vector2d(0, 0)
             element.pos = vector2d(0, 0)
@@ -230,5 +232,19 @@ class BListingContainer(BNoTKEventBase):
         self.__elements = my_list
         self.__place_elements()
     
+    def __ev_element_detached(self, params):
+        my_object = params.get("object_id")
+        if type(my_object) not in [BListingContainer, BContainer]:
+            for element in self.__elements:
+                if element.object_id == my_object:
+                    my_object = element
+                    break
+        my_object.anchor = vector2d()
+        my_object.pos = vector2d()
+        my_object.visible = False
+    
     def __ev_element_configured(self):
         self.__place_elements()
+    
+    def detach(self):
+        self._eventhandler("<Detach>")

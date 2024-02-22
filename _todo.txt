@@ -1,8 +1,7 @@
 Log standardmäßig auf true
 
-Container events
 outlines
-detach event
+detach method
 
 
 Container:

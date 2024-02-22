@@ -98,7 +98,8 @@ class BBaseObject:
             event_type = self.__type_trans[event.type]
         else:
             event_type = event
-
+        if event_type not in self._event_lib.keys():
+            return
         for dict in self._event_lib[event_type]:
             if dict.get("truth_func", lambda event, object_id: False)(event, self.object_id):
                 try:
