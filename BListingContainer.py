@@ -1,4 +1,5 @@
 from typing import Any, Iterable
+from BNoTKEventBase import BNoTKEventBase
 from BBaseObject import BaseEvents, BBaseObject
 from BBaseWidget import BBaseWidget
 from vector2d     import vector2d
@@ -13,8 +14,9 @@ class ListingTypes(Enum):
     LEFT_TO_RIGHT = auto()
     RIGHT_TO_LEFT = auto()
 
-class BListingContainer:
+class BListingContainer(BNoTKEventBase):
     def __init__(self, gui_object=None, offset:int = 10, alignment:Alignments=Alignments.MIDDLE_LEFT, listing_type:ListingTypes=ListingTypes.TOP_TO_BOTTOM):
+        super().__init__()
         self.__my_alignment = alignment
         self.__alignment_type = vector2d(float(alignment.value[1]), float(alignment.value[0]))
         self.__listing_type = listing_type
@@ -36,7 +38,10 @@ class BListingContainer:
     
     @anchor.setter
     def anchor(self, value:vector2d):
+        my_anchor = self.__anchor
         self.__anchor = value
+        if my_anchor != value:
+            self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
 
     @property
@@ -45,7 +50,10 @@ class BListingContainer:
     
     @pos.setter
     def pos(self, value:vector2d):
+        my_pos = self.__my_pos
         self.__my_pos = value
+        if my_pos != value:
+            self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
     
     @property
@@ -60,7 +68,10 @@ class BListingContainer:
             raise ValueError("objects must have a positive width")
         if value == None:
             value = -1
+        my_width = self.__dimensions.x
         self.__dimensions.x = value
+        if my_width != value:
+            self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
     
     @property
@@ -75,9 +86,24 @@ class BListingContainer:
             raise ValueError("objects must have a positive width")
         if value == None:
             value = -1
+        my_height = self.__dimensions.y
         self.__dimensions.y = value
+        if my_height != value:
+            self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
     
+    @property
+    def visible(self)->bool:
+        if True in [e.visible for e in self.__elements]:
+            return True
+        else:
+            return False
+    
+    @visible.setter
+    def visible(self, value):
+        for element in self.__elements:
+            element.visible = True
+
     @property
     def alignment(self)->Alignments:
         return self.__my_alignment

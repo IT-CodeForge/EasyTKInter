@@ -7,8 +7,9 @@ class ObservableList(list):
         super().__init__(*args)
     
     def __send_event(self):
+        self.__eventhandler(self)
         try:
-            self.__eventhandler(self)
+            
             return
         except:
             pass

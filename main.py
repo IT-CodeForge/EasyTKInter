@@ -6,7 +6,7 @@ from BButton     import *
 from BLabel      import *
 from BCheckbox   import *
 from BEdit       import *
-from BTimer      import TGTimer
+from BTimer      import BTimer
 from BContainer  import *
 from BListingContainer import *
 from BBitmap     import *
@@ -18,22 +18,25 @@ class GUI(BMainWindow.BMainWindow):
         super().__init__(pos_x=0, pos_y=40, width=1540, height=768)
     
     def add_elements(self):
-        self.myLbl = BLabel(self.object_id, "HHHHHHHHHHHHHHHHHHHHHHHHHH", 100, 300, 1000,500)
+        self.myLbl = BLabel(self.object_id, "", 100, 300, 1000,500)
         self.myBtn2 = BButton(self.object_id, "BTN2")
         self.myBtn2.add_event(ButtonEvents.BTN_PRESSED, self.ev_btn2)
         self.myBtn = BButton(self.object_id, "BTN")
         self.myBtn.add_event(BaseEvents.MOUSE_DOWN, self.process)
-        self.myBtn3 = BButton(self.object_id, "BTN3", 90, 27)
+        self.myBtn3 = BButton(self.object_id, "BTN3")
         self.myBtn3.add_event(BaseEvents.MOUSE_DOWN, self.ev_btn)
         self.myCon = BListingContainer(listing_type=ListingTypes.LEFT_TO_RIGHT)
         self.myCon.pos = self.myLbl.pos
-        self.myCon2 = BContainer(self.myLbl)
+        self.myCon2 = BContainer()
         self.myCon.elements = [self.myBtn, self.myBtn2]
         self.myCon2.add_element(self.myBtn3, Alignments.MIDDLE_LEFT)
         self.my_oval_1 = self.canvas.draw_oval(vector2d(125,75), 100, 50, None)
         self.my_oval_2 = self.canvas.draw_oval(vector2d(200,75), 100, 50, None)
         self.my_oval_2.move(vector2d(-40,0))
         self.my_oval_2.rotate_with_degrees(-45)
+        self.myCon.elements.append(self.myCon2)
+        print(self.myCon.elements)
+        print(self.myCon2.anchor, self.myCon2.width)
         sol = self.my_oval_1.ray_casting(vector2d(125,0), vector2d(0,1))
         #print([str(e) for e in sol])
 
