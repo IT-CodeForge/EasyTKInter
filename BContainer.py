@@ -114,7 +114,6 @@ class BContainer(BNoTKEventBase):
         for my_element in self.__elements:
             if my_element[0] == element:
                 self.__elements.remove(my_element)
-                self.__place_elements()
                 break
 
     def __place_elements(self):
@@ -132,7 +131,7 @@ class BContainer(BNoTKEventBase):
             element[0].anchor = self.__my_pos + self.anchor + element_pos + element[0].pos
         self.__dimensions = my_dim
     
-    def __ev_element_configured(self, params:dict):
+    def __ev_element_configured(self):
         self.__place_elements()
     
     def __ev_element_detached(self, params):
@@ -142,6 +141,10 @@ class BContainer(BNoTKEventBase):
                 if element.object_id == my_object:
                     my_object = element
                     break
+        for my_element in self.__elements:
+            if my_element[0] == element:
+                self.__elements.remove(my_element)
+                break
         my_object.anchor = vector2d()
         my_object.pos = vector2d()
         my_object.visible = False

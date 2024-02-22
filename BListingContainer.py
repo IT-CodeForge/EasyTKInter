@@ -239,6 +239,7 @@ class BListingContainer(BNoTKEventBase):
                 if element.object_id == my_object:
                     my_object = element
                     break
+        self.__elements.remove(my_object)
         my_object.anchor = vector2d()
         my_object.pos = vector2d()
         my_object.visible = False
