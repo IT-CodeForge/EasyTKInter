@@ -35,7 +35,20 @@ def gen_col_from_int(col:int)->str:
         if len(hold_str) < 6:
             hold_str = "0"*(6-len(hold_str)) + hold_str
         return "#" + hold_str
+
+class Test:
+    def hallo(self):
+        print("hallo")
  
 
 if __name__ == "__main__":
     temp = 0x00FF00
+    test1 = Test()
+    test2 = Test()
+    liste = [test1, test2]
+    for test in liste:
+        test.hallo()
+    print("-"*10)
+    del liste[0]
+    for test in liste:
+        test.hallo()

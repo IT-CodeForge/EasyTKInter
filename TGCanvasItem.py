@@ -185,6 +185,42 @@ class TGCanvasItem:
         if vector == None:
             return vector
         return (self.__temp_sort_vec - vector).lenght
+    
+    def __raycast_not_through_poly_corner(self, point:vector2d, direction_vec:vector2d):
+        my_pointlist = self.__point_list.copy()
+        my_pointlist += my_pointlist[:2]
+        p3 = point
+        x_list = [self.__point_list[i * 2] for i in range(len(self.__point_list) // 2)]
+        y_list = [self.__point_list[i * 2 + 1] for i in range(len(self.__point_list) // 2)]
+        distance_to_window_edge = vector2d(
+            max(x_list) if direction_vec.x else min(x_list),
+            max(y_list) if direction_vec.y else min(y_list))
+        
+        sol_list = []
+
+        p4 = point + direction_vec.normalize() * distance_to_window_edge
+        for i in range(len(self.__point_list) // 2):
+            p1 = vector2d(my_pointlist[i *2], my_pointlist[i * 2 + 1])
+            p2 = vector2d(my_pointlist[i * 2 + 2], my_pointlist[i * 2 + 3])
+            sol = self.__find_intersection(p1,p2,p3,p4)
+            if sol in sol_list:
+                return None
+            if sol == None:
+                continue
+            sol_list.append(sol)
+        return sol_list
+    
+    def is_point_in_shape(self, point:vector2d)->bool:
+        intersections = None
+        my_dir = vector2d(1,0)
+        while intersections == None:
+            intersections = self.__raycast_not_through_poly_corner(point, my_dir)
+            my_dir.rotate(1.01)
+        num_of_intersections = len(intersections)
+        if num_of_intersections % 2:
+            return False
+        else:
+            return True
 
     def __find_intersection(self, p1:vector2d, p2:vector2d, p3:vector2d, p4:vector2d):
         s1 = p2 - p1
