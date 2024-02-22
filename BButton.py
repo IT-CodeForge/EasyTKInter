@@ -1,8 +1,8 @@
 from abc import abstractmethod
 from typing import Any, Callable
 from enum         import Enum, auto
-from TGBaseWidget import TGBaseWidget
-from TGBaseObject import BaseEvents
+from BBaseWidget import BBaseWidget
+from BBaseObject import BaseEvents
 from vector2d     import vector2d
 from tkinter      import Button, Event, Tk
 from Framework_utils import gen_col_from_int
@@ -11,7 +11,7 @@ class ButtonEvents(Enum):
     BTN_PRESSED        = auto()
     BTN_RELEASED       = auto()
 
-class TGButton(TGBaseWidget):
+class BButton(BBaseWidget):
     def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17, fill:int=0xEEEEEE, text_col:int=0x0) -> None:
         self.__bg_col = gen_col_from_int(fill)
         self.__text_col = gen_col_from_int(text_col)

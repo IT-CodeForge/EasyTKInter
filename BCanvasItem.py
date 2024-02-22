@@ -7,7 +7,7 @@ import math
 
 #types: "line" "rectangle" "square" "oval" "circle" "polygon"
 
-class TGCanvasItem:
+class BCanvasItem:
     def __init__(self, canvas:Canvas, item_type:str, *args) -> None:
         self.__temp_sort_vec = vector2d()
         self.__my_Canvas = canvas
@@ -141,7 +141,7 @@ class TGCanvasItem:
         self.anchor = pos
         self.__my_Canvas.coords(self.item_id, self.__point_list)
     
-    def find_intersections(self, shape:TGCanvasItem)->list[vector2d]:
+    def find_intersections(self, shape:BCanvasItem)->list[vector2d]:
         sol_list = []
         other_pointlist = shape.__point_list.copy()
         my_pointlist = self.__point_list.copy()

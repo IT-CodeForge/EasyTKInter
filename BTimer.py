@@ -1,6 +1,6 @@
 from tkinter import Tk
 
-class TGTimer:
+class BTimer:
     def __init__(self, my_Tk:Tk, interval_in_ms:int, timer_function) -> None:
         self.__my_Tk = my_Tk
         self.__timer_func = timer_function

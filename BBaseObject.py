@@ -24,7 +24,7 @@ class BaseEvents(Enum):
     STOP_HOVERED = auto()
     CONFIGURED   = auto()
 
-class TGBaseObject:
+class BBaseObject:
     def __init__(self) -> None:
         self.object_id
         self._event_lib:dict[str, list[dict[str, Any]]] = {

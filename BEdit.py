@@ -1,5 +1,5 @@
-from TGBaseWidget import TGBaseWidget
-from TGBaseObject import BaseEvents
+from BBaseWidget import BBaseWidget
+from BBaseObject import BaseEvents
 from typing   import Any, Callable
 from enum     import Enum
 from vector2d import vector2d
@@ -9,7 +9,7 @@ from Framework_utils import gen_col_from_int
 class EditEvents(Enum):
     EV_CHANGED = 0
 
-class TGEdit(TGBaseWidget):
+class BEdit(BBaseWidget):
     def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17, fill:int=0xFFFFFF, text_col:int=0x0) -> None:
         self.__bg_col = gen_col_from_int(fill)
         self.__text_col = gen_col_from_int(text_col)
@@ -54,11 +54,13 @@ class TGEdit(TGBaseWidget):
     def delete_txt(self, del_str:str):
         self.replace_text(del_str, "")
     
-    def add_event(self, event_type: BaseEvents, eventhandler: Callable[..., None]):
+    def add_event(self, event_type: BaseEvents, eventhandler: Callable[..., None], truth_func:Callable[..., None]|None=None):
         if type(event_type) == EditEvents:
             super().add_event(event_type, eventhandler, self.__event_trans[event_type], self.__event_truth_funcs[event_type])
         elif type(event_type) == BaseEvents:
             super().add_event(event_type, eventhandler)
+        elif type(event_type) == str:
+            super().add_event(event_type, eventhandler, truth_func=truth_func)
         else:
             #Raise Error
             pass    

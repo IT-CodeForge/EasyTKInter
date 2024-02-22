@@ -3,11 +3,11 @@ import sys
 from time import perf_counter
 from typing import Callable
 from enum import Enum, auto
-from TGBaseObject import TGBaseObject, BaseEvents
+from BBaseObject import BBaseObject, BaseEvents
 from tkinter import Tk, Event
 from abc import ABCMeta, abstractmethod
 from vector2d import vector2d
-from TGCanvas import TGCanvas
+from BCanvas import TGCanvas
 
 # this is for logging purposses, if you don't want it, set "log" to False
 LOG = True
@@ -29,7 +29,7 @@ class WindowEvents(Enum):
     KEY_RELEASED = auto()
 
 
-class TGMainWindow(TGBaseObject, metaclass=ABCMeta):
+class BMainWindow(BBaseObject, metaclass=ABCMeta):
     def __init__(self, pos_x: int = 0, pos_y: int = 0, width: int = 2048, height: int = 512, title: str = "Tk"):
         if LOG:
             my_logger.info(f"created MainWindow with geometry: \

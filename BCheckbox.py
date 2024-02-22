@@ -1,7 +1,7 @@
 from typing       import Any, Callable
 from enum         import Enum, auto
-from TGBaseWidget import TGBaseWidget
-from TGBaseObject import BaseEvents
+from BBaseWidget import BBaseWidget
+from BBaseObject import BaseEvents
 from vector2d     import vector2d
 from tkinter      import Event, IntVar, Tk, Checkbutton
 from Framework_utils import gen_col_from_int
@@ -11,7 +11,7 @@ class CheckboxEvents(Enum):
     EV_UNCHECKED = auto()
     EV_TOGGLED   = auto()
 
-class TGCheckbox(TGBaseWidget):
+class BCheckbox(BBaseWidget):
     def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17, fill:int=0xEEEEEE, text_col:int=0x0) -> None:
         self.__state = IntVar()
         self.__bg_col = gen_col_from_int(fill)
@@ -55,11 +55,13 @@ class TGCheckbox(TGBaseWidget):
             #Raise Error
             pass    
     
-    def remove_event(self, event_type: BaseEvents, eventhandler:Callable[..., None]):
+    def remove_event(self, event_type: BaseEvents, eventhandler:Callable[..., None], truth_func:Callable[..., None]|None=None):
         if type(event_type) == CheckboxEvents:
             super().remove_event(event_type, eventhandler, self.__event_trans[event_type])
         elif type(event_type) == BaseEvents:
             super().remove_event(event_type, eventhandler)
+        elif type(event_type) == str:
+            super().add_event(event_type, eventhandler, truth_func=truth_func)
         else:
             #Raise Error
             pass 

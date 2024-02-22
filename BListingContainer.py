@@ -1,11 +1,11 @@
 from typing import Any, Iterable
-from TGBaseObject import BaseEvents, TGBaseObject
-from TGBaseWidget import TGBaseWidget
+from BBaseObject import BaseEvents, BBaseObject
+from BBaseWidget import BBaseWidget
 from vector2d     import vector2d
 from math         import pi
 from enum         import Enum, auto
 from ObservableTypes import ObservableList
-from TGContainer  import Alignments
+from BContainer  import Alignments
 
 class ListingTypes(Enum):
     TOP_TO_BOTTOM = auto()
@@ -13,7 +13,7 @@ class ListingTypes(Enum):
     LEFT_TO_RIGHT = auto()
     RIGHT_TO_LEFT = auto()
 
-class TGListingContainer:
+class BListingContainer:
     def __init__(self, gui_object=None, offset:int = 10, alignment:Alignments=Alignments.MIDDLE_LEFT, listing_type:ListingTypes=ListingTypes.TOP_TO_BOTTOM):
         self.__my_alignment = alignment
         self.__alignment_type = vector2d(float(alignment.value[1]), float(alignment.value[0]))
@@ -191,7 +191,7 @@ class TGListingContainer:
         self.__place_elements()
     
     def __ev_elements_changed(self, my_list):
-        element: TGBaseWidget
+        element: BBaseWidget
         for element in [e for e in my_list if e not in self.__elements]:
             element.add_event("<Visible>", self.__ev_visibility_changed, lambda event, object_id : True)
             element.add_event(BaseEvents.CONFIGURED, self.__ev_element_configured)

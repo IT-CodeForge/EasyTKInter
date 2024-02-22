@@ -1,5 +1,5 @@
 from typing import overload
-from TGBaseObject import BaseEvents
+from BBaseObject import BaseEvents
 from vector2d     import vector2d
 from enum         import Enum
 
@@ -14,7 +14,7 @@ class Alignments(Enum):
     BOTTOM_CENTER = "21"
     BOTTOM_RIGHT  = "22"
 
-class TGContainer:
+class BContainer:
     def __init__(self, gui_object=None):
         self.__elements = []
         self.__anchor = vector2d()

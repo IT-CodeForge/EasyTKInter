@@ -1,33 +1,33 @@
 from time import perf_counter
 from typing import Any
-import TGMainWindow
-from TGCanvasItem import *
-from TGButton     import *
-from TGLabel      import *
-from TGCheckbox   import *
-from TGEdit       import *
-from TGTimer      import TGTimer
-from TGContainer  import *
-from TGListingContainer import *
-from TGBitmap     import *
+import BMainWindow
+from BCanvasItem import *
+from BButton     import *
+from BLabel      import *
+from BCheckbox   import *
+from BEdit       import *
+from BTimer      import TGTimer
+from BContainer  import *
+from BListingContainer import *
+from BBitmap     import *
 import math
 
-class GUI(TGMainWindow.TGMainWindow):
+class GUI(BMainWindow.BMainWindow):
     def __init__(self) -> None:
         self.my_lines = []
         super().__init__(pos_x=0, pos_y=40, width=1540, height=768)
     
     def add_elements(self):
-        self.myLbl = TGLabel(self.object_id, "HHHHHHHHHHHHHHHHHHHHHHHHHH", 100, 300, 1000,500)
-        self.myBtn2 = TGButton(self.object_id, "BTN2")
+        self.myLbl = BLabel(self.object_id, "HHHHHHHHHHHHHHHHHHHHHHHHHH", 100, 300, 1000,500)
+        self.myBtn2 = BButton(self.object_id, "BTN2")
         self.myBtn2.add_event(ButtonEvents.BTN_PRESSED, self.ev_btn2)
-        self.myBtn = TGButton(self.object_id, "BTN")
+        self.myBtn = BButton(self.object_id, "BTN")
         self.myBtn.add_event(BaseEvents.MOUSE_DOWN, self.process)
-        self.myBtn3 = TGButton(self.object_id, "BTN3", 90, 27)
+        self.myBtn3 = BButton(self.object_id, "BTN3", 90, 27)
         self.myBtn3.add_event(BaseEvents.MOUSE_DOWN, self.ev_btn)
-        self.myCon = TGListingContainer(listing_type=ListingTypes.LEFT_TO_RIGHT)
+        self.myCon = BListingContainer(listing_type=ListingTypes.LEFT_TO_RIGHT)
         self.myCon.pos = self.myLbl.pos
-        self.myCon2 = TGContainer(self.myLbl)
+        self.myCon2 = BContainer(self.myLbl)
         self.myCon.elements = [self.myBtn, self.myBtn2]
         self.myCon2.add_element(self.myBtn3, Alignments.MIDDLE_LEFT)
         self.my_oval_1 = self.canvas.draw_oval(vector2d(125,75), 100, 50, None)
