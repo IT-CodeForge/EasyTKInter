@@ -89,6 +89,8 @@ class BContainer:
                 break
 
     def __place_elements(self):
+        if len(self.__elements) == 0:
+            return
         max_x = max([e[0].pos.x + e[0].width for e in self.__elements])
         max_y = max([e[0].pos.y + e[0].height for e in self.__elements])
         my_dim = self.__dimensions
