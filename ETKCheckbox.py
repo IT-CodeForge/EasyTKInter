@@ -1,7 +1,7 @@
 from typing       import Any, Callable
 from enum         import Enum, auto
-from BBaseWidget import BBaseWidget
-from BBaseObject import BaseEvents
+from ETKBaseWidget import ETKBaseWidget
+from ETKBaseObject import BaseEvents
 from vector2d     import vector2d
 from tkinter      import Event, IntVar, Tk, Checkbutton
 from Framework_utils import gen_col_from_int
@@ -11,7 +11,7 @@ class CheckboxEvents(Enum):
     EV_UNCHECKED = auto()
     EV_TOGGLED   = auto()
 
-class BCheckbox(BBaseWidget):
+class ETKCheckbox(ETKBaseWidget):
     def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17, fill:int=0xEEEEEE, text_col:int=0x0) -> None:
         self.__state = IntVar()
         self.__bg_col = gen_col_from_int(fill)

@@ -1,6 +1,6 @@
 from typing import Any
 from vector2d  import vector2d
-from BBaseObject import BBaseObject
+from ETKBaseObject import ETKBaseObject
 import logging
 
 #this is for logging purposses, if you don't want it, set "log" to False
@@ -15,7 +15,7 @@ if LOG:
     my_logger.addHandler(handler)
 #-------------------------------------------------------------------------
 
-class BBaseWidget(BBaseObject):
+class ETKBaseWidget(ETKBaseObject):
     def __init__(self, pos:vector2d, dim:vector2d) -> None:
         self.object_id: Any
         self.__visibility = True

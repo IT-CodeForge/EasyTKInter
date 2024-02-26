@@ -1,6 +1,6 @@
-from BListingContainer import BListingContainer
-from BNoTKEventBase import BNoTKEventBase
-from BBaseObject import BaseEvents
+from ETKBaseWidget import ETKBaseWidget
+from ETKNoTKEventBase import ETKNoTKEventBase
+from ETKBaseObject import BaseEvents
 from vector2d     import vector2d
 from enum         import Enum
 
@@ -15,7 +15,7 @@ class Alignments(Enum):
     BOTTOM_CENTER = "21"
     BOTTOM_RIGHT  = "22"
 
-class BContainer(BNoTKEventBase):
+class ETKContainer(ETKNoTKEventBase):
     def __init__(self, gui_object=None):
         super().__init__()
         self.__elements = []
@@ -136,7 +136,7 @@ class BContainer(BNoTKEventBase):
     
     def __ev_element_detached(self, params):
         my_object = params.get("object_id")
-        if type(my_object) not in [BListingContainer, BContainer]:
+        if type(my_object) == ETKBaseWidget:
             for element in self.__elements:
                 if element.object_id == my_object:
                     my_object = element

@@ -3,11 +3,11 @@ import sys
 from time import perf_counter
 from typing import Callable
 from enum import Enum, auto
-from BBaseObject import BBaseObject, BaseEvents
+from ETKBaseObject import ETKBaseObject, BaseEvents
 from tkinter import Tk, Event
 from abc import ABCMeta, abstractmethod
 from vector2d import vector2d
-from BCanvas import BCanvas
+from ETKCanvas import ETKCanvas
 
 # this is for logging purposses, if you don't want it, set "log" to False
 LOG = True
@@ -29,7 +29,7 @@ class WindowEvents(Enum):
     KEY_RELEASED = auto()
 
 
-class BMainWindow(BBaseObject, metaclass=ABCMeta):
+class ETKMainWindow(ETKBaseObject, metaclass=ABCMeta):
     def __init__(self, pos_x: int = 0, pos_y: int = 0, width: int = 2048, height: int = 512, title: str = "Tk"):
         if LOG:
             my_logger.info(f"created MainWindow with geometry: \
@@ -41,7 +41,7 @@ class BMainWindow(BBaseObject, metaclass=ABCMeta):
         self.object_id.geometry(f"{width}x{height}+{pos_x}+{pos_y}")
         self.object_id.configure(background='#AAAAAA')
         self.object_id.protocol("WM_DELETE_WINDOW", self.app_close)
-        self.canvas = BCanvas(self.object_id, 0, 0, width, height)
+        self.canvas = ETKCanvas(self.object_id, 0, 0, width, height)
         self.__event_trans = {
             WindowEvents.MOUSE_MOVED: "<Motion>",
             WindowEvents.KEY_PRESSED: "<KeyPress>",

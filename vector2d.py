@@ -186,7 +186,7 @@ class vector2d:
         if change_self:
             self.x = self.x / lenght
             self.y = self.y / lenght
-        return self / lenght
+        return self
     
     def rotate(self, radians:float, change_self:bool=True)->vector2d:
         tempx = round(self.x*math.cos(radians) - self.y*math.sin(radians), 10)

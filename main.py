@@ -1,33 +1,34 @@
 from time import perf_counter
 from typing import Any
-import BMainWindow
-from BCanvasItem import *
-from BButton     import *
-from BLabel      import *
-from BCheckbox   import *
-from BEdit       import *
-from BTimer      import BTimer
-from BContainer  import *
-from BListingContainer import *
-from BBitmap     import *
+import ETKMainWindow
+from ETKCanvasItem import *
+from ETKButton     import *
+from ETKLabel      import *
+from ETKCheckbox   import *
+from ETKEdit       import *
+from ETKTimer      import ETKTimer
+from ETKContainer  import *
+from ETKListingContainer import *
+from ETKBitmap     import *
 import math
 
-class GUI(BMainWindow.BMainWindow):
+class GUI(ETKMainWindow.ETKMainWindow):
     def __init__(self) -> None:
         self.my_lines = []
         super().__init__(pos_x=0, pos_y=40, width=1540, height=768)
     
     def add_elements(self):
-        self.myLbl = BLabel(self.object_id, "", 100, 300, 1000,500)
-        self.myBtn2 = BButton(self.object_id, "BTN2")
+        self.canvas.add_event(BaseEvents.MOUSE_DOWN, self.touch_canvas)
+        self.myLbl = ETKLabel(self.object_id, "", 100, 300, 1000,500)
+        self.myBtn2 = ETKButton(self.object_id, "BTN2")
         self.myBtn2.add_event(ButtonEvents.BTN_PRESSED, self.ev_btn2)
-        self.myBtn = BButton(self.object_id, "BTN")
+        self.myBtn = ETKButton(self.object_id, "BTN")
         self.myBtn.add_event(BaseEvents.MOUSE_DOWN, self.process)
-        self.myBtn3 = BButton(self.object_id, "BTN3")
+        self.myBtn3 = ETKButton(self.object_id, "BTN3")
         self.myBtn3.add_event(BaseEvents.MOUSE_DOWN, self.ev_btn)
-        self.myCon = BListingContainer(listing_type=ListingTypes.LEFT_TO_RIGHT)
+        self.myCon = ETKListingContainer(listing_type=ListingTypes.LEFT_TO_RIGHT)
         self.myCon.pos = self.myLbl.pos
-        self.myCon2 = BContainer()
+        self.myCon2 = ETKContainer()
         self.myCon.elements = [self.myBtn, self.myBtn2]
         self.myCon2.add_element(self.myBtn3, Alignments.MIDDLE_LEFT)
         self.my_oval_1 = self.canvas.draw_oval(vector2d(125,75), 100, 50, None)
@@ -65,6 +66,11 @@ class GUI(BMainWindow.BMainWindow):
         sol = self.my_oval_1.find_intersections(self.my_oval_2)
         for vec in sol:
             self.my_lines.append(self.canvas.draw_line(vector2d(0,0), vec))
+    
+    def touch_canvas(self, params):
+        my_event:Event = params.get("event")
+        mouse_pos = vector2d(my_event.x,my_event.y)
+        print(self.my_oval_1.is_point_in_shape(mouse_pos))
 
         
 

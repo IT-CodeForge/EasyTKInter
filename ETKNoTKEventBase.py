@@ -1,12 +1,14 @@
 from typing import Callable
 
-class BNoTKEventBase:
+class ETKNoTKEventBase:
     def __init__(self) -> None:
         self._event_lib:dict[str,list] = {}
 
     def add_event(self, event_type, eventhandler:Callable[...,None], truth_func:Callable[..., None]|None=None):
         if event_type not in self._event_lib:
             self._event_lib[event_type] = []
+        if truth_func == None:
+            truth_func = lambda event, object_id:True
         self._event_lib[event_type].append([eventhandler, truth_func])
 
     def remove_event(self, event_type, eventhandler:Callable[..., None]):

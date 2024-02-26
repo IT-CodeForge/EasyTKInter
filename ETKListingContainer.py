@@ -1,12 +1,12 @@
 from typing import Any, Iterable
-from BNoTKEventBase import BNoTKEventBase
-from BBaseObject import BaseEvents, BBaseObject
-from BBaseWidget import BBaseWidget
+from ETKNoTKEventBase import ETKNoTKEventBase
+from ETKBaseObject import BaseEvents, ETKBaseObject
+from ETKBaseWidget import ETKBaseWidget
 from vector2d     import vector2d
 from math         import pi
 from enum         import Enum, auto
 from ObservableTypes import ObservableList
-from BContainer  import Alignments, BContainer
+from ETKContainer  import Alignments, ETKContainer
 
 class ListingTypes(Enum):
     TOP_TO_BOTTOM = auto()
@@ -14,7 +14,7 @@ class ListingTypes(Enum):
     LEFT_TO_RIGHT = auto()
     RIGHT_TO_LEFT = auto()
 
-class BListingContainer(BNoTKEventBase):
+class ETKListingContainer(ETKNoTKEventBase):
     def __init__(self, gui_object=None, offset:int = 10, alignment:Alignments=Alignments.MIDDLE_LEFT, listing_type:ListingTypes=ListingTypes.TOP_TO_BOTTOM):
         super().__init__()
         self.__my_alignment = alignment
@@ -217,7 +217,7 @@ class BListingContainer(BNoTKEventBase):
         self.__place_elements()
     
     def __ev_elements_changed(self, my_list):
-        element: BBaseWidget
+        element: ETKBaseWidget
         for element in [e for e in my_list if e not in self.__elements]:
             element.add_event("<Visible>", self.__ev_visibility_changed, lambda event, object_id : True)
             element.add_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
@@ -234,7 +234,7 @@ class BListingContainer(BNoTKEventBase):
     
     def __ev_element_detached(self, params):
         my_object = params.get("object_id")
-        if type(my_object) not in [BListingContainer, BContainer]:
+        if type(my_object) not in [ETKListingContainer, ETKContainer]:
             for element in self.__elements:
                 if element.object_id == my_object:
                     my_object = element
