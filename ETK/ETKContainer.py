@@ -158,7 +158,7 @@ class ETKContainer(ETKNoTKEventBase):
                 continue 
             element_pos = (self.__dimensions - vector2d(element[0].width, element[0].height)) * element[1] / 2
             self.__mov_flag == True
-            element[0].pos = self.__my_pos + self.anchor + element_pos + element[0].pos
+            element[0].pos = self.__my_pos + element_pos + element[0].pos
         self.__dimensions = my_dim
     ######
     ######
@@ -178,7 +178,6 @@ class ETKContainer(ETKNoTKEventBase):
             if my_element[0] == element:
                 self.__elements.remove(my_element)
                 break
-        my_object.anchor = vector2d()
         my_object.pos = vector2d()
         my_object.visible = False
     
