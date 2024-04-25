@@ -38,7 +38,7 @@ class ETKListingContainer(ETKNoTKEventBase):
     ######
     @property
     def abs_pos(self)->vector2d:
-        return self.__object_pos
+        return self.__my_pos
 
     @property
     def pos(self)->vector2d:

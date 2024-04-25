@@ -18,10 +18,10 @@ class GUI(ETK.ETKMainWindow.ETKMainWindow):
         super().__init__(pos_x=0, pos_y=40, width=1540, height=768)
     
     def add_elements(self):
-        self.bckgd = ETKLabel(self.object_id, width=100, height=200, fill=0x0000FF)
-        self.lContainer = ETKListingContainer(self.bckgd)
-        #self.lContainer.width = 100
-        #self.lContainer.height = 200
+        #self.bckgd = ETKLabel(self.object_id, width=100, height=200, fill=0x0000FF)
+        self.lContainer = ETKListingContainer()
+        self.lContainer.width = 100
+        self.lContainer.height = 200
 
         self.testlbl1 = ETKLabel(self.object_id, fill=0xFF0000)
         self.testlbl2 = ETKLabel(self.object_id, pos_y=50, fill=0x00FF00)

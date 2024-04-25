@@ -8,7 +8,7 @@ class GUI(ETK.ETKMainWindow.ETKMainWindow):
     
     def add_elements(self):
         for i in range(self.width//10):
-            self.canvas.draw_line([vector2d(i*10,0), vector2d(i*10,self.height)])
+            self.canvas.draw_line(vector2d(i*10,0), vector2d(i*10,self.height))
 
 if __name__ == '__main__':
   w = GUI()
