@@ -1,7 +1,9 @@
 Log standardmäßig auf true
 
 outlines
-detach method
+hintergrundfarben (Container)
+
+parent system (alle objekte bekommen einen "_parent" (mit public read only) und fragen, wenn sie einen parent haben, diese ob sie eine aktion (bsp. move, visible))
 
 
 Container:

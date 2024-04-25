@@ -1,4 +1,4 @@
-from vector2d import vector2d
+from ETK.vector2d import vector2d
 from ast import literal_eval
 from random   import randint
 from time     import perf_counter

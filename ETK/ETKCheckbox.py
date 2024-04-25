@@ -46,22 +46,22 @@ class ETKCheckbox(ETKBaseWidget):
     def text(self, value:str):
         self.object_id.config(text=value)
     
-    def add_event(self, event_type: BaseEvents, eventhandler: Callable[..., None]):
+    def add_event(self, event_type: BaseEvents, eventhandler: Callable[..., None], truth_func:Callable[..., None]|None=None):
         if type(event_type) == CheckboxEvents:
             super().add_event(event_type, eventhandler, self.__event_trans[event_type], self.__event_truth_funcs[event_type])
         elif type(event_type) == BaseEvents:
             super().add_event(event_type, eventhandler)
+        elif type(event_type) == str:
+            super().add_event(event_type, eventhandler, truth_func=truth_func)
         else:
             #Raise Error
             pass    
     
-    def remove_event(self, event_type: BaseEvents, eventhandler:Callable[..., None], truth_func:Callable[..., None]|None=None):
+    def remove_event(self, event_type: BaseEvents, eventhandler:Callable[..., None]):
         if type(event_type) == CheckboxEvents:
             super().remove_event(event_type, eventhandler, self.__event_trans[event_type])
         elif type(event_type) == BaseEvents:
             super().remove_event(event_type, eventhandler)
-        elif type(event_type) == str:
-            super().add_event(event_type, eventhandler, truth_func=truth_func)
         else:
             #Raise Error
             pass 
