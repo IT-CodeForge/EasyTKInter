@@ -36,16 +36,17 @@ def gen_col_from_int(col:int)->str:
             hold_str = "0"*(6-len(hold_str)) + hold_str
         return "#" + hold_str
 
-class Test:
-    def hallo(self):
-        print("hallo")
-    
-    def __del__(self):
-        print("del")
  
 
 if __name__ == "__main__":
-    temp = {}
-    temp["h"] = 1
-    print(temp)
-    
+    var = 9164916591
+    sol = 0
+    start = perf_counter()
+    sol = var * 10
+    end = perf_counter()
+    tim1 = end - start
+    start = perf_counter()
+    sol = (var << 3) + (var << 1)
+    end = perf_counter()
+    tim2 = end - start
+    print("var * 10" if tim1 < tim2 else "shift", tim1, tim2)

@@ -51,9 +51,9 @@ class GUI(ETKMainWindow.ETKMainWindow):
         #self.myBtn.enabled = not self.myBtn.enabled
 
     def ev_chb(self, params:dict[str,Any]):
-        if params.get("event_type", "") == CheckboxEvents.EV_CHECKED:
+        if params.get("event_type", "") == CheckboxEvents.CB_CHECKED:
             self.my_tri.rotate_with_degrees(45)
-        elif params.get("event_type", "") == CheckboxEvents.EV_UNCHECKED:
+        elif params.get("event_type", "") == CheckboxEvents.CB_UNCHECKED:
             self.my_tri.move(vector2d(1,1))
         else:
             print("ERROR")

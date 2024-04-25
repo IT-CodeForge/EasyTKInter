@@ -21,7 +21,7 @@ class BaseEvents(Enum):
     MOUSE_DOWN   = auto()
     MOUSE_UP     = auto()
     HOVERED      = auto()
-    STOP_HOVERED = auto()
+    LEAVE        = auto()
     CONFIGURED   = auto()
 
 class ETKBaseObject:
@@ -52,14 +52,14 @@ class ETKBaseObject:
             BaseEvents.MOUSE_DOWN:"<ButtonPress>",
             BaseEvents.MOUSE_UP:"<ButtonRelease>",
             BaseEvents.HOVERED:"<Enter>",
-            BaseEvents.STOP_HOVERED:"<Leave>",
+            BaseEvents.LEAVE:"<Leave>",
             BaseEvents.CONFIGURED:"<Configure>"
         }
         self.__event_truth_funcs = {
             BaseEvents.MOUSE_DOWN:lambda event, object_id : True,
             BaseEvents.MOUSE_UP:lambda event, object_id : True,
             BaseEvents.HOVERED:lambda event, object_id : True,
-            BaseEvents.STOP_HOVERED:lambda event, object_id : True,
+            BaseEvents.LEAVE:lambda event, object_id : True,
             BaseEvents.CONFIGURED:lambda event, object_id : True
         }
     
@@ -103,12 +103,12 @@ class ETKBaseObject:
         for dict in self._event_lib[event_type]:
             if dict.get("truth_func", lambda event, object_id: False)(event, self.object_id):
                 try:
-                    dict.get("eventhandler")(self.object_id, dict.get("event_type"), event)
+                    dict.get("eventhandler")(self, dict.get("event_type"), event)
                     continue
                 except:
                     pass
                 try:
-                    params = {"object_id":self.object_id, "event_type":dict.get("event_typ"), "event":event}
+                    params = {"object":self, "event_type":dict.get("event_typ"), "event":event}
                     dict.get("eventhandler")(params)
                     continue
                 except:

@@ -3,6 +3,7 @@ from ETKNoTKEventBase import ETKNoTKEventBase
 from ETKBaseObject import BaseEvents
 from vector2d     import vector2d
 from enum         import Enum
+import logging
 
 class Alignments(Enum):
     TOP_LEFT      = "00"
@@ -111,6 +112,7 @@ class ETKContainer(ETKNoTKEventBase):
     def remove_element(self, element):
         element.remove_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
         element.remove_event(BaseEvents.CONFIGURED)
+        element.anchor = vector2d(0,0)
         for my_element in self.__elements:
             if my_element[0] == element:
                 self.__elements.remove(my_element)

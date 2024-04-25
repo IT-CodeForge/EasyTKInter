@@ -211,7 +211,7 @@ class vector2d:
         except:
             raise ValueError("You can only do a dotproduct of two vectors")
     
-    def crossproduct(self, vector:vector2d)->float:
+    def crossproduct(self, vector:vector2d)->float: 
         try:
             return self.x*vector.y - self.y*vector.x
         except:
