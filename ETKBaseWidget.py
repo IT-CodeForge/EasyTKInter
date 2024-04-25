@@ -1,5 +1,5 @@
 from typing import Any
-from vector2d  import vector2d
+from .vector2d  import vector2d
 from .ETKBaseObject import ETKBaseObject
 import logging
 
