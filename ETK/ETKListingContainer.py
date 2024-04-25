@@ -55,7 +55,7 @@ class ETKListingContainer(ETKNoTKEventBase):
         if my_pos != value:
             self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("move", self):
             self._parent._element_changed(self)
     
     @property
@@ -77,7 +77,7 @@ class ETKListingContainer(ETKNoTKEventBase):
         if my_width != value:
             self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("width", self):
             self._parent._element_changed(self)
     
     @property
@@ -99,7 +99,7 @@ class ETKListingContainer(ETKNoTKEventBase):
         if my_height != value:
             self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("height", self):
             self._parent._element_changed(self)
     
     @property
@@ -119,6 +119,8 @@ class ETKListingContainer(ETKNoTKEventBase):
         for index,e in enumerate(self.__elements):
             e.visible = visibilities[index]
         self._eventhandler("<Visible>")
+        if self.parent != None and self._parent._validate("visible", self):
+            self._parent._element_changed(self)
 
     @property
     def alignment(self)->Alignments:
@@ -197,9 +199,10 @@ class ETKListingContainer(ETKNoTKEventBase):
             if not element.visible:
                 continue
             visible_elements.append(element)
-            new_pos = self.__calc_child_pos(index, dynamic_dim * vec_mask, vec_mask, visible_elements)
+            new_pos = self.__calc_child_pos(index, dynamic_dim, vec_mask, visible_elements)
             if new_pos == None:
                 break
+            self.__mov_flag = True
             element.pos = new_pos
             index += 1
         if self.__listing_type in [ListingTypes.BOTTOM_TO_TOP, ListingTypes.RIGHT_TO_LEFT]:
@@ -208,22 +211,17 @@ class ETKListingContainer(ETKNoTKEventBase):
         self.__dimensions = my_dim
 
     def __calc_child_pos(self, index:int, dynamic_dim:vector2d, vec_mask:vector2d, element_list:list)->vector2d:
-        my_element = element_list[-1]
-        #calculate the vector that defines the box,
-        #that the unary component of the child forms with the lenght of all the listed childs in the other axi
-        bounding_box_dim = dynamic_dim * vec_mask + vector2d(my_element.width,my_element.height) * vec_mask.switch(False)
-        #adds the widths and heigts of other elemts, to get the offset from the top left if 
-        listed_offset_by_index = self.__vector_sum([vector2d(event.width, event.height) for event in element_list[:-1]])
-        #apply the offset between the widgets
-        listed_offset_by_index += vector2d(1,1).normalize() * index * self.__offset * 2
-        #catch if element would be outside the container
         if (self.__vector_sum([vector2d(event.width, event.height) for event in element_list]) * vec_mask).lenght + index * self.__offset > (self.__dimensions * vec_mask).lenght:
             print(f"Warning, too many elements, were inputted in container, skipping all elemnts after element{index}")
             return None
-        #calculate the vector that is dependent on the listing type of the Container
-        case_sensitive_vec = -1 * bounding_box_dim * self.__alignment_type + listed_offset_by_index * (vec_mask * 2)
-        #calculate the final position of the element
-        return self.__my_pos + (self.__dimensions * self.__alignment_type + case_sensitive_vec) / 2
+        #calculate the absolute postition of the box that encompasses all the listed elements
+        BoundingBoxPos = self.__my_pos + 1/2 * self.__alignment_type * (self.__dimensions - dynamic_dim)
+        #calculate the position, of the element inside the BoundingBox
+        element_pos_in_BB = vec_mask * vector2d(sum([e.width for e in element_list[:-1]]),sum([e.height for e in element_list[:-1]])) + vec_mask * index * self.__offset
+        element_pos_in_BB += vec_mask.switch(False) * 0.5 * vector2d(dynamic_dim.x - element_list[-1].width, dynamic_dim.y - element_list[-1].height)
+        #add the positions together
+        retval = BoundingBoxPos + element_pos_in_BB
+        return retval
     
     def __get_mask_vec_and_dynamic_dim(self):
         if self.__listing_type in [ListingTypes.TOP_TO_BOTTOM, ListingTypes.BOTTOM_TO_TOP]:
@@ -237,6 +235,8 @@ class ETKListingContainer(ETKNoTKEventBase):
 
         dynamic_dim = vector2d(dim_sum if vec_mask.x else dim_max,
                                dim_sum if vec_mask.y else dim_max)
+        
+        print("earlydynamic:",dynamic_dim)
         
         return vec_mask, dynamic_dim
     ######

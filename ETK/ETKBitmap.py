@@ -46,7 +46,7 @@ class ETKBitmap(ETKNoTKEventBase):
         if self.parent != None and not self._parent._validate("move", self):
             return
         self.__place_object(value)
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("move", self):
             self._parent._element_changed(self)
     
     @property
@@ -59,7 +59,7 @@ class ETKBitmap(ETKNoTKEventBase):
             return
         self.__dimensions.x = value
         self.__place_object()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("width", self):
             self._parent._element_changed(self)
     
     @property
@@ -72,7 +72,7 @@ class ETKBitmap(ETKNoTKEventBase):
             return
         self.__dimensions.y = value
         self.__place_object()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("height", self):
             self._parent._element_changed(self)
     
     @property
@@ -93,7 +93,7 @@ class ETKBitmap(ETKNoTKEventBase):
                 return
             self.object_id.place_forget()
             self._eventhandler("<Visible>")
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("visible", self):
             self._parent._element_changed(self)
 
     def move(self, mov_vec:vector2d):

@@ -40,7 +40,7 @@ class ETKBaseWidget(ETKBaseObject):
         if self.parent != None and not self._parent._validate("move", self):
             return
         self.__place_object(value)
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("move", self):
             self._parent._element_changed(self)
     
     @property
@@ -53,7 +53,7 @@ class ETKBaseWidget(ETKBaseObject):
             return
         self.__dimensions.x = value
         self.__place_object()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("width", self):
             self._parent._element_changed(self)
     
     @property
@@ -66,7 +66,7 @@ class ETKBaseWidget(ETKBaseObject):
             return
         self.__dimensions.y = value
         self.__place_object()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("height", self):
             self._parent._element_changed(self)
     
     @property
@@ -87,7 +87,7 @@ class ETKBaseWidget(ETKBaseObject):
                 return
             self.object_id.place_forget()
             self._eventhandler("<Visible>")
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("visible", self):
             self._parent._element_changed(self)
     
     @property
@@ -114,7 +114,8 @@ class ETKBaseWidget(ETKBaseObject):
             dim = self.__dimensions
         else:
             self.__dimensions = dim
-        self.object_id.place(x=pos.x, y=pos.y, width=dim.x, height=dim.y)
+        anchor = self._parent.abs_pos jljljlj#######WIP
+        self.object_id.place(x=pos.x + anchor.x, y=pos.y + anchor.y, width=dim.x, height=dim.y)
     
     def detach(self):
         self._eventhandler("<Detach>")

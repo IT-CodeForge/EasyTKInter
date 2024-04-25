@@ -53,7 +53,7 @@ class ETKContainer(ETKNoTKEventBase):
         if my_pos != value:
             self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("move", self):
             self._parent._element_changed(self)
     
     @property
@@ -75,7 +75,7 @@ class ETKContainer(ETKNoTKEventBase):
         if my_width != value:
             self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("height", self):
             self._parent._element_changed(self)
     
     @property
@@ -97,7 +97,7 @@ class ETKContainer(ETKNoTKEventBase):
         if my_height != value:
             self._eventhandler(BaseEvents.CONFIGURED)
         self.__place_elements()
-        if self.parent != None:
+        if self.parent != None and self._parent._validate("height", self):
             self._parent._element_changed(self)
     
     @property
@@ -117,6 +117,8 @@ class ETKContainer(ETKNoTKEventBase):
         for index,e in enumerate(self.__elements):
             e[0].visible = visibilities[index]
         self._eventhandler("<Visible>")
+        if self.parent != None and self._parent._validate("visible", self):
+            self._parent._element_changend(self)
     ######
     ######
     ######
@@ -157,7 +159,6 @@ class ETKContainer(ETKNoTKEventBase):
             if element[0].pos.x + element[0].width > self.__dimensions.x or element[0].pos.y + element[0].height > self.__dimensions.y:
                 continue 
             element_pos = (self.__dimensions - vector2d(element[0].width, element[0].height)) * element[1] / 2
-            self.__mov_flag == True
             element[0].pos = self.__my_pos + element_pos + element[0].pos
         self.__dimensions = my_dim
     ######
@@ -195,10 +196,11 @@ class ETKContainer(ETKNoTKEventBase):
         return child.abs_pos - self.pos
     
     def _validate(self, action:str, child)->bool:
-        if action == "move":
+        if action == "move":    
             if self.__mov_flag:
                 self.__mov_flag = False
-                return True
+                return False
+            self.__mov_flag = True
             return False
         
         if action == "visible":
