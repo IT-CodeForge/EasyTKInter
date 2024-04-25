@@ -43,7 +43,7 @@ class ETKBitmap(ETKNoTKEventBase):
     
     @pos.setter
     def pos(self, value:vector2d):
-        if self.parent != None and not self._parent._validate():
+        if self.parent != None and not self._parent._validate("move", self):
             return
         self.__place_object(value)
         if self.parent != None:
@@ -55,7 +55,7 @@ class ETKBitmap(ETKNoTKEventBase):
     
     @width.setter
     def width(self, value:int):
-        if self.parent != None and not self._parent._validate():
+        if self.parent != None and not self._parent._validate("width", self):
             return
         self.__dimensions.x = value
         self.__place_object()
@@ -68,7 +68,7 @@ class ETKBitmap(ETKNoTKEventBase):
     
     @height.setter
     def height(self, value:int):
-        if self.parent != None and not self._parent._validate():
+        if self.parent != None and not self._parent._validate("height", self):
             return
         self.__dimensions.y = value
         self.__place_object()
@@ -83,13 +83,13 @@ class ETKBitmap(ETKNoTKEventBase):
     def visible(self, value:bool):
         if value:
             self.__visibility = True
-            if self.parent != None and not self._parent._validate():
+            if self.parent != None and not self._parent._validate("visible", self):
                 return
             self.__place_object()
             self._eventhandler("<Visible>")
         else:
             self.__visibility = False
-            if self.parent != None and not self._parent._validate():
+            if self.parent != None and not self._parent._validate("visible", self):
                 return
             self.object_id.place_forget()
             self._eventhandler("<Visible>")

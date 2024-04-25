@@ -114,6 +114,7 @@ class ETKCanvasItem:
         return [f(point) for point in vec_list for f in (getx, gety)]
     
     def __gen_line(self, pos_list:list[vector2d, vector2d], fill:str, line_thickness:int):
+        print(fill)
         self.item_id = self.__my_Canvas.create_line(pos_list[0].x, pos_list[0].y, pos_list[1].x, pos_list[1].y, fill=fill, width=line_thickness)
     
     def __make_shape(self,pointlist:list[float], fill:str, outline:str):

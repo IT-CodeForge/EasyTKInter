@@ -48,7 +48,7 @@ class ETKListingContainer(ETKNoTKEventBase):
     
     @pos.setter
     def pos(self, value:vector2d):
-        if self.parent != None and not self._parent._validate():
+        if self.parent != None and not self._parent._validate("move", self):
             return
         my_pos = self.__my_pos
         self.__my_pos = value
@@ -66,7 +66,7 @@ class ETKListingContainer(ETKNoTKEventBase):
     
     @width.setter
     def width(self, value:int):
-        if self.parent != None and not self._parent._validate():
+        if self.parent != None and not self._parent._validate("width", self):
             return
         if type(value) == int and value < 0:
             raise ValueError("objects must have a positive width")
@@ -88,7 +88,7 @@ class ETKListingContainer(ETKNoTKEventBase):
     
     @height.setter
     def height(self, value:int):
-        if self.parent != None and not self._parent._validate():
+        if self.parent != None and not self._parent._validate("height", self):
             return
         if type(value) == int and value < 0:
             raise ValueError("objects must have a positive height")
@@ -108,8 +108,9 @@ class ETKListingContainer(ETKNoTKEventBase):
     
     @visible.setter
     def visible(self, value):
-        if self.parent != None:
+        if self.parent != None and not self._parent._validate("visible", self):
             self.__visibility = value
+            return
         visibilities = []
         for e in self.__elements:
             visibilities.append(e.visible)
