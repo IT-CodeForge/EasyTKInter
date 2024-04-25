@@ -1,10 +1,10 @@
-from ETKBaseWidget import ETKBaseWidget
-from ETKBaseObject import BaseEvents
+from .ETKBaseWidget import ETKBaseWidget
+from .ETKBaseObject import BaseEvents
 from typing   import Any, Callable
 from enum     import Enum
-from vector2d import vector2d
+from .vector2d import vector2d
 from tkinter  import END, Text, Tk
-from Framework_utils import gen_col_from_int
+from .Framework_utils import gen_col_from_int
 
 class EditEvents(Enum):
     EV_CHANGED = 0

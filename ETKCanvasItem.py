@@ -1,8 +1,8 @@
 from __future__ import annotations
 from tkinter    import Canvas
-from vector2d   import vector2d
+from .vector2d   import vector2d
 from ast        import literal_eval
-from Framework_utils import gen_col_from_int
+from .Framework_utils import gen_col_from_int
 import math
 
 #types: "line" "rectangle" "square" "oval" "circle" "polygon"

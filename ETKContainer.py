@@ -1,7 +1,7 @@
-from ETKBaseWidget import ETKBaseWidget
-from ETKNoTKEventBase import ETKNoTKEventBase
-from ETKBaseObject import BaseEvents
-from vector2d     import vector2d
+from .ETKBaseWidget import ETKBaseWidget
+from .ETKNoTKEventBase import ETKNoTKEventBase
+from .ETKBaseObject import BaseEvents
+from .vector2d     import vector2d
 from enum         import Enum
 import logging
 

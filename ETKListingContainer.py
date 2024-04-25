@@ -1,12 +1,12 @@
 from typing import Any, Iterable
-from ETKNoTKEventBase import ETKNoTKEventBase
-from ETKBaseObject import BaseEvents, ETKBaseObject
-from ETKBaseWidget import ETKBaseWidget
-from vector2d     import vector2d
+from .ETKNoTKEventBase import ETKNoTKEventBase
+from .ETKBaseObject import BaseEvents, ETKBaseObject
+from .ETKBaseWidget import ETKBaseWidget
+from .vector2d     import vector2d
 from math         import pi
 from enum         import Enum, auto
-from ObservableTypes import ObservableList
-from ETKContainer  import Alignments, ETKContainer
+from .ObservableTypes import ObservableList
+from .ETKContainer  import Alignments, ETKContainer
 
 class ListingTypes(Enum):
     TOP_TO_BOTTOM = auto()

@@ -1,15 +1,15 @@
 from time import perf_counter
 from typing import Any
 import ETKMainWindow
-from ETKCanvasItem import *
-from ETKButton     import *
-from ETKLabel      import *
-from ETKCheckbox   import *
-from ETKEdit       import *
-from ETKTimer      import ETKTimer
-from ETKContainer  import *
-from ETKListingContainer import *
-from ETKBitmap     import *
+from .ETKCanvasItem import *
+from .ETKButton     import *
+from .ETKLabel      import *
+from .ETKCheckbox   import *
+from .ETKEdit       import *
+from .ETKTimer      import ETKTimer
+from .ETKContainer  import *
+from .ETKListingContainer import *
+from .ETKBitmap     import *
 import math
 
 class GUI(ETKMainWindow.ETKMainWindow):

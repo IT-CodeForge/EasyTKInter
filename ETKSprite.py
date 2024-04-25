@@ -1,6 +1,6 @@
-from ETKCanvas        import ETKCanvas
-from ETKCanvasItem    import ETKCanvasItem
-from vector2d        import vector2d
+from .ETKCanvas        import ETKCanvas
+from .ETKCanvasItem    import ETKCanvasItem
+from .vector2d        import vector2d
 import math
 import json
 

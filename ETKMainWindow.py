@@ -3,11 +3,11 @@ import sys
 from time import perf_counter
 from typing import Callable, Optional
 from enum import Enum, auto
-from ETKBaseObject import ETKBaseObject, BaseEvents
+from .ETKBaseObject import ETKBaseObject, BaseEvents
 from tkinter import Tk, Event
 from abc import ABCMeta, abstractmethod
-from vector2d import vector2d
-from ETKCanvas import ETKCanvas
+from .vector2d import vector2d
+from .ETKCanvas import ETKCanvas
 
 # this is for logging purposses, if you don't want it, set "log" to False
 LOG = True

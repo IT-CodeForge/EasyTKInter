@@ -1,10 +1,10 @@
 from typing       import Any, Callable
 from enum         import Enum, auto
-from ETKBaseWidget import ETKBaseWidget
-from ETKBaseObject import BaseEvents
-from vector2d     import vector2d
+from .ETKBaseWidget import ETKBaseWidget
+from .ETKBaseObject import BaseEvents
+from .vector2d     import vector2d
 from tkinter      import Event, IntVar, Tk, Checkbutton
-from Framework_utils import gen_col_from_int
+from .Framework_utils import gen_col_from_int
 
 class CheckboxEvents(Enum):
     CB_CHECKED   = auto()

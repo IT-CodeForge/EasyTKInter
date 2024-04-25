@@ -1,8 +1,8 @@
-from ETKBaseWidget import ETKBaseWidget
-from ETKEdit import ETKEdit
-from vector2d import vector2d
+from .ETKBaseWidget import ETKBaseWidget
+from .ETKEdit import ETKEdit
+from .vector2d import vector2d
 from tkinter  import Message, Tk
-from Framework_utils import gen_col_from_int
+from .Framework_utils import gen_col_from_int
 
 class ETKLabel(ETKEdit):
     def __init__(self, myTk:Tk, txt:str="", pos_x:int=0, pos_y:int=0, width:int=80, height:int=17, fill:int=0xFFFFFF, text_col:int=0x0) -> None:

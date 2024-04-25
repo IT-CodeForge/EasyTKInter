@@ -1,7 +1,7 @@
 from typing import Iterable
-from vector2d import vector2d
+from .vector2d import vector2d
 from tkinter  import Label, PhotoImage, Tk
-from ETKNoTKEventBase import ETKNoTKEventBase
+from .ETKNoTKEventBase import ETKNoTKEventBase
 
 class ETKBitmap(ETKNoTKEventBase):
     def __init__(self, my_tk:Tk, pos_x:int=0, pos_y:int=0, width:int=100, height:int=100) -> None:

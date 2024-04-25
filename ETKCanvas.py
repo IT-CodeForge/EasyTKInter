@@ -1,10 +1,10 @@
 from tkinter import Canvas, Tk
-from ETKBaseWidget import ETKBaseWidget
-from vector2d import vector2d
+from .ETKBaseWidget import ETKBaseWidget
+from .vector2d import vector2d
 from enum import Enum
-from ETKCanvasItem import ETKCanvasItem
+from .ETKCanvasItem import ETKCanvasItem
 from typing import Callable, Final
-from Framework_utils import gen_col_from_int
+from .Framework_utils import gen_col_from_int
 import math
 
 class DrawMode(Enum):

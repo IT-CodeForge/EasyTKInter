@@ -1,11 +1,11 @@
 from abc import abstractmethod
 from typing import Any, Callable
 from enum         import Enum, auto
-from ETKBaseWidget import ETKBaseWidget
-from ETKBaseObject import BaseEvents
-from vector2d     import vector2d
+from .ETKBaseWidget import ETKBaseWidget
+from .ETKBaseObject import BaseEvents
+from .vector2d     import vector2d
 from tkinter      import Button, Event, Tk
-from Framework_utils import gen_col_from_int
+from .Framework_utils import gen_col_from_int
 
 class ButtonEvents(Enum):
     BTN_PRESSED        = auto()
