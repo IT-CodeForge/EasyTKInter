@@ -249,9 +249,10 @@ class ETKListingContainer(ETKNoTKEventBase):
         element: ETKBaseWidget
         for element in [e for e in my_list if e not in self.__elements]:
             element.add_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
+            element._parent = self
         for element in [e for e in self.__elements if e not in my_list]:
             element.remove_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
-            element.anchor = vector2d(0, 0)
+            element._parent = None
             element.pos = vector2d(0, 0)
             element.visible = False
         self.__elements = my_list

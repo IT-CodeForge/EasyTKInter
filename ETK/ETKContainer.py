@@ -127,12 +127,14 @@ class ETKContainer(ETKNoTKEventBase):
         self.__elements.append([element, vector2d(int(allignment.value[1]), int(allignment.value[0]))])
         self.__place_elements()
         element.add_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
+        element._parent = self
     
     def remove_element(self, element):
-        element.remove_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
-        element.anchor = vector2d(0,0)
         for my_element in self.__elements:
             if my_element[0] == element:
+                element.remove_event("<Detach>", self.__ev_element_detached, lambda event, object_id : True)
+                element.pos -= self.pos
+                element._parent = None
                 self.__elements.remove(my_element)
                 break   
     ######
