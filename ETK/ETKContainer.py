@@ -32,7 +32,7 @@ class ETKContainer(ETKNoTKEventBase):
             self.__dimensions = vector2d(gui_object.width, gui_object.height)
 
     ######
-    ###properties###
+    #region properties
     ######    
     @property
     def abs_pos(self)->vector2d:
@@ -137,11 +137,11 @@ class ETKContainer(ETKNoTKEventBase):
         if self.parent != None and self._parent._validate("visible", self):
             self._parent._element_changend(self)
     ######
-    ######
+    #endregion
     ######
 
     ######
-    ###manipulating elements###
+    #region manipulating elements
     ######
     def add_element(self, element, allignment:Alignments=Alignments.TOP_LEFT):
         self.__elements.append([element, vector2d(int(allignment.value[1]), int(allignment.value[0]))])
@@ -158,11 +158,11 @@ class ETKContainer(ETKNoTKEventBase):
                 self.__elements.remove(my_element)
                 break   
     ######
-    ######
+    #endregion
     ######
 
     ######
-    ###calculate child positions###
+    #region calculate child positions
     ######
     def __place_elements(self):
         if len(self.__elements) == 0:
@@ -181,11 +181,11 @@ class ETKContainer(ETKNoTKEventBase):
                           max_y if self.__dimensions.y == -1 else self.__dimensions.y)
         return retval
     ######
-    ######
+    #endregion
     ######
 
     ######
-    ###Events###
+    #region Events
     ######    
     def __ev_element_detached(self, params):
         my_object = params.get("object_id")
@@ -207,11 +207,11 @@ class ETKContainer(ETKNoTKEventBase):
         """
         self._eventhandler("<Detach>")  
     ######
-    ######
+    #endregion
     ######
 
     ######
-    ###methods as parent###
+    #region methods as parent
     ######
     def _validate(self, action:str, child)->bool:
         if action == "move":    
@@ -235,5 +235,5 @@ class ETKContainer(ETKNoTKEventBase):
         if None == self.width and self.parent != None:
             self._parent._element_changed()
     ######
-    ######
+    #endregion
     ######

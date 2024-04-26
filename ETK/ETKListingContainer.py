@@ -231,7 +231,7 @@ class ETKListingContainer(ETKNoTKEventBase):
         if (self.__vector_sum([vector2d(event.width, event.height) for event in element_list]) * vec_mask).lenght + index * self.__offset > (self.__dimensions * vec_mask).lenght:
             print(f"Warning, too many elements, were inputted in container, skipping all elemnts after element{index}")
             return None
-        #calculate the absolute postition of the box that encompasses all the listed elements
+        #calculate the postition of the box that encompasses all the listed elements
         BoundingBoxPos = 1/2 * self.__alignment_type * (self.__dimensions - dynamic_dim)
         #calculate the position, of the element inside the BoundingBox
         element_pos_in_BB = vec_mask * vector2d(sum([e.width for e in element_list[:-1]]),sum([e.height for e in element_list[:-1]])) + vec_mask * index * self.__offset
