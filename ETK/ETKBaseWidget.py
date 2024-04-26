@@ -31,7 +31,7 @@ class ETKBaseWidget(ETKBaseObject):
         READ-ONLY \r\n
         the absolute position in the Window
         """
-        return self.__object_pos + vector2d() if self.parent == 0 else self._parent.abs_pos
+        return self.__object_pos + vector2d() if self.parent == None else self._parent.abs_pos
 
     @property
     def pos(self)->vector2d:

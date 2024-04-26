@@ -17,6 +17,7 @@ class ETKCanvasItem:
         elif type(args[0]) == list:
             self.anchor = args[0][0]
         self.item_id = 0
+
         if item_type.startswith("json"):
             self.__col        = args.get("col", "")
             self.__line_col   = args.get("line_col", "")
@@ -26,6 +27,7 @@ class ETKCanvasItem:
             else:
                 self.__make_shape(args.get("pointlist", []), self.__col, self.__line_col)
             return
+        
         if item_type == "line":
             self.__col       = None
             self.__line_col  = args[-2]
@@ -33,6 +35,7 @@ class ETKCanvasItem:
             self.__gen_line(*args)
             self.__point_list = [args[0][0].x, args[0][0].y, args[0][1].x, args[0][1].y]
             return
+        
         self.__thickness = None
         self.__col       = args[-2]
         self.__line_col  = args[-1]
@@ -79,9 +82,9 @@ class ETKCanvasItem:
     def get_item_type(self)->str:
         return self.__item_type
     
-    def stretch(self, x_stretch:float = 1, y_stretch:float = 1):
-        for point in self.__point_list:
-            pass
+    #def stretch(self, x_stretch:float = 1, y_stretch:float = 1):
+    #    for point in self.__point_list:
+    #        pass
 
     def __generate_pointlist(self, *args):
         if self.__item_type in ["oval", "circle"]:
@@ -117,6 +120,9 @@ class ETKCanvasItem:
         self.item_id = self.__my_Canvas.create_line(pos_list[0].x, pos_list[0].y, pos_list[1].x, pos_list[1].y, fill=fill, width=line_thickness)
     
     def __make_shape(self,pointlist:list[float], fill:str, outline:str):
+        print(pointlist)
+        print(fill)
+        print(outline)
         self.item_id = self.__my_Canvas.create_polygon(pointlist, fill=fill, outline=outline)
     
     def rotate_with_radians(self, radians:float):

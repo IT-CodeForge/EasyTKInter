@@ -22,6 +22,7 @@ class GUI(ETK.ETKMainWindow.ETKMainWindow):
         self.lContainer = ETKListingContainer(self.bckgd)
         #self.lContainer.width = 100
         #self.lContainer.height = 200
+        self.canvas.draw_square(pos=vector2d(100,100), side_lenght=100)
 
         self.testlbl1 = ETKLabel(self.object_id, fill=0xFF0000, height=20)
         self.testlbl2 = ETKLabel(self.object_id, pos_y=50, fill=0x00FF00, height=20)
