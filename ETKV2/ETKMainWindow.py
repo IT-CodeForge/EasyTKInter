@@ -15,7 +15,6 @@ class ETKMainWindow(ETKBaseTkObject):
         self._size = size
         self.canvas = ETKCanvas(self._tk_object, 0, 0, int(self.size.x), int(self.size.y))
         super().__init__(pos, size, background_color)
-        self.__place_object()
         self._tk_object.protocol("WM_DELETE_WINDOW", self.app_close)
 
         #TODO: EVENTS
