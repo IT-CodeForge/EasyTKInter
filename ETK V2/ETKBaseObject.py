@@ -17,7 +17,7 @@ class ETKBaseObject:
         pass
     
     @property
-    def _abs_pos(self) -> vector2d:
+    def abs_pos(self) -> vector2d:
         """READ-ONLY"""
         return self._pos
 
