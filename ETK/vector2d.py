@@ -4,7 +4,7 @@ from typing import Optional, overload
 
 class vector2d:
     @overload
-    def __init__(self, x:float, y:float) -> None:
+    def __init__(self, x:float=0, y:float=0) -> None:
         pass
 
     @overload
@@ -25,8 +25,6 @@ class vector2d:
                 self.__raise_error()
             self.x = x
             self.y = y
-        else:
-            self.__raise_error()
         
     def __raise_error(self):
         raise TypeError("Expected: vector2d(x:float, y:float) or vector2d(*, lenght:float, radians:float)")
