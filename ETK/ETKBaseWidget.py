@@ -17,27 +17,34 @@ if LOG:
 
 class ETKBaseWidget(ETKBaseObject):
     def __init__(self, pos:vector2d, dim:vector2d) -> None:
+        super().__init__()
         self.object_id: Any
         self.__visibility = True
         self.__object_pos = pos
         self.__dimensions = dim
         self.__place_object(self.__object_pos, self.__dimensions)
         self.__state = True
-        super().__init__()
 
     @property
     def abs_pos(self)->vector2d:
-        return self.__object_pos
+        """
+        READ-ONLY \r\n
+        the absolute position in the Window
+        """
+        return self.__object_pos + self._parent.abs_pos if self.parent != 0 else vector2d()
 
     @property
     def pos(self)->vector2d:
-        if self._parent != None:
-            return self._parent._get_pos_in_parent(self)
+        """
+        The position relative to the parent (eg. if object, is added to Container, the Container becomes its parent)\r\n
+        WARNING: Some Parents may lock the position and make it READ-ONLY
+        """
         return self.__object_pos
     
     @pos.setter
     def pos(self, value:vector2d):
         if self.parent != None and not self._parent._validate("move", self):
+            print("WARNING: tried to move a locked Element")
             return
         self.__place_object(value)
         if self.parent != None and self._parent._validate("move", self):
@@ -45,6 +52,9 @@ class ETKBaseWidget(ETKBaseObject):
     
     @property
     def width(self)->int:
+        """
+        The width of the element
+        """
         return int(self.__dimensions.x)
     
     @width.setter
@@ -58,6 +68,9 @@ class ETKBaseWidget(ETKBaseObject):
     
     @property
     def height(self)->int:
+        """
+        the height of the element
+        """
         return int(self.__dimensions.y)
     
     @height.setter
@@ -71,6 +84,11 @@ class ETKBaseWidget(ETKBaseObject):
     
     @property
     def visible(self)->bool:
+        """
+        If the element, is drawn on the window\r\n
+        WARNING: When parents are set invisible the children are never drawn, but they remember their status and their status can still be changed, so upon making the parent visible again, only the children which,
+        before or during the the parent being invisible were set to visible will be drawn
+        """
         return self.__visibility
     
     @visible.setter
@@ -92,6 +110,9 @@ class ETKBaseWidget(ETKBaseObject):
     
     @property
     def enabled(self)->bool:
+        """
+        Defines, if the element, can be interacted with, by the user
+        """
         return self.__state
     
     @enabled.setter
@@ -103,6 +124,9 @@ class ETKBaseWidget(ETKBaseObject):
             self.object_id["state"] = "disabled"
 
     def move(self, mov_vec:vector2d):
+        """
+        moves an element from its current position, by the mov_vec
+        """
         self.pos = self.__object_pos+mov_vec
 
     def __place_object(self, pos:vector2d|None=None, dim:vector2d|None=None):
@@ -114,8 +138,13 @@ class ETKBaseWidget(ETKBaseObject):
             dim = self.__dimensions
         else:
             self.__dimensions = dim
-        anchor = self._parent.abs_pos jljljlj#######WIP
+        anchor = vector2d()
+        if self.parent != None:
+            anchor = self._parent.abs_pos
         self.object_id.place(x=pos.x + anchor.x, y=pos.y + anchor.y, width=dim.x, height=dim.y)
     
     def detach(self):
+        """
+        detaches the object, from its parent
+        """
         self._eventhandler("<Detach>")

@@ -61,6 +61,9 @@ class ETKMainWindow(ETKBaseObject, metaclass=ABCMeta):
 
     @property
     def caption(self) -> str:
+        """
+        The string, that is displayed in the taskbar
+        """
         return self.object_id.title()
 
     @caption.setter
@@ -69,6 +72,10 @@ class ETKMainWindow(ETKBaseObject, metaclass=ABCMeta):
 
     @property
     def pos(self) -> vector2d:
+        """
+        The position relative to the parent (eg. if object, is added to Container, the Container becomes its parent)\r\n
+        WARNING: Some Parents may lock the position and make it READ-ONLY
+        """
         return self.__window_pos
 
     @pos.setter
@@ -77,6 +84,9 @@ class ETKMainWindow(ETKBaseObject, metaclass=ABCMeta):
 
     @property
     def width(self) -> int:
+        """
+        The width of the element
+        """
         return self.__dimensions.x
 
     @width.setter
@@ -86,6 +96,9 @@ class ETKMainWindow(ETKBaseObject, metaclass=ABCMeta):
 
     @property
     def height(self) -> int:
+        """
+        the height of the element
+        """
         return self.__dimensions.y
 
     @height.setter

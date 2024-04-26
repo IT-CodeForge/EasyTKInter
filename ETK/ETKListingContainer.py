@@ -38,12 +38,18 @@ class ETKListingContainer(ETKNoTKEventBase):
     ######
     @property
     def abs_pos(self)->vector2d:
-        return self.__my_pos
+        """
+        READ-ONLY \r\n
+        the absolute position in the Window
+        """
+        return self.__my_pos + self._parent.abs_pos if self.parent != 0 else vector2d()
 
     @property
     def pos(self)->vector2d:
-        if self.parent != None:
-            return self._parent._get_pos_in_parent(self)
+        """
+        The position relative to the parent (eg. if object, is added to Container, the Container becomes its parent)\r\n
+        WARNING: Some Parents may lock the position and make it READ-ONLY
+        """
         return self.__my_pos
     
     @pos.setter
@@ -60,6 +66,9 @@ class ETKListingContainer(ETKNoTKEventBase):
     
     @property
     def width(self)->int:
+        """
+        The width of the element, if width is set to None, it becomes dynamic
+        """
         if self.__dimensions.x == -1:
             return max([e[0].pos.x + e[0].width for e in self.__elements])
         return self.__dimensions.x
@@ -82,6 +91,9 @@ class ETKListingContainer(ETKNoTKEventBase):
     
     @property
     def height(self)->int:
+        """
+        the height of the element
+        """
         if self.__dimensions.y == -1:
             return max([e[0].pos.y + e[0].height for e in self.__elements])
         return self.__dimensions.y
@@ -108,6 +120,11 @@ class ETKListingContainer(ETKNoTKEventBase):
     
     @visible.setter
     def visible(self, value):
+        """
+        If the children, are drawn on the window\r\n
+        WARNING: When parents are set invisible the children are never drawn, but they remember their status and their status can still be changed, so upon making the parent visible again, only the children which,
+        before or during the the parent being invisible were set to visible will be drawn
+        """
         if self.parent != None and not self._parent._validate("visible", self):
             self.__visibility = value
             return
@@ -215,7 +232,7 @@ class ETKListingContainer(ETKNoTKEventBase):
             print(f"Warning, too many elements, were inputted in container, skipping all elemnts after element{index}")
             return None
         #calculate the absolute postition of the box that encompasses all the listed elements
-        BoundingBoxPos = self.__my_pos + 1/2 * self.__alignment_type * (self.__dimensions - dynamic_dim)
+        BoundingBoxPos = 1/2 * self.__alignment_type * (self.__dimensions - dynamic_dim)
         #calculate the position, of the element inside the BoundingBox
         element_pos_in_BB = vec_mask * vector2d(sum([e.width for e in element_list[:-1]]),sum([e.height for e in element_list[:-1]])) + vec_mask * index * self.__offset
         element_pos_in_BB += vec_mask.switch(False) * 0.5 * vector2d(dynamic_dim.x - element_list[-1].width, dynamic_dim.y - element_list[-1].height)
@@ -235,8 +252,6 @@ class ETKListingContainer(ETKNoTKEventBase):
 
         dynamic_dim = vector2d(dim_sum if vec_mask.x else dim_max,
                                dim_sum if vec_mask.y else dim_max)
-        
-        print("earlydynamic:",dynamic_dim)
         
         return vec_mask, dynamic_dim
     ######
@@ -272,6 +287,9 @@ class ETKListingContainer(ETKNoTKEventBase):
         my_object.visible = False
     
     def detach(self):
+        """
+        detaches the object, from its parent
+        """
         self._eventhandler("<Detach>")
     ######
     ######
@@ -280,11 +298,7 @@ class ETKListingContainer(ETKNoTKEventBase):
 
     ######
     ###methods as parent###
-    ######
-
-    def _get_pos_in_parent(self, child)->vector2d:    
-        return child.abs_pos - self.pos
-    
+    ######   
     def _validate(self, action:str, child)->bool:
         if action == "move":
             if self.__mov_flag:
@@ -299,6 +313,12 @@ class ETKListingContainer(ETKNoTKEventBase):
     
     def _element_changed(self, child):
         self.__place_elements()
+        
+        if None == self.height and self.parent != None:
+            self.parent._element_changed()
+        
+        if None == self.width and self.parent != None:
+            self._parent._element_changed()
     ######
     ######
     ######
