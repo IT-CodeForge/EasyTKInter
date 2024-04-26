@@ -16,4 +16,4 @@ class ETKBaseTkObject(ETKBaseObject):
     @background_color.setter
     def background_color(self, value: Optional[int]) -> None:
         self._background_color = gen_col_from_int(value)
-        self._tk_object.configure(background='#AAAAAA')
+        self._tk_object.configure(background=self._background_color)
