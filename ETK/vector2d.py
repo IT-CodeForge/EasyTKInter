@@ -1,19 +1,35 @@
 from __future__ import annotations
 import math
-from typing import Optional
+from typing import Optional, overload
 
 class vector2d:
-    def __init__(self, x:Optional[float]=None, y:Optional[float]=None, lenght:Optional[float]=None, radians:Optional[float]=None):
-        
+    @overload
+    def __init__(self, x:float, y:float) -> None:
+        pass
+
+    @overload
+    def __init__(self, *, lenght:float, radians:float) -> None:
+        pass
+
+    def __init__(self, x:Optional[float]=None, y:Optional[float]=None, *, lenght:Optional[float]=None, radians:Optional[float]=None) -> None:
         self.x = 0.0
         self.y = 0.0
 
         if lenght != None and radians != None:
+            if x != None or y != None:
+                self.__raise_error()
             self.x = math.cos(radians) * lenght
             self.y = math.sin(radians) * lenght
         elif x != None and y != None:
+            if lenght != None or radians != None:
+                self.__raise_error()
             self.x = x
             self.y = y
+        else:
+            self.__raise_error()
+        
+    def __raise_error(self):
+        raise TypeError("Expected: vector2d(x:float, y:float) or vector2d(*, lenght:float, radians:float)")
     
     @property
     def lenght(self)->float:
