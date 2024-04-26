@@ -38,7 +38,7 @@ class ETKBitmap(ETKNoTKEventBase):
         READ-ONLY \r\n
         the absolute position in the Window
         """
-        return self.__object_pos + self._parent.abs_pos if self.parent != 0 else vector2d()
+        return self.__object_pos + vector2d() if self.parent == 0 else self._parent.abs_pos
     
     @property
     def pos(self)->vector2d:
@@ -130,7 +130,7 @@ class ETKBitmap(ETKNoTKEventBase):
         anchor = vector2d()
         if self.parent != None:
             anchor = self._parent.abs_pos
-        self.__container.place(x=pos.x + self.anchor.x, y=pos.y + self.anchor.y, width=dim.x, height=dim.y)
+        self.__container.place(x=pos.x + anchor.x, y=pos.y + anchor.y, width=dim.x, height=dim.y)
         #self.object_id.configure(width=dim.x,height=dim.y)
     
     def draw_rect(self, top_left:vector2d, bottom_right:vector2d, color:int):

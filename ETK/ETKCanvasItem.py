@@ -41,7 +41,7 @@ class ETKCanvasItem:
     
     @property
     def fill(self)->int|None:
-        return literal_eval("0x" + self.__col[1])
+        return literal_eval("0x" + self.__col[1:])
     
     @fill.setter
     def fill(self, value):
@@ -114,7 +114,6 @@ class ETKCanvasItem:
         return [f(point) for point in vec_list for f in (getx, gety)]
     
     def __gen_line(self, pos_list:list[vector2d, vector2d], fill:str, line_thickness:int):
-        print(fill)
         self.item_id = self.__my_Canvas.create_line(pos_list[0].x, pos_list[0].y, pos_list[1].x, pos_list[1].y, fill=fill, width=line_thickness)
     
     def __make_shape(self,pointlist:list[float], fill:str, outline:str):
@@ -211,7 +210,6 @@ class ETKCanvasItem:
             sign = (poly_edge_dir*vector2d(0,1)).normalize().y
             if sign not in [-1,1]:
                 print((poly_edge_dir*vector2d(0,1)).normalize())
-                print("sign:", sign)
             if sol in [p1,p2]:
                 retval += 0.5 * sign
             else:
