@@ -59,15 +59,15 @@ class ETKBaseWidget(ETKBaseObject):
             return self._enabled and self._parent._enabled
         return self._enabled
 
-    def detach_child(self, element: ETKBaseWidget):
+    def _detach_child(self, element: ETKBaseWidget):
         if element._parent != self:
             raise ValueError(f"{self} is not the parent of {element}!")
         element._parent = None
 
-    def detach_self(self):
+    def detach_from_parent(self):
         if self._parent == None:
             raise ValueError(f"{self} has no parent!")
-        self._parent.detach_child(self)
+        self._parent._detach_child(self)
     
     @abstractmethod
     def _update_pos(self) -> None:

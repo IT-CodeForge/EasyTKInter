@@ -20,7 +20,7 @@ class GUI(ETKMainWindow):
 
         self.color_label = ETKLabel(self._tk_object, "", vector2d(0,20), vector2d(100, 200), 0x00FF00)
 
-        self.label = ETKLabel(self._tk_object, "LABEL", vector2d(10, 0))
+        self.label = ETKLabel(self._tk_object, "LABEL", vector2d(0, 0))
         self.label.size = vector2d(100, 200)
 
         self.container.add_element(self.label, Alignments.TOP_LEFT)
