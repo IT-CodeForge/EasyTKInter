@@ -1,5 +1,6 @@
 from enum import Enum, auto
 from tkinter import Tk
+from typing import Optional
 from .ETKBaseContainer import Alignments
 from .ETKBaseWidget import ETKBaseWidget
 from .ETKContainer import ContainerSize
@@ -18,11 +19,11 @@ class ListingTypes(Enum):
     RIGHT_TO_LEFT = auto()
 
 class ETKListingContainer(ETKBaseContainer):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), alignment: Alignments = Alignments.TOP_LEFT, listing_type: ListingTypes = ListingTypes.TOP_TO_BOTTOM, offset: int = 10, background_color: int = 11184810) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), alignment: Alignments = Alignments.TOP_LEFT, listing_type: ListingTypes = ListingTypes.TOP_TO_BOTTOM, offset: int = 10, background_color: int = 11184810, outline_color: Optional[int] = None) -> None:
         self.__alignment = alignment
         self.__listing_type = listing_type
         self.__offset = offset
-        ETKBaseContainer.__init__(self, tk, pos, size, background_color)
+        ETKBaseContainer.__init__(self, tk, pos, size, background_color, outline_color)
 
     def add_element(self, element: ETKBaseWidget):
         ETKBaseContainer.add_element(self, element)

@@ -44,7 +44,7 @@ class ETKCanvasItem:
         return int(self._background_color[1:], 16)
     
     @background_color.setter
-    def background_color(self, value: int)->None:
+    def background_color(self, value: Optional[int])->None:
         self._background_color = gen_col_from_int(value)
         self.__redraw_shape()
     

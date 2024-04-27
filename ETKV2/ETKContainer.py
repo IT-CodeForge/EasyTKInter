@@ -1,6 +1,6 @@
 from __future__ import annotations
 from tkinter import Tk
-from typing import Literal
+from typing import Literal, Optional
 from .ETKBaseWidget import ETKBaseWidget
 
 from .vector2d import vector2d
@@ -9,8 +9,8 @@ from .ETKBaseContainer import Alignments, _SubAlignments, ContainerSize, SizeErr
 
 
 class ETKContainer(ETKBaseContainer):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
-        ETKBaseContainer.__init__(self, tk, pos, size, background_color)
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810, outline_color: Optional[int] = None) -> None:
+        ETKBaseContainer.__init__(self, tk, pos, size, background_color, outline_color)
         self._element_alignments: dict[ETKBaseWidget, Alignments] = {}
     
     @ETKBaseContainer.size.setter

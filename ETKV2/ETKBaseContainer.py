@@ -1,10 +1,11 @@
 from abc import abstractmethod
 from enum import Enum, auto
 from tkinter import Tk
-from typing import Literal
+from typing import Literal, Optional
 from .ETKBaseWidget import ETKBaseWidget
 from .vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
+from .ETKBackgroundCanvas import ETKBackgroundCanvas
 
 # TODO: Events, bg_col, outline, enabled, visible, padding bei dynamic size
 
@@ -106,11 +107,17 @@ class PosError(ValueError):
 
 
 class ETKBaseContainer(ETKBaseWidgetDisableable):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810, outline_color: Optional[int] = None) -> None:
+        self.__background = ETKBackgroundCanvas(tk, pos, size.vec, background_color, outline_color)
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         self._container_size: ContainerSize = size
         ETKBaseWidgetDisableable.__init__(
             self, pos, size.vec)
+    
+    @ETKBaseWidgetDisableable.pos.setter
+    def pos(self, value: vector2d)->None:
+        ETKBaseWidgetDisableable.pos.fset(self, value) #type:ignore
+        ETKBackgroundCanvas.pos = value
 
     @property
     def size(self) -> ContainerSize:  # type:ignore
@@ -122,6 +129,23 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
             self._container_size = value
         else:
             self._container_size = ContainerSize(int(value.x), int(value.y))
+        self.__background.size = self.size.vec
+    
+    @property
+    def outline_color(self)->int:
+        return self.__background.background_color
+    
+    @outline_color.setter
+    def outline_color(self, value: int)->None:
+        self.__background.background_color = value
+    
+    @property
+    def background_color(self)->int:
+        return self.__background.background_color
+    
+    @background_color.setter
+    def background_color(self, value: int)->None:
+        self.__background.background_color = value
 
     def add_element(self, element: ETKBaseWidget):
         if element in self._element_rel_pos.keys():
