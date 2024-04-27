@@ -42,13 +42,13 @@ class ETKContainer(ETKBaseContainer):
 
         for e in elements:
             alignment = self._element_alignments[e].value
-            mul = [1, 1]
             for i, sal in enumerate(alignment):
                 if sal == _SubAlignments.MAX:
-                    mul[i] = -1
+                    size = e.size[i] + e.pos[i] * -1
                 elif sal == _SubAlignments.MIDDLE:
-                    mul[i] = 2
-                size = e.size[i] + e.pos[i]*mul[i]
+                    size = e.size[i] + abs(e.pos[i]) * 2
+                else:
+                    size = e.size[i] + e.pos[i]
                 if size > max_size[i]:
                     max_size[i] = int(size)
         
