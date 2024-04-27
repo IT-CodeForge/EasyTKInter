@@ -12,7 +12,7 @@ class __VALIDATION_RETURN_TYPES(Enum):
 
 class ETKBaseWidget(ETKBaseObject):
     def __init__(self, pos: vector2d, size: vector2d) -> None:
-        super().__init__(pos, size)
+        ETKBaseObject.__init__(self, pos, size)
         self._parent: Optional[ETKBaseWidget] = None
         self._visibility: bool = True
         self._enabled: bool = True

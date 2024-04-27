@@ -3,9 +3,18 @@ from .ETKBaseTkWidget import ETKBaseTkWidget
 from .ETKUtils import gen_col_from_int
 
 class ETKBaseTkWidgetText(ETKBaseTkWidget):
-    def __init__(self, pos: vector2d, size: vector2d, background_color: int = 11184810, text_color: int = 0x0) -> None:
-        super().__init__(pos, size, background_color)
+    def __init__(self, text: str, pos: vector2d, size: vector2d, background_color: int = 11184810, text_color: int = 0x0) -> None:
+        ETKBaseTkWidget.__init__(self, pos, size, background_color)
         self.text_color = text_color
+        self.text = text
+    
+    @property
+    def text(self)->str:
+        return self._tk_object.cget("text")
+    
+    @text.setter
+    def text(self, value:str):
+        self._tk_object.config(text=value) #type:ignore
     
     @property
     def text_color(self) -> int:

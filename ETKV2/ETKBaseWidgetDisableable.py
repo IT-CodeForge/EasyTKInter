@@ -3,7 +3,7 @@ from .ETKBaseWidget import ETKBaseWidget
 
 class ETKBaseWidgetDisableable(ETKBaseWidget):
     def __init__(self, pos: vector2d, size: vector2d) -> None:
-        super().__init__(pos, size)
+        ETKBaseWidget.__init__(self, pos, size)
     
     @property
     def enabled(self) -> bool:

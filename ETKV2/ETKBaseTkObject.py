@@ -18,7 +18,7 @@ class ETKBaseTkObject(ETKBaseObject):
     } #NOTE!!!!
 
     def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xAAAAAA) -> None:
-        super().__init__(pos, size)
+        ETKBaseObject.__init__(self, pos, size)
         self._tk_object: Any
         self.background_color = background_color #NOTE: muss nach child init passieren!
     
@@ -34,12 +34,12 @@ class ETKBaseTkObject(ETKBaseObject):
     def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
         if len(self._event_lib[event_type]) == 0:
             self._tk_object.bind(event_type.value, self._handle_tk_event)#type:ignore
-        super().add_event(event_type, eventhandler)
+        ETKBaseObject.add_event(self, event_type, eventhandler)
     
     def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
         if len(self._event_lib[event_type]) == 0:
             self._tk_object.unbind(event_type.value)
-        super().remove_event(event_type, eventhandler)
+        ETKBaseObject.remove_event(self, event_type, eventhandler)
     
     def _handle_tk_event(self, event: Event) -> None: #type:ignore
         match self._TK_EVENTTYPE_TRANSLATION[event.type]:
