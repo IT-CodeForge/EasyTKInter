@@ -10,7 +10,7 @@ class ButtonEvents(Events):
 
 class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
     def __init__(self, tk:Tk, text:str="", pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), background_color:int=0xEEEEEE, text_color:int=0x0) -> None:
-        self._tk_object: Button = Button(tk, text="") #type:ignore
+        self._tk_object: Button = Button(tk) #type:ignore
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
         ETKBaseTkWidgetText.__init__(self, text, pos, size, background_color, text_color)
         self._event_lib.update({e: [] for e in ButtonEvents})

@@ -1,4 +1,4 @@
-from ETKV2.vector2d import vector2d
+from .vector2d import vector2d
 from .ETKBaseTkWidget import ETKBaseTkWidget
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
 
