@@ -1,39 +1,32 @@
 from .vector2d import vector2d
 from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
-from .ETKUtils import gen_col_from_int
+from .ETKCanvasItem import ETKCanvasItem
+from .ETKCanvasRectangle import ETKCanvasRectangle
+from .ETKCanvasSquare import ETKCanvasSquare
+from .ETKCanvasOval import ETKCanvasOval
+from .ETKCanvasCircle import ETKCanvasCircle
+from .ETKCanvasLine import ETKCanvasLine
 from tkinter import Canvas, Tk
 
 class ETKCanvas(ETKBaseTkWidgetDisableable):
     def __init__(self, tk:Tk, pos: vector2d, size: vector2d, background_color: int = 0xFFFFFF) -> None:
-        self._tk_object: Canvas = Canvas(tk)
-        ETKBaseTkWidgetDisableable.__init__(pos, size, background_color)
+        self._tk_object: Canvas = Canvas(tk) #type:ignore
+        ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
     
-    def draw_square(self, pos:vector2d, side_lenght:int, fill_col:int=0xFF0000, outline_col:int=0x000000, draw_mode:DrawMode = DrawMode.TOP_LEFT_CORNER)->ETKCanvasItem:
-        top_left,bottom_right = self.__draw_mode_trans[draw_mode](pos,side_lenght,side_lenght)
-        my_fill_col = gen_col_from_int(fill_col)
-        my_outline_col = gen_col_from_int(outline_col)
-        #return ETKCanvasItem(self.object_id, "square", top_left, bottom_right, my_fill_col, my_outline_col)
+    def draw_square(self, top_left:vector2d, side_length:int, background_color:int=0xFF0000, outline_color:int=0x000000)->ETKCanvasItem:
+        return ETKCanvasSquare(self._tk_object, top_left, side_length, background_color, outline_color)
     
-    def draw_rect(self, top_left:vector2d, bottom_right:vector2d, fill_col:int=0xFF0000, outline_col:int=0x000000)->ETKCanvasItem:
-        my_fill_col = gen_col_from_int(fill_col)
-        my_outline_col = gen_col_from_int(outline_col)
-        #return ETKCanvasItem(self.object_id, "rectangle", top_left, bottom_right, my_fill_col, my_outline_col)
+    def draw_rect(self, top_left:vector2d, bottom_right:vector2d, background_color:int=0xFF0000, outline_color:int=0x000000)->ETKCanvasItem:
+        return ETKCanvasRectangle(self._tk_object, top_left, bottom_right, background_color, outline_color)
     
-    def draw_circle(self, center:vector2d, radian:int, fill_col:int=0x00FF00, outline_col:int=0x000000)->ETKCanvasItem:
-        my_fill_col = gen_col_from_int(fill_col)
-        my_outline_col = gen_col_from_int(outline_col)
-        #return ETKCanvasItem(self.object_id, "circle", center, radian, radian, my_fill_col, my_outline_col)
+    def draw_circle(self, center:vector2d, radius:int, background_color:int=0x00FF00, outline_color:int=0x000000)->ETKCanvasItem:
+        return ETKCanvasCircle(self._tk_object, center, radius, background_color, outline_color)
 
-    def draw_oval(self, center:vector2d, radian_x:int, radian_y:int, fill_col:int=0x00FF00, outline_col:int=0x000000)->ETKCanvasItem:
-        my_fill_col = gen_col_from_int(fill_col)
-        my_outline_col = gen_col_from_int(outline_col)
-        #return ETKCanvasItem(self.object_id, "oval", center, radian_x, radian_y, my_fill_col, my_outline_col)
+    def draw_oval(self, center:vector2d, radius_x:int, radius_y:int, background_color:int=0x00FF00, outline_color:int=0x000000)->ETKCanvasItem:
+        return ETKCanvasOval(self._tk_object, center, radius_x, radius_y, background_color, outline_color)
     
-    def draw_polygon(self, corner_list:list[vector2d], fill_col:int=0x0000FF, outline_col:int=0x000000)->ETKCanvasItem:
-        my_fill_col = gen_col_from_int(fill_col)
-        my_outline_col = gen_col_from_int(outline_col)
-        #return ETKCanvasItem(self.object_id, "polygon", corner_list, my_fill_col, my_outline_col)
+    def draw_polygon(self, corner_list:list[vector2d], background_color:int=0x0000FF, outline_color:int=0x000000)->ETKCanvasItem:
+        return ETKCanvasItem(self._tk_object, corner_list, background_color, outline_color)
     
-    def draw_line(self, pos1:vector2d, pos2:vector2d, line_col:int=0x000000, line_thickness:int=2)->ETKCanvasItem:
-        my_fill_col = gen_col_from_int(line_col)
-        #return ETKCanvasItem(self.object_id, "line", [pos1, pos2], my_fill_col, line_thickness)
+    def draw_line(self, start_point:vector2d, end_point:vector2d, thickness:float=2, background_color:int = 0x000000, outline_color:int = 0x000000)->ETKCanvasItem:
+        return ETKCanvasLine(self._tk_object, start_point, end_point, thickness, background_color, outline_color)
