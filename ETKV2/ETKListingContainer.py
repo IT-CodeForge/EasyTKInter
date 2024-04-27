@@ -1,7 +1,7 @@
 from enum import Enum, auto
 from tkinter import Tk
-from ETKV2.ETKBaseContainer import Alignments
-from ETKV2.ETKBaseWidget import ETKBaseWidget
+from .ETKBaseContainer import Alignments
+from .ETKBaseWidget import ETKBaseWidget
 from .ETKContainer import ContainerSize
 from .vector2d import vector2d
 from .ETKBaseContainer import ETKBaseContainer, _SubAlignments, SizeError #type:ignore

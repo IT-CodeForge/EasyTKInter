@@ -1,9 +1,9 @@
 from __future__ import annotations
 from tkinter import Tk
 from typing import Literal
-from ETKV2.ETKBaseWidget import ETKBaseWidget
+from .ETKBaseWidget import ETKBaseWidget
 
-from ETKV2.vector2d import vector2d
+from .vector2d import vector2d
 
 from .ETKBaseContainer import Alignments, _SubAlignments, ContainerSize, SizeError, PosError, ETKBaseContainer #type:ignore
 
