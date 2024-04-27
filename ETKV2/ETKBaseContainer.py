@@ -124,7 +124,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         return self._container_size
 
     @size.setter
-    def size(self, value: ContainerSize | vector2d):
+    def size(self, value: ContainerSize | vector2d) -> None:
         if type(value) == ContainerSize:
             self._container_size = value
         else:
@@ -147,7 +147,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     def background_color(self, value: int)->None:
         self.__background.background_color = value
 
-    def add_element(self, element: ETKBaseWidget):
+    def add_element(self, element: ETKBaseWidget) -> None:
         if element in self._element_rel_pos.keys():
             raise ElementAlreadyAddedError(
                 f"element {element} is already in container {self}")
@@ -159,7 +159,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
 
         self._element_rel_pos.update({element: vector2d()})
 
-    def remove_element(self, element: ETKBaseWidget):
+    def remove_element(self, element: ETKBaseWidget) -> None:
         if element not in self._element_rel_pos.keys():
             raise ElementNotPartOfContainerError(
                 f"element {element} is not in container {self}")
@@ -172,9 +172,6 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         if child not in self._element_rel_pos.keys():
             raise ElementNotPartOfContainerError(
                 f"element {child} is not in container {self}")
-        return self._calculate_abs_pos(child)
-
-    def _calculate_abs_pos(self, child: ETKBaseWidget) -> vector2d:
         pos = self._element_rel_pos[child]
         return vector2d(pos.x + self.abs_pos.x, pos.y + self.abs_pos.y)
     
@@ -187,12 +184,12 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1]) -> float:
         pass
 
-    def _validate_size(self, element: ETKBaseWidget):
+    def _validate_size(self, element: ETKBaseWidget) -> None:
         element._update_pos()
 
     def _update_pos(self) -> None:
         for e in self._element_rel_pos.keys():
             e._update_pos()
 
-    def _detach_child(self, element: ETKBaseWidget):
+    def _detach_child(self, element: ETKBaseWidget) -> None:
         self.remove_element(element)

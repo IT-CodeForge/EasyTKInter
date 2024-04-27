@@ -25,12 +25,12 @@ class ETKListingContainer(ETKBaseContainer):
         self.__offset = offset
         ETKBaseContainer.__init__(self, tk, pos, size, background_color, outline_color)
 
-    def add_element(self, element: ETKBaseWidget):
+    def add_element(self, element: ETKBaseWidget) -> None:
         ETKBaseContainer.add_element(self, element)
         self.__update_all_element_pos()
         element._update_pos()
 
-    def __update_all_element_pos(self):
+    def __update_all_element_pos(self) -> None:
         if self.__listing_type in [ListingTypes.TOP_TO_BOTTOM, ListingTypes.BOTTOM_TO_TOP]:
             listing_dir_index = 1
             non_listing_dir_index = 0
@@ -95,9 +95,9 @@ class ETKListingContainer(ETKBaseContainer):
         ETKBaseContainer.size.fset(self, value) #type:ignore
         self.__update_all_element_pos()
 
-    def _validate_pos(self, element: ETKBaseWidget):
+    def _validate_pos(self, element: ETKBaseWidget) -> None:
         raise ElementPosLockedError(f"pos of element {element} is locked by ListingContainer {self}")
     
-    def _validate_size(self, element: ETKBaseWidget):
+    def _validate_size(self, element: ETKBaseWidget) -> None:
         self.__update_all_element_pos()
         ETKBaseContainer._validate_size(self, element)
