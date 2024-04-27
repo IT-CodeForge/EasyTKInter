@@ -156,6 +156,22 @@ class vector2d:
         elif type(other) == vector2d:
             return self.x >= other.x and self.y >= other.y
         raise ValueError("incompatible compare types")
+    
+    def __setitem__(self, address: int, other: float)->None:
+        if address not in [0,1]:
+            raise KeyError("Invalid index")
+        if address == 0:
+            self.x = other
+        else:
+            self.y = other
+    
+    def __getitem__(self, address: int)->float:
+        if address not in [0,1]:
+            raise KeyError("Invalid index")
+        if address == 0:
+            return self.x
+        else:
+            return self.y
 
     def __str__(self) -> str:
         return f"<{self.x}, {self.y}>"
@@ -171,8 +187,8 @@ class vector2d:
     def normalize(self) -> vector2d:
         lenght = self.__get_lenght()
         if not lenght:
-            return vector2d(self.x, self.y)
-        return self
+            return self
+        return self / lenght
 
     def rotate(self, radians: float) -> vector2d:
         tempx = round(self.x*math.cos(radians) - self.y*math.sin(radians), 10)

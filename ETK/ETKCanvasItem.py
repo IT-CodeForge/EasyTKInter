@@ -71,7 +71,7 @@ class ETKCanvasItem:
         self.__thickness = value
     
     @property
-    def pointlist(self)->list(vector2d):
+    def pointlist(self)->list[vector2d]:
         return self.__point_list
     
     @pointlist.setter

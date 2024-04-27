@@ -1,4 +1,5 @@
 from __future__ import annotations
+import math
 from .ETKUtils import gen_col_from_int
 from tkinter import Canvas
 from typing import Callable, Optional
@@ -12,7 +13,7 @@ class ETKCanvasItem:
         self._background_color: str = gen_col_from_int(background_color)
         self._outline_color: str = gen_col_from_int(outline_color)
         tkinter_pointlist: list[tuple[float,float]] = [(vector.x, vector.y) for vector in self._pointlist]
-        self.itemId: int = self._tk_object.create_polygon(coords=tkinter_pointlist, fill=self._background_color, outline=self._outline_color) #type:ignore
+        self.itemId: int = self._tk_object.create_polygon(tkinter_pointlist, fill=self._background_color, outline=self._outline_color)
 
     @property
     def pos(self)->vector2d:
@@ -32,6 +33,8 @@ class ETKCanvasItem:
     @rotation.setter
     def rotation(self, value: float)->None:
         self._rotation = value
+        if self._rotation >= 2 * math.pi:
+            self.rotation -= 2 * math.pi
         for index, point in enumerate(self._pointlist):
             self._pointlist[index] = self.pos + (point - self.pos).rotate(self.rotation)
         self._transform_shape()
@@ -129,7 +132,8 @@ class ETKCanvasItem:
     def __redraw_shape(self)->None:
         self._tk_object.delete(self.itemId)
         tkinter_pointlist: list[float] = self.__get_tkinter_pointlist()
-        self.itemId = self._tk_object.create_polygon(coords=tkinter_pointlist, fill=self._background_color, outline=self._outline_color) #type:ignore
+        #self._tk_object.create_polygon([(0.0,0.0),(10.0,10.0),(0.0,10.0)])
+        self.itemId = self._tk_object.create_polygon(tkinter_pointlist, fill=self._background_color, outline=self._outline_color)
     
     def __get_tkinter_pointlist(self)->list[float]:
         getx: Callable[[vector2d], float] = lambda vector: vector.x
