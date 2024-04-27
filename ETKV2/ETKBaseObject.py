@@ -45,7 +45,7 @@ class ETKBaseObject:
     def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
         self._event_lib[event_type].append(eventhandler)
     
-    def remove_event(self, event_type: Events, eventhandler: Callable[..., None]):
+    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
         self._event_lib[event_type].remove(eventhandler)
     
     def _handle_event(self, event: Events, event_data: Optional[Any] = None):
@@ -60,4 +60,4 @@ class ETKBaseObject:
             except:
                 ret_val = dict.get("eventhandler").__code__.co_varnames #type:ignore
                 name = dict.get("eventhandler").__name__ #type:ignore
-                raise TypeError(f"Invalid parametercount for event function ({name}) (can only be 0,1 or 3 self is not included),parameters: {ret_val}")
+                raise TypeError(f"Invalid parametercount for event function ({name}) (can only be 0,1 or 3 self is not included),parameters: {ret_val}") #NOTE

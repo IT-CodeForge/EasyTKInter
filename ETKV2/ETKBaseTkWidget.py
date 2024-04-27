@@ -8,7 +8,8 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
     
     def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xAAAAAA) -> None:
         self._tk_object: tk_widget
-        super().__init__(pos, size, background_color)
+        ETKBaseWidget.__init__(self, pos, size)
+        ETKBaseTkObject.__init__(self, pos, size, background_color)
         self.__place_object()
 
     @ETKBaseWidget.pos.setter

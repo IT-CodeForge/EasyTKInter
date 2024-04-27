@@ -1,9 +1,8 @@
 from tkinter import Event, EventType
 from typing import Any, Callable, Final, Optional
 
-from .ETKBaseObject import BaseEvents
 from .vector2d import vector2d
-from .ETKBaseObject import ETKBaseObject, Events
+from .ETKBaseObject import ETKBaseObject, Events, BaseEvents
 from .ETKUtils import gen_col_from_int
 
 class ETKBaseTkObject(ETKBaseObject):
@@ -32,12 +31,12 @@ class ETKBaseTkObject(ETKBaseObject):
         self._background_color = gen_col_from_int(value)
         self._tk_object.configure(background=self._background_color)
 
-    def add_event(self, event_type: Events, eventhandler: Callable[..., None]):
+    def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
         if len(self._event_lib[event_type]) == 0:
             self._tk_object.bind(event_type.value, self._handle_tk_event)#type:ignore
         super().add_event(event_type, eventhandler)
     
-    def remove_event(self, event_type: Events, eventhandler: Callable[..., None]):
+    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
         if len(self._event_lib[event_type]) == 0:
             self._tk_object.unbind(event_type.value)
         super().remove_event(event_type, eventhandler)
