@@ -17,7 +17,7 @@ class GUI(ETKMainWindow):
         pass#print("INIT")
     
     def _add_elements(self) -> None:
-        self.listingcontainer = ETKListingContainer(vector2d(10, 10), ContainerSize(500, 100, True, True), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT)
+        self.listingcontainer = ETKListingContainer(self._tk_object, vector2d(10, 10), ContainerSize(500, 100, True, True), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT)
         
         self.color_label = ETKLabel(self._tk_object, "", self.listingcontainer.abs_pos, self.listingcontainer.size.vec, 0x00FF00)
 
@@ -31,7 +31,7 @@ class GUI(ETKMainWindow):
 
         return
         
-        self.container = ETKContainer(vector2d(0, 20), ContainerSize(200, 200, True, True))
+        self.container = ETKContainer(self._tk_object, vector2d(0, 20), ContainerSize(200, 200, True, True))
 
         self.color_label = ETKLabel(self._tk_object, "", vector2d(0,20), vector2d(100, 200), 0x00FF00)
 

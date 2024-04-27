@@ -1,4 +1,5 @@
 from __future__ import annotations
+from tkinter import Tk
 from typing import Literal
 from ETKV2.ETKBaseWidget import ETKBaseWidget
 
@@ -8,8 +9,8 @@ from .ETKBaseContainer import Alignments, _SubAlignments, ContainerSize, SizeErr
 
 
 class ETKContainer(ETKBaseContainer):
-    def __init__(self, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
-        ETKBaseContainer.__init__(self, pos, size, background_color)
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
+        ETKBaseContainer.__init__(self, tk, pos, size, background_color)
         self._element_alignments: dict[ETKBaseWidget, Alignments] = {}
     
     @ETKBaseContainer.size.setter

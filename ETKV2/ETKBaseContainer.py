@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from enum import Enum, auto
+from tkinter import Tk
 from typing import Literal
 from .ETKBaseWidget import ETKBaseWidget
 from .vector2d import vector2d
@@ -105,7 +106,7 @@ class PosError(ValueError):
 
 
 class ETKBaseContainer(ETKBaseWidgetDisableable):
-    def __init__(self, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         self._container_size: ContainerSize = size
         ETKBaseWidgetDisableable.__init__(
