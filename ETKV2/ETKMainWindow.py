@@ -3,7 +3,7 @@ from enum import auto
 from tkinter import Event, Tk, EventType
 from typing import Optional
 
-from ETK.ETKCanvas import ETKCanvas  # NOTE auf neuer Canvas
+from ETKV2.ETKCanvas import ETKCanvas
 from .ETKUtils import gen_col_from_int
 from .vector2d import vector2d
 from .ETKBaseTkObject import ETKBaseTkObject
@@ -28,8 +28,7 @@ class ETKMainWindow(ETKBaseTkObject):
         self._size = size
         self._topmost = False
         self.exit_locked = False
-        self.canvas = ETKCanvas(self._tk_object, 0, 0,
-                                int(self.size.x), int(self.size.y))
+        self.canvas = ETKCanvas(self._tk_object, vector2d(), size)
         ETKBaseTkObject.__init__(self, pos, size, background_color)
         self._tk_object.protocol("WM_DELETE_WINDOW", self.exit)
         self._event_lib.update({e: [] for e in WindowEvents})
@@ -66,8 +65,7 @@ class ETKMainWindow(ETKBaseTkObject):
         ETKBaseTkObject.background_color.fset(self, value)  # type:ignore
         self._background_color = gen_col_from_int(value)
         self._tk_object.configure(background=self._background_color)
-        self.canvas.object_id.configure(
-            background=self._background_color)
+        self.canvas.background_color = value
 
     @ETKBaseTkObject.visibility.setter
     def visibility(self, value: bool) -> None:
