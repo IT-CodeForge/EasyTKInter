@@ -14,6 +14,7 @@ class BaseEvents(Events):
     MOUSE_UP = ("<ButtonRelease>", auto())
     ENTER = ("<Enter>", auto())
     LEAVE = ("<Leave>", auto())
+    MOUSE_MOVED = ("<Motion>", auto())
 
 
 class ETKBaseObject:

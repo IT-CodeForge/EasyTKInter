@@ -11,7 +11,6 @@ from .ETKBaseObject import Events
 
 
 class WindowEvents(Events):
-    MOUSE_MOVED = ("<Motion>", auto())
     KEY_PRESSED = ("<KeyDown>", auto())
     KEY_RELEASED = ("<KeyRelease>", auto())
     FOCUS_IN = ("<FocusIn>", auto())
@@ -103,10 +102,6 @@ class ETKMainWindow(ETKBaseTkObject):
 
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
-            case EventType.Motion:
-                self._handle_event(WindowEvents.MOUSE_MOVED,
-                                   event)  # type:ignore
-                return
             case EventType.KeyPress:
                 self._handle_event(WindowEvents.KEY_PRESSED,
                                    event)  # type:ignore

@@ -44,6 +44,8 @@ class ETKBaseTkObject(ETKBaseObject):
                 event_type = BaseEvents.ENTER
             case EventType.Leave:
                 event_type = BaseEvents.LEAVE
+            case EventType.Motion:
+                event_type = BaseEvents.MOUSE_MOVED
             case _:
                 raise ValueError(f"invalid event {event}")
 
