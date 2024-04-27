@@ -5,10 +5,12 @@ from typing import Optional
 from .vector2d import vector2d
 from .ETKBaseObject import ETKBaseObject
 
+
 class __VALIDATION_RETURN_TYPES(Enum):
     OK = auto()
     INVALID = auto()
     LOCKED = auto()
+
 
 class ETKBaseWidget(ETKBaseObject):
     def __init__(self, pos: vector2d, size: vector2d) -> None:
@@ -16,11 +18,11 @@ class ETKBaseWidget(ETKBaseObject):
         self._parent: Optional[ETKBaseWidget] = None
         self._visibility: bool = True
         self._enabled: bool = True
-    
+
     @property
     def parent(self) -> Optional[ETKBaseWidget]:
         return self._parent
-    
+
     @ETKBaseObject.pos.setter
     def pos(self, value: vector2d):
         if self.parent != None:
@@ -32,7 +34,7 @@ class ETKBaseWidget(ETKBaseObject):
                 case _:
                     pass
         self._pos = value
-    
+
     @ETKBaseObject.size.setter
     def size(self, value: vector2d):
         if self.parent != None:
@@ -55,7 +57,7 @@ class ETKBaseWidget(ETKBaseObject):
     @property
     def visibility(self) -> bool:
         return self._visibility
-    
+
     @visibility.setter
     @abstractmethod
     def visibility(self, value: bool) -> None:
@@ -63,16 +65,16 @@ class ETKBaseWidget(ETKBaseObject):
 
     @property
     def enabled(self) -> bool:
-        """READ-ONLY""" #NOTE
+        """READ-ONLY"""  # NOTE
         return self._enabled
-    
+
     @property
     def _abs_visibility(self) -> bool:
         """READ-ONLY"""
         if self._parent != None:
             return self._visibility and self._parent._abs_visibility
         return self._visibility
-    
+
     @property
     def _abs_enabled(self) -> bool:
         """READ-ONLY"""
@@ -89,7 +91,7 @@ class ETKBaseWidget(ETKBaseObject):
         if self._parent == None:
             raise ValueError(f"{self} has no parent!")
         self._parent.detach_child(self)
-    
+
     def __validate_pos(self, value: vector2d) -> __VALIDATION_RETURN_TYPES:
         return __VALIDATION_RETURN_TYPES.OK
 
