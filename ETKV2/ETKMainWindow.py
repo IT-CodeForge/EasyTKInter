@@ -3,7 +3,7 @@ from enum import auto
 from tkinter import Event, Tk, EventType
 from typing import Optional
 
-from ETKV2.ETKCanvas import ETKCanvas
+from .ETKCanvas import ETKCanvas
 from .ETKUtils import gen_col_from_int
 from .vector2d import vector2d
 from .ETKBaseTkObject import ETKBaseTkObject
