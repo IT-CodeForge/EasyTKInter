@@ -10,3 +10,4 @@ class ETKBaseWidgetDisableable(ETKBaseWidget):
     def enabled(self, value: bool) -> None:
         """ """
         self._enabled = value
+        self._update_enabled()

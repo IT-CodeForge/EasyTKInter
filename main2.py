@@ -16,7 +16,8 @@ class GUI(ETKMainWindow):
         self.button.text_color = 0x0
         self.button.add_event(ButtonEvents.BUTTON_PRESSED, self.test2)
         self.button.add_event(BaseEvents.MOUSE_DOWN, self.test3)
-        self.button.enabled = True
+        #self.button.enabled = False
+        #self.button.visibility = False
         #self.add_event(WindowEvents.MOUSE_MOVED, self.test4)
 
         self.label = ETKLabel(self._tk_object, "LABEL", vector2d(100, 0))
@@ -31,6 +32,9 @@ class GUI(ETKMainWindow):
     def test2(self):
         print("BTN")
         self.edit.text += "1"
+    
+    def test20(self):
+        self.visibility = True
 
     def test3(self):
         print("BTN2")

@@ -21,7 +21,6 @@ class ETKBaseTkObject(ETKBaseObject):
     def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xAAAAAA) -> None:
         ETKBaseObject.__init__(self, pos, size)
         self._tk_object: Any
-        # NOTE: muss nach child init passieren!
         self.background_color = background_color
 
     @property

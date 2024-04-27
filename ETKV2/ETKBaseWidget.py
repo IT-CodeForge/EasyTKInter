@@ -16,7 +16,6 @@ class ETKBaseWidget(ETKBaseObject):
     def __init__(self, pos: vector2d, size: vector2d) -> None:
         ETKBaseObject.__init__(self, pos, size)
         self._parent: Optional[ETKBaseWidget] = None
-        self._visibility: bool = True
         self._enabled: bool = True
 
     @property
@@ -54,29 +53,25 @@ class ETKBaseWidget(ETKBaseObject):
             return self._parent.abs_pos + self._pos
         return self._pos
 
-    @property
-    def visibility(self) -> bool:
-        return self._visibility
-
-    @visibility.setter
-    @abstractmethod
+    @ETKBaseObject.visibility.setter
     def visibility(self, value: bool) -> None:
-        pass
+        self._visibility = value
+        self._update_visibility()
 
     @property
     def enabled(self) -> bool:
-        """READ-ONLY"""  # NOTE
+        """READ-ONLY"""
         return self._enabled
 
     @property
-    def _abs_visibility(self) -> bool:
+    def abs_visibility(self) -> bool:
         """READ-ONLY"""
         if self._parent != None:
-            return self._visibility and self._parent._abs_visibility
+            return self._visibility and self._parent.abs_visibility
         return self._visibility
 
     @property
-    def _abs_enabled(self) -> bool:
+    def abs_enabled(self) -> bool:
         """READ-ONLY"""
         if self._parent != None:
             return self._enabled and self._parent._enabled
@@ -91,6 +86,13 @@ class ETKBaseWidget(ETKBaseObject):
         if self._parent == None:
             raise ValueError(f"{self} has no parent!")
         self._parent.detach_child(self)
+    
+    @abstractmethod
+    def _update_visibility(self) -> None:
+        pass
+
+    def _update_enabled(self) -> None:
+        pass
 
     def __validate_pos(self, value: vector2d) -> __VALIDATION_RETURN_TYPES:
         return __VALIDATION_RETURN_TYPES.OK

@@ -21,19 +21,12 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
     def size(self, value: vector2d):
         ETKBaseWidget.size.fset(self, value) #type:ignore #NOTE
         self.__place_object()
-
-    @ETKBaseWidget.visibility.setter
-    def visibility(self, value: bool) -> None:
-        self._visibility = value
-        self._update_visibility()
     
     def _update_visibility(self) -> None:
-        if self._abs_visibility:
+        if self.abs_visibility:
             self.__place_object()
-            #self._eventhandler("<Visible>") TODO
         else:
             self._tk_object.place_forget()
-            #self._eventhandler("<Visible>") TODO
     
     def __place_object(self):
         anchor = vector2d()

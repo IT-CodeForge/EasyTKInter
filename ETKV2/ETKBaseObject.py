@@ -20,6 +20,7 @@ class ETKBaseObject:
     def __init__(self, pos: vector2d, size: vector2d) -> None:
         self._pos: vector2d = pos
         self._size: vector2d = size
+        self._visibility: bool = True
         self._event_lib: dict[Events, list[Callable[..., Any]]] = {
             e: [] for e in BaseEvents}
 
@@ -45,6 +46,20 @@ class ETKBaseObject:
     @abstractmethod
     def size(self, value: vector2d):
         pass
+
+    @property
+    def visibility(self) -> bool:
+        return self._visibility
+
+    @visibility.setter
+    @abstractmethod
+    def visibility(self, value: bool) -> None:
+        pass
+
+    @property
+    def abs_visibility(self) -> bool:
+        """READ-ONLY"""
+        return self._visibility
 
     @property
     def events(self) -> dict[Events, list[Callable[..., Any]]]:
