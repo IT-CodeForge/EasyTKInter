@@ -30,9 +30,9 @@ class ETKContainer(ETKBaseContainer):
     def _update_size(self) -> None:
         if self._container_size.dynamic_x:
             self._container_size.x = int(
-                max([e.pos.x + e.size.x for e in self._elements.keys()]))
+                max([e.abs_pos.x + e.size.x - self.abs_pos.x for e in self._elements.keys()]))
         if self._container_size.dynamic_y:
             self._container_size.y = int(
-                max([e.pos.y + e.size.y for e in self._elements.keys()]))
+                max([e.abs_pos.y + e.size.y - self.abs_pos.y for e in self._elements.keys()]))
         ETKBaseContainer.size.fset(
             self, self._container_size.vec) # type:ignore
