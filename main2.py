@@ -35,6 +35,9 @@ class GUI(ETKMainWindow):
 
         self.add_event(WindowEvents.START, self.teststart)
         self.add_event(WindowEvents.EXIT, self.testexit)
+        #self.topmost = True
+        self.add_event(WindowEvents.FOCUS_IN, self.testfocin)
+        self.add_event(WindowEvents.FOCUS_OUT, self.testfocout)
     
     def test(self):
         self.background_color = 0x00FF00
@@ -63,6 +66,12 @@ class GUI(ETKMainWindow):
 
     def testexit(self):
         print("EXIT")
+
+    def testfocin(self):
+        print("FOCIN")
+    
+    def testfocout(self):
+        print("FOCOUT")
 
         
 

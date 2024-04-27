@@ -3,7 +3,7 @@ from enum import auto
 from tkinter import Event, Tk, EventType
 from typing import Optional
 
-from ETK.ETKCanvas import ETKCanvas # NOTE auf neuer Canvas
+from ETK.ETKCanvas import ETKCanvas  # NOTE auf neuer Canvas
 from .ETKUtils import gen_col_from_int
 from .vector2d import vector2d
 from .ETKBaseTkObject import ETKBaseTkObject
@@ -14,6 +14,8 @@ class WindowEvents(Events):
     MOUSE_MOVED = ("<Motion>", auto())
     KEY_PRESSED = ("<KeyDown>", auto())
     KEY_RELEASED = ("<KeyRelease>", auto())
+    FOCUS_IN = ("<FocusIn>", auto())
+    FOCUS_OUT = ("<FocusOut>", auto())
     START = ("<Custom>", auto())
     EXIT = ("<Custom>", auto())
 
@@ -113,6 +115,14 @@ class ETKMainWindow(ETKBaseTkObject):
                 return
             case EventType.KeyRelease:
                 self._handle_event(WindowEvents.KEY_RELEASED,
+                                   event)  # type:ignore
+                return
+            case EventType.FocusIn:
+                self._handle_event(WindowEvents.FOCUS_IN,
+                                   event)  # type:ignore
+                return
+            case EventType.FocusOut:
+                self._handle_event(WindowEvents.FOCUS_OUT,
                                    event)  # type:ignore
                 return
             case _:
