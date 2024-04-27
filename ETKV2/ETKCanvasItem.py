@@ -32,11 +32,11 @@ class ETKCanvasItem:
     
     @rotation.setter
     def rotation(self, value: float)->None:
+        for index, point in enumerate(self._pointlist):
+            self._pointlist[index] = self.pos + (point - self.pos).rotate(value - self.rotation)
         self._rotation = value
         if self._rotation >= 2 * math.pi:
             self.rotation -= 2 * math.pi
-        for index, point in enumerate(self._pointlist):
-            self._pointlist[index] = self.pos + (point - self.pos).rotate(self.rotation)
         self._transform_shape()
     
     @property

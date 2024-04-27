@@ -14,7 +14,9 @@ class ETKCanvasOval(ETKCanvasItem):
         return self._center
     
     def __poly_oval(self, center:vector2d, radian_x:int, radian_y:int)->list[vector2d]:
-        steps = int((radian_x + radian_y) / 4)
+        """generates the cornerpoints, for a polygon which symbolizes the oval"""
+        #steps is the number of corners the polygon has
+        steps = int((radian_x * radian_y) / 4)
         point_list: list[vector2d] = []
         theta = 0
         for _ in range(steps):
