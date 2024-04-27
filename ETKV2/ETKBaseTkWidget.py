@@ -11,11 +11,6 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
         ETKBaseWidget.__init__(self, pos, size)
         ETKBaseTkObject.__init__(self, pos, size, background_color)
         self.__place_object()
-
-    @ETKBaseWidget.pos.setter
-    def pos(self, value: vector2d):
-        ETKBaseWidget.pos.fset(self, value) #type:ignore
-        self._update_pos()
     
     @ETKBaseWidget.size.setter
     def size(self, value: vector2d):
@@ -32,7 +27,5 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
         self.__place_object()
     
     def __place_object(self):
-        anchor = vector2d()
-        if self._parent != None:
-            anchor = self._parent.abs_pos
-        self._tk_object.place(x=self._pos.x + anchor.x, y=self._pos.y + anchor.y, width=self._size.x, height=self._size.y)
+        pos = self.abs_pos
+        self._tk_object.place(x=pos.x, y=pos.y, width=self._size.x, height=self._size.y)

@@ -1,15 +1,8 @@
 from __future__ import annotations
 from abc import abstractmethod
-from enum import Enum, auto
 from typing import Optional
 from .vector2d import vector2d
 from .ETKBaseObject import ETKBaseObject
-
-
-class __VALIDATION_RETURN_TYPES(Enum):
-    OK = auto()
-    INVALID = auto()
-    LOCKED = auto()
 
 
 class ETKBaseWidget(ETKBaseObject):
@@ -24,27 +17,16 @@ class ETKBaseWidget(ETKBaseObject):
 
     @ETKBaseObject.pos.setter
     def pos(self, value: vector2d):
-        if self.parent != None:
-            match self.parent.__validate_pos(value):
-                case __VALIDATION_RETURN_TYPES.INVALID:
-                    raise ValueError("invalid pos")
-                case __VALIDATION_RETURN_TYPES.LOCKED:
-                    raise RuntimeError(f"{self} is locked")
-                case _:
-                    pass
         self._pos = value
+        if self.parent != None:
+            self.parent._validate_pos(self)
+        self._update_pos()
 
     @ETKBaseObject.size.setter
     def size(self, value: vector2d):
-        if self.parent != None:
-            match self.parent.__validate_size(value):
-                case __VALIDATION_RETURN_TYPES.INVALID:
-                    raise ValueError("invalid size")
-                case __VALIDATION_RETURN_TYPES.LOCKED:
-                    raise RuntimeError(f"{self} is locked")
-                case _:
-                    pass
         self._size = value
+        if self.parent != None:
+            self.parent._validate_size(self)
 
     @property
     def abs_pos(self) -> vector2d:
@@ -101,8 +83,8 @@ class ETKBaseWidget(ETKBaseObject):
     def _get_childs_abs_pos(self, child: ETKBaseWidget) -> vector2d:
         return self.abs_pos + child.pos
 
-    def __validate_pos(self, value: vector2d) -> __VALIDATION_RETURN_TYPES:
-        return __VALIDATION_RETURN_TYPES.OK
+    def _validate_pos(self, element: ETKBaseWidget):
+        pass
 
-    def __validate_size(self, value: vector2d) -> __VALIDATION_RETURN_TYPES:
-        return __VALIDATION_RETURN_TYPES.OK
+    def _validate_size(self, element: ETKBaseWidget):
+        pass
