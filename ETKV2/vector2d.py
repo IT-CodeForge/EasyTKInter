@@ -168,32 +168,23 @@ class vector2d:
             return math.acos(self.x/self.__get_lenght())
         return 2 * math.pi - math.acos(self.x/self.__get_lenght())
 
-    def normalize(self, change_self: bool = True) -> vector2d:
+    def normalize(self) -> vector2d:
         lenght = self.__get_lenght()
         if not lenght:
-            if change_self:
-                self.x, self.y = 0.0, 0.0
             return vector2d(self.x, self.y)
-        if change_self:
-            self.x = self.x / lenght
-            self.y = self.y / lenght
         return self
 
-    def rotate(self, radians: float, change_self: bool = True) -> vector2d:
+    def rotate(self, radians: float) -> vector2d:
         tempx = round(self.x*math.cos(radians) - self.y*math.sin(radians), 10)
         tempy = round(self.x*math.sin(radians) + self.y*math.cos(radians), 10)
-        if change_self:
-            self.x, self.y = tempx, tempy
         return vector2d(tempx, tempy)
 
-    def switch(self, change_self: bool = True) -> vector2d:
-        if change_self:
-            self.x, self.y = self.y, self.x
+    def switch(self) -> vector2d:
         return vector2d(self.y, self.x)
 
     def get_angle_to_vec(self, vector: vector2d) -> float:
-        calc_vec_self = self.normalize(False)
-        calc_vec_other = vector.normalize(False)
+        calc_vec_self = self.normalize()
+        calc_vec_other = vector.normalize()
         return math.acos(calc_vec_self.dotproduct(calc_vec_other))
 
     def dotproduct(self, vector: vector2d) -> float:

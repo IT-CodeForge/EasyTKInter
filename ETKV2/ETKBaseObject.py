@@ -46,6 +46,11 @@ class ETKBaseObject:
     def size(self, value: vector2d):
         pass
 
+    @property
+    def events(self) -> dict[Events, list[Callable[..., Any]]]:
+        """read-only"""
+        return self._event_lib.copy()
+
     def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
         self._event_lib[event_type].append(eventhandler)
 
