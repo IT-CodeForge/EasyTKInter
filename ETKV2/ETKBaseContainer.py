@@ -106,10 +106,10 @@ class PosError(ValueError):
 
 class ETKBaseContainer(ETKBaseWidgetDisableable):
     def __init__(self, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
-        ETKBaseWidgetDisableable.__init__(
-            self, pos, size.vec)
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         self._container_size: ContainerSize = size
+        ETKBaseWidgetDisableable.__init__(
+            self, pos, size.vec)
 
     @property
     def size(self) -> ContainerSize:  # type:ignore

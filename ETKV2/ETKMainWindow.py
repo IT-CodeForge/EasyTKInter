@@ -89,7 +89,7 @@ class ETKMainWindow(ETKBaseTkObject):
 
     def __place_object(self) -> None:
         self._tk_object.geometry(
-            f"{self.size.x}x{self.size.y}+{self.pos.x}+{self.pos.y}")
+            f"{int(self.size.x)}x{int(self.size.y)}+{self.pos.x}+{self.pos.y}")
 
     @abstractmethod
     def _add_elements(self) -> None:

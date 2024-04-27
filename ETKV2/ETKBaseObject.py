@@ -18,8 +18,10 @@ class BaseEvents(Events):
 
 class ETKBaseObject:
     def __init__(self, pos: vector2d, size: vector2d) -> None:
-        self._pos: vector2d = pos
-        self._size: vector2d = size
+        self._pos: vector2d = vector2d()
+        self._size: vector2d = vector2d()
+        self.pos = pos
+        self.size = size
         self._visibility: bool = True
         self._event_lib: dict[Events, list[Callable[..., Any]]] = {
             e: [] for e in BaseEvents}

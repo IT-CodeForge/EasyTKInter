@@ -40,6 +40,9 @@ class ETKContainer(ETKBaseContainer):
 
         max_size = [0, 0]
 
+        if len(elements) == 0:
+            return
+
         for e in elements:
             alignment = self._element_alignments[e].value
             for i, sal in enumerate(alignment):

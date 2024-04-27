@@ -18,10 +18,10 @@ class ListingTypes(Enum):
 
 class ETKListingContainer(ETKBaseContainer):
     def __init__(self, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), alignment: Alignments = Alignments.TOP_LEFT, listing_type: ListingTypes = ListingTypes.TOP_TO_BOTTOM, offset: int = 10, background_color: int = 11184810) -> None:
-        ETKBaseContainer.__init__(self, pos, size, background_color)
         self.__alignment = alignment
         self.__listing_type = listing_type
         self.__offset = offset
+        ETKBaseContainer.__init__(self, pos, size, background_color)
 
     def add_element(self, element: ETKBaseWidget):
         ETKBaseContainer.add_element(self, element)
@@ -38,6 +38,9 @@ class ETKListingContainer(ETKBaseContainer):
 
         elements = [e for e in self._element_rel_pos.keys() if e.abs_enabled]
         sizes = [e.size for e in elements]
+
+        if len(elements) == 0:
+            return
         
         listing_dir_size = sum([s[listing_dir_index] for s in sizes]) + self.__offset * (len(sizes) - 1)
         non_listing_dir_size = max([s[non_listing_dir_index] for s in sizes])
