@@ -1,5 +1,5 @@
 from tkinter import Canvas
-from ETKV2.vector2d import vector2d
+from .vector2d import vector2d
 from .ETKCanvasItem import ETKCanvasItem
 
 class ETKCanvasRectangle(ETKCanvasItem):

@@ -6,6 +6,7 @@ from ETKV2.ETKBaseTkObject import BaseEvents
 from ETKV2.vector2d import vector2d
 from ETKV2.ETKButton import ETKButton, ButtonEvents
 from ETKV2.ETKMainWindow import ETKMainWindow, WindowEvents
+from ETKV2.ETKContainer import ETKContainer, ContainerSize, Alignments
 
 class GUI(ETKMainWindow):
     def __init__(self) -> None:
@@ -15,6 +16,18 @@ class GUI(ETKMainWindow):
         print("INIT")
     
     def _add_elements(self) -> None:
+        self.container = ETKContainer(vector2d(0, 20), ContainerSize(100, 200))
+
+        self.color_label = ETKLabel(self._tk_object, "", vector2d(0,20), vector2d(100, 200), 0x00FF00)
+
+        self.label = ETKLabel(self._tk_object, "LABEL", vector2d(10, 0))
+        self.label.size = vector2d(100, 200)
+
+        self.container.add_element(self.label, Alignments.TOP_LEFT)
+        return
+
+
+
         #self._tk_object.after(2000, self.test)
         self.button = ETKButton(self._tk_object, "BTN", vector2d(0, 0), vector2d(100, 100), 0xAAAAAA, 0xFFFFFF)
         self.button.text_color = 0x0
@@ -39,39 +52,39 @@ class GUI(ETKMainWindow):
         self.add_event(WindowEvents.FOCUS_IN, self.testfocin)
         self.add_event(WindowEvents.FOCUS_OUT, self.testfocout)
     
-    def test(self):
-        self.background_color = 0x00FF00
+    # def test(self):
+    #     self.background_color = 0x00FF00
     
-    def test2(self):
-        print("BTN")
-        self.edit.text += "1"
+    # def test2(self):
+    #     print("BTN")
+    #     self.edit.text += "1"
     
-    def test20(self):
-        self.visibility = True
+    # def test20(self):
+    #     self.visibility = True
 
-    def test3(self):
-        print("BTN2")
+    # def test3(self):
+    #     print("BTN2")
     
-    def test4(self):
-        print("WIN")
+    # def test4(self):
+    #     print("WIN")
     
-    def test5(self):
-        print("EDIT")
+    # def test5(self):
+    #     print("EDIT")
     
-    def test6(self):
-        print(self.checkbox.state)
+    # def test6(self):
+    #     print(self.checkbox.state)
 
-    def teststart(self):
-        print("START")
+    # def teststart(self):
+    #     print("START")
 
-    def testexit(self):
-        print("EXIT")
+    # def testexit(self):
+    #     print("EXIT")
 
-    def testfocin(self):
-        print("FOCIN")
+    # def testfocin(self):
+    #     print("FOCIN")
     
-    def testfocout(self):
-        print("FOCOUT")
+    # def testfocout(self):
+    #     print("FOCOUT")
 
         
 
