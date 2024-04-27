@@ -1,4 +1,5 @@
 #from ETKV2.ETKMainWindow import WindowEvents
+from ETKV2.ETKCheckbox import ETKCheckbox, CheckboxEvents
 from ETKV2.ETKLabel import ETKLabel
 from ETKV2.ETKEdit import ETKEdit, EditEvents
 from ETKV2.ETKBaseTkObject import BaseEvents
@@ -25,6 +26,9 @@ class GUI(ETKMainWindow):
         self.edit = ETKEdit(self._tk_object, "TEXT", vector2d(100, 20))
         self.edit.add_event(EditEvents.EV_CHANGED, self.test5)
         self.edit.text += "1"
+
+        self.checkbox = ETKCheckbox(self._tk_object, "CHECKBOX", vector2d(100, 40))
+        self.checkbox.add_event(CheckboxEvents.CB_TOGGLED, self.test6)
     
     def test(self):
         self.background_color = 0x00FF00
@@ -44,6 +48,9 @@ class GUI(ETKMainWindow):
     
     def test5(self):
         print("EDIT")
+    
+    def test6(self):
+        print(self.checkbox.state)
 
         
 

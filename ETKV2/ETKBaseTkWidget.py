@@ -14,12 +14,12 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
 
     @ETKBaseWidget.pos.setter
     def pos(self, value: vector2d):
-        ETKBaseWidget.pos.fset(self, value) #type:ignore #NOTE
+        ETKBaseWidget.pos.fset(self, value) #type:ignore
         self.__place_object()
     
     @ETKBaseWidget.size.setter
     def size(self, value: vector2d):
-        ETKBaseWidget.size.fset(self, value) #type:ignore #NOTE
+        ETKBaseWidget.size.fset(self, value) #type:ignore
         self.__place_object()
     
     def _update_visibility(self) -> None:

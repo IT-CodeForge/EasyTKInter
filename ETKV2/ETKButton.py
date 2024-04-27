@@ -2,7 +2,7 @@ from .ETKBaseObject import Events
 from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .ETKBaseTkWidgetText import ETKBaseTkWidgetText
 from .vector2d import vector2d
-from tkinter import Button, Event, Tk
+from tkinter import Button, Event, Tk, EventType
 
 
 class ButtonEvents(Events):
@@ -19,11 +19,15 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
         self._event_lib.update({e: [] for e in ButtonEvents})
 
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
-        match self._TK_EVENTTYPE_TRANSLATION[event.type]:
-            case "<ButtonPress>":
+        match event.type:
+            case EventType.ButtonPress:
                 if self._enabled:
                     self._handle_event(
                         ButtonEvents.BUTTON_PRESSED, event)  # type:ignore
+            case EventType.ButtonRelease:
+                if self._enabled:
+                    self._handle_event(
+                        ButtonEvents.BUTTON_RELEASED, event)  # type:ignore
             case _:
                 pass
         return ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore

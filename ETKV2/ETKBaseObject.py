@@ -82,8 +82,7 @@ class ETKBaseObject:
             try:
                 c()
             except:
-                ret_val = dict.get(  # type:ignore
-                    "eventhandler").__code__.co_varnames
-                name = dict.get("eventhandler").__name__  # type:ignore
+                ret_val = c.__code__.co_varnames
+                name = c.__name__  # type:ignore
                 raise TypeError(
-                    f"Invalid parametercount for event function ({name}) (can only be 0,1 or 3 self is not included),parameters: {ret_val}")  # NOTE
+                    f"invalid parametercount for event function ({name}) (can only be 0, 1 (self, cls, etc not included)), parameter: {ret_val}")

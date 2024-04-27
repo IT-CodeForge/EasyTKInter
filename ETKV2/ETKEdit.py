@@ -1,4 +1,4 @@
-from tkinter import Event, Tk
+from tkinter import Event, Tk, EventType
 from .ETKBaseObject import Events
 from .vector2d import vector2d
 from .ETKLabel import ETKLabel
@@ -18,8 +18,8 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
         self._event_lib.update({e: [] for e in EditEvents})
 
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
-        match self._TK_EVENTTYPE_TRANSLATION[event.type]:
-            case "<KeyPress>":
+        match event.type:
+            case EventType.KeyPress:
                 if self._enabled:
                     self._handle_event(EditEvents.EV_CHANGED,
                                        event)  # type:ignore

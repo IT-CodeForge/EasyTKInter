@@ -1,5 +1,5 @@
 from tkinter import Event, EventType
-from typing import Any, Callable, Final, Optional
+from typing import Any, Callable, Optional
 
 from .vector2d import vector2d
 from .ETKBaseObject import ETKBaseObject, Events, BaseEvents
@@ -7,17 +7,6 @@ from .ETKUtils import gen_col_from_int
 
 
 class ETKBaseTkObject(ETKBaseObject):
-    _TK_EVENTTYPE_TRANSLATION: Final = {
-        EventType.KeyPress: "<KeyPress>",
-        EventType.KeyRelease: "<KeyRelease>",
-        EventType.ButtonPress: "<ButtonPress>",
-        EventType.ButtonRelease: "<ButtonRelease>",
-        EventType.Motion: "<Motion>",
-        EventType.Enter: "<Enter>",
-        EventType.Leave: "<Leave>",
-        EventType.Configure: "<Configure>"
-    }  # NOTE!!!!
-
     def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xAAAAAA) -> None:
         ETKBaseObject.__init__(self, pos, size)
         self._tk_object: Any
@@ -44,14 +33,14 @@ class ETKBaseTkObject(ETKBaseObject):
         ETKBaseObject.remove_event(self, event_type, eventhandler)
 
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
-        match self._TK_EVENTTYPE_TRANSLATION[event.type]:
-            case "<ButtonPress>":
+        match event.type:
+            case EventType.ButtonPress:
                 event_type = BaseEvents.MOUSE_DOWN
-            case "<ButtonRelease>":
+            case EventType.ButtonRelease:
                 event_type = BaseEvents.MOUSE_UP
-            case "<Enter>":
+            case EventType.Enter:
                 event_type = BaseEvents.ENTER
-            case "<Leave>":
+            case EventType.Leave:
                 event_type = BaseEvents.LEAVE
             case _:
                 raise ValueError(f"invalid event {event}")

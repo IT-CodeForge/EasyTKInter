@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from tkinter import Event, Tk
+from tkinter import Event, Tk, EventType
 from typing import Optional
 
 from ETK.ETKCanvas import ETKCanvas # NOTE auf neuer Canvas
@@ -88,16 +88,16 @@ class ETKMainWindow(ETKBaseTkObject):
         self._tk_object.mainloop()
 
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
-        match self._TK_EVENTTYPE_TRANSLATION[event.type]:
-            case "<Motion>":
+        match event.type:
+            case EventType.Motion:
                 self._handle_event(WindowEvents.MOUSE_MOVED,
                                    event)  # type:ignore
                 return
-            case "<KeyDown>":
+            case EventType.KeyPress:
                 self._handle_event(WindowEvents.KEY_PRESSED,
                                    event)  # type:ignore
                 return
-            case "<KeyRelease>":
+            case EventType.KeyRelease:
                 self._handle_event(WindowEvents.KEY_RELEASED,
                                    event)  # type:ignore
                 return

@@ -2,7 +2,7 @@ from .vector2d import vector2d
 from .ETKBaseObject import Events
 from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .ETKBaseTkWidgetText import ETKBaseTkWidgetText
-from tkinter import Checkbutton, IntVar, Event, Tk
+from tkinter import Checkbutton, IntVar, Event, Tk, EventType
 
 class CheckboxEvents(Events):
     CB_CHECKED   = "<ButtonPress>"
@@ -26,8 +26,8 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
         self.__state.set(value)
 
     def _handle_tk_event(self, event: Event) -> None: #type:ignore
-        match self._TK_EVENTTYPE_TRANSLATION[event.type]:
-            case "<ButtonPress>":
+        match event.type:
+            case EventType.ButtonPress:
                 if self.enabled:
                     self._handle_event(CheckboxEvents.CB_TOGGLED, event) #type:ignore
                     if self.state:
@@ -36,4 +36,4 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
                         self._handle_event(CheckboxEvents.CB_UNCHECKED, event) #type:ignore
             case _:
                 pass
-        return ETKBaseTkWidgetText._handle_tk_event(event) #type:ignore
+        ETKBaseTkWidgetText._handle_tk_event(self, event) #type:ignore
