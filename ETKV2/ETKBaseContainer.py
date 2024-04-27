@@ -5,7 +5,7 @@ from .ETKBaseWidget import ETKBaseWidget
 from .vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
 
-# TODO: Events, bg_col, outline, dynamic, enabled, visible, padding bei dynamic size
+# TODO: Events, bg_col, outline, enabled, visible, padding bei dynamic size
 
 # region Enums
 
@@ -38,44 +38,6 @@ class ContainerSize():
         self.dynamic_y = dynamic_y
         self.x = x
         self.y = y
-
-    @property
-    def x(self) -> int:
-        return self.__x
-
-    @x.setter
-    def x(self, value: int) -> None:
-        if not self.dynamic_x:
-            self.__x = value
-
-    @property
-    def y(self) -> int:
-        return self.__y
-
-    @y.setter
-    def y(self, value: int) -> None:
-        if not self.dynamic_y:
-            self.__y = value
-
-    @property
-    def dynamic_x(self) -> int:
-        return self.__dynamic_x
-
-    @dynamic_x.setter
-    def dynamic_x(self, value: int) -> None:
-        self.__dynamic_x = value
-        if value:
-            self.__x = 0
-
-    @property
-    def dynamic_y(self) -> int:
-        return self.__dynamic_y
-
-    @dynamic_y.setter
-    def dynamic_y(self, value: int) -> None:
-        self.__dynamic_y = value
-        if value:
-            self.__y = 0
 
     @property
     def vec(self) -> vector2d:
@@ -146,7 +108,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     def __init__(self, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
         ETKBaseWidgetDisableable.__init__(
             self, pos, size.vec)
-        self._elements: dict[ETKBaseWidget, Alignments] = {}
+        self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         self._container_size: ContainerSize = size
 
     @property
@@ -160,29 +122,8 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         else:
             self._container_size = ContainerSize(int(value.x), int(value.y))
 
-        self._update_size()
-
-        try:
-            for e in self._elements.keys():
-                self._validate_size_pos(e.abs_pos, e.size)
-        except ValueError:
-            raise SizeError(
-                f"size of container {self} is too small\ncontainer: abs_pos: {self.abs_pos}, size: {self.size}")
-
-    def _validate_size_pos(self, abs_pos: vector2d, size: vector2d):
-        s_a_pos = self.abs_pos
-        s_size = self.size
-
-        if s_size.x > self.size.x or s_size.y > self.size.y:
-            raise SizeError(
-                f"size is outside of container {self}\nparameter: abs_pos: {abs_pos}, size: {size}; container: abs_pos: {self.abs_pos}, size: {self.size}")
-
-        if abs_pos.x + size.x > s_a_pos.x + s_size.x or abs_pos.y + size.y > s_a_pos.y + s_size.y or abs_pos.x < s_a_pos.x or abs_pos.y < s_a_pos.y:
-            raise PosError(
-                f"pos is outside of container {self}\nparameter: abs_pos: {abs_pos}, size: {size}; container: abs_pos: {self.abs_pos}, size: {self.size}")
-
-    def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT):
-        if element in self._elements.keys():
+    def add_element(self, element: ETKBaseWidget):
+        if element in self._element_rel_pos.keys():
             raise ElementAlreadyAddedError(
                 f"element {element} is already in container {self}")
         if element == self:
@@ -190,40 +131,43 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
                 f"cannot add container {self} to itself")
 
         element._parent = self
-        self._elements.update({element: alignment})
+
+        self._element_rel_pos.update({element: vector2d()})
 
     def remove_element(self, element: ETKBaseWidget):
-        if element not in self._elements.keys():
+        if element not in self._element_rel_pos.keys():
             raise ElementNotPartOfContainerError(
                 f"element {element} is not in container {self}")
-        self._elements.pop(element)
+        self._element_rel_pos.pop(element)
         element._parent = None
         element.pos = vector2d(0, 0)
         element._update_pos()
 
     def _get_childs_abs_pos(self, child: ETKBaseWidget) -> vector2d:
-        if child not in self._elements.keys():
+        if child not in self._element_rel_pos.keys():
             raise ElementNotPartOfContainerError(
                 f"element {child} is not in container {self}")
-        x = self._calculate_abs_element_pos(child, 0)
-        y = self._calculate_abs_element_pos(child, 1)
-        print(vector2d(x, y))
+        return self._calculate_abs_pos(child)
+
+    def _calculate_abs_pos(self, child: ETKBaseWidget) -> vector2d:
+        pos = self._element_rel_pos[child]
+        return vector2d(pos.x + self.abs_pos.x, pos.y + self.abs_pos.y)
+    
+    def _calculate_rel_element_pos(self, element: ETKBaseWidget) -> vector2d:
+        x = self._calculate_rel_element_pos_part(element, 0)
+        y = self._calculate_rel_element_pos_part(element, 1)
         return vector2d(x, y)
 
     @abstractmethod
-    def _calculate_abs_element_pos(self, child: ETKBaseWidget, index: Literal[0, 1]) -> float:
+    def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1]) -> float:
         pass
 
     def _validate_size(self, element: ETKBaseWidget):
         element._update_pos()
 
     def _update_pos(self) -> None:
-        for e in self._elements.keys():
+        for e in self._element_rel_pos.keys():
             e._update_pos()
-
-    @abstractmethod
-    def _update_size(self) -> None:
-        pass
 
     def _detach_child(self, element: ETKBaseWidget):
         self.remove_element(element)

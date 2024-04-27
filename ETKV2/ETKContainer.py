@@ -4,35 +4,83 @@ from ETKV2.ETKBaseWidget import ETKBaseWidget
 
 from ETKV2.vector2d import vector2d
 
-from .ETKBaseContainer import Alignments, _SubAlignments, ContainerSize, ElementAlreadyAddedError, AddContainerToItselfError, ElementNotPartOfContainerError, SizeError, PosError, ETKBaseContainer #type:ignore
+from .ETKBaseContainer import Alignments, _SubAlignments, ContainerSize, SizeError, PosError, ETKBaseContainer #type:ignore
 
 
 class ETKContainer(ETKBaseContainer):
     def __init__(self, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810) -> None:
-        super().__init__(pos, size, background_color)
+        ETKBaseContainer.__init__(self, pos, size, background_color)
+        self._element_alignments: dict[ETKBaseWidget, Alignments] = {}
     
+    @ETKBaseContainer.size.setter
+    def size(self, value: ContainerSize | vector2d) -> None:
+        ETKBaseContainer.size.fset(self, value) #type:ignore
+        try:
+            self.__update_all_element_pos()
+        except ValueError:
+            raise SizeError(
+                f"size of container {self} is too small\ncontainer: size: {self.size}")
+
     def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT):
-        super().add_element(element, alignment)
-        self._validate_size_pos(element.abs_pos, element.size)
-        element._update_pos()
+        self._element_alignments.update({element: alignment})
+        ETKBaseContainer.add_element(self, element)
+        self.__update_all_element_pos()
     
-    def _calculate_abs_element_pos(self, child: ETKBaseWidget, index: Literal[0, 1]) -> float:
-        print(index, (self.abs_pos[index], self.size[index]), (
-            child.pos[index], child.size[index]), self._elements[child].value[index])
-        match self._elements[child].value[index]:
+    def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1]) -> float:
+        match self._element_alignments[element].value[index]:
             case _SubAlignments.MIN:
-                return self.abs_pos[index] + child.pos[index]
+                return element.pos[index]
             case _SubAlignments.MIDDLE:
-                return self.abs_pos[index] + 0.5 * self.size[index] - 0.5 * child.size[index] + child.pos[index]
+                return  0.5 * self.size[index] - 0.5 * element.size[index] + element.pos[index]
             case _SubAlignments.MAX:
-                return self.abs_pos[index] + self.size[index] - child.size[index] + child.pos[index]
+                return self.size[index] - element.size[index] + element.pos[index]
+        
+    def __update_all_element_pos(self) -> None:
+        elements = [e for e in self._element_rel_pos.keys() if e.abs_enabled]
+
+        max_size = [0, 0]
+
+        for e in elements:
+            alignment = self._element_alignments[e].value
+            mul = [1, 1]
+            for i, sal in enumerate(alignment):
+                if sal == _SubAlignments.MAX:
+                    mul[i] = -1
+                elif sal == _SubAlignments.MIDDLE:
+                    mul[i] = 2
+                size = e.size[i] + e.pos[i]*mul[i]
+                if size > max_size[i]:
+                    max_size[i] = int(size)
+        
+        if self.size.dynamic_x:
+            self._container_size.x = max_size[0]
+        if self.size.dynamic_y:
+            self._container_size.y = max_size[1]
+        
+        for e in elements:
+            self._element_rel_pos[e] = self._calculate_rel_element_pos(e)
+            self.__validate_size_pos(self._element_rel_pos[e], e.size)
+            e._update_pos()
+        
+        
+        
             
-    def _update_size(self) -> None:
-        if self._container_size.dynamic_x:
-            self._container_size.x = int(
-                max([e.abs_pos.x + e.size.x - self.abs_pos.x for e in self._elements.keys()]))
-        if self._container_size.dynamic_y:
-            self._container_size.y = int(
-                max([e.abs_pos.y + e.size.y - self.abs_pos.y for e in self._elements.keys()]))
-        ETKBaseContainer.size.fset(
-            self, self._container_size.vec) # type:ignore
+    
+    def __validate_size_pos(self, rel_pos: vector2d, size: vector2d):
+        s_size = self.size
+
+        if s_size.x > self.size.x or s_size.y > self.size.y:
+            raise SizeError(
+                f"size is outside of container {self}\nparameter: size: {size}; container: abs_pos: size: {self.size}")
+
+        if rel_pos.x + size.x > s_size.x or rel_pos.y + size.y > s_size.y or rel_pos.x < 0 or rel_pos.y < 0:
+            raise PosError(
+                f"pos is outside of container {self}\nparameter: rel_pos: {rel_pos}, size: {size}; container: size: {self.size}")
+    
+    def _validate_pos(self, element: ETKBaseWidget):
+        self.__update_all_element_pos()
+        ETKBaseContainer._validate_size(self, element)
+
+    def _validate_size(self, element: ETKBaseWidget):
+        self.__update_all_element_pos()
+        ETKBaseContainer._validate_size(self, element)

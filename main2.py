@@ -1,4 +1,5 @@
 #from ETKV2.ETKMainWindow import WindowEvents
+from ETKV2.ETKListingContainer import ETKListingContainer, ListingTypes
 from ETKV2.ETKCheckbox import ETKCheckbox, CheckboxEvents
 from ETKV2.ETKLabel import ETKLabel
 from ETKV2.ETKEdit import ETKEdit, EditEvents
@@ -13,17 +14,36 @@ class GUI(ETKMainWindow):
         super().__init__(caption="NENENE", background_color=0xFF0000)
 
     def _on_init(self) -> None:
-        print("INIT")
+        pass#print("INIT")
     
     def _add_elements(self) -> None:
-        self.container = ETKContainer(vector2d(0, 20), ContainerSize(100, 200))
+        self.listingcontainer = ETKListingContainer(vector2d(10, 10), ContainerSize(500, 100, True, True), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT)
+        
+        self.color_label = ETKLabel(self._tk_object, "", self.listingcontainer.abs_pos, self.listingcontainer.size.vec, 0x00FF00)
+
+        self.label1 = ETKLabel(self._tk_object, "LABEL1")
+        self.label2 = ETKLabel(self._tk_object, "LABEL2")
+
+        self.listingcontainer.add_element(self.label1)
+        self.listingcontainer.add_element(self.label2)
+
+        self.color_label.size = self.listingcontainer.size.vec
+
+        return
+        
+        self.container = ETKContainer(vector2d(0, 20), ContainerSize(200, 200, True, True))
 
         self.color_label = ETKLabel(self._tk_object, "", vector2d(0,20), vector2d(100, 200), 0x00FF00)
 
-        self.label = ETKLabel(self._tk_object, "LABEL", vector2d(0, 0))
-        self.label.size = vector2d(100, 200)
+        self.label = ETKLabel(self._tk_object, "LABEL", vector2d(-10, 30))
+        
 
-        self.container.add_element(self.label, Alignments.TOP_LEFT)
+        self.container.add_element(self.label, Alignments.TOP_RIGHT)
+
+        self.label.pos = vector2d(-400, 400)
+        
+        self.color_label.size = self.container.size.vec
+        
         return
 
 
