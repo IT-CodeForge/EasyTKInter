@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import abstractmethod
-from enum import Enum
+from enum import Enum, auto
 from typing import Any, Callable, Optional
 from .vector2d import vector2d
 
@@ -10,10 +10,10 @@ class Events(Enum):
 
 
 class BaseEvents(Events):
-    MOUSE_DOWN = "<ButtonPress>"
-    MOUSE_UP = "<ButtonRelease>"
-    ENTER = "<Enter>"
-    LEAVE = "<Leave>"
+    MOUSE_DOWN = ("<ButtonPress>", auto())
+    MOUSE_UP = ("<ButtonRelease>", auto())
+    ENTER = ("<Enter>", auto())
+    LEAVE = ("<Leave>", auto())
 
 
 class ETKBaseObject:

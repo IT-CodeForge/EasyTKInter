@@ -1,3 +1,4 @@
+from enum import auto
 from .vector2d import vector2d
 from .ETKBaseObject import Events
 from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
@@ -5,9 +6,9 @@ from .ETKBaseTkWidgetText import ETKBaseTkWidgetText
 from tkinter import Checkbutton, IntVar, Event, Tk, EventType
 
 class CheckboxEvents(Events):
-    CHECKED   = "<ButtonPress>"
-    UNCHECKED = "<ButtonPress>"
-    TOGGLED   = "<ButtonPress>"
+    CHECKED   = ("<ButtonPress>", auto())
+    UNCHECKED = ("<ButtonPress>", auto())
+    TOGGLED   = ("<ButtonPress>", auto())
 
 class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
     def __init__(self, tk:Tk, text:str="", pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), background_color:int=0xEEEEEE, text_color:int=0x0) -> None:

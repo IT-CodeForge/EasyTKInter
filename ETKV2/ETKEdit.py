@@ -1,3 +1,4 @@
+from enum import auto
 from tkinter import Event, Tk, EventType
 from .ETKBaseObject import Events
 from .vector2d import vector2d
@@ -6,7 +7,7 @@ from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 
 
 class EditEvents(Events):
-    CHANGED = "<KeyPress>"
+    CHANGED = ("<KeyPress>", auto())
 
 
 class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):

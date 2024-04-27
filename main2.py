@@ -5,11 +5,14 @@ from ETKV2.ETKEdit import ETKEdit, EditEvents
 from ETKV2.ETKBaseTkObject import BaseEvents
 from ETKV2.vector2d import vector2d
 from ETKV2.ETKButton import ETKButton, ButtonEvents
-from ETKV2.ETKMainWindow import ETKMainWindow
+from ETKV2.ETKMainWindow import ETKMainWindow, WindowEvents
 
 class GUI(ETKMainWindow):
     def __init__(self) -> None:
         super().__init__(caption="NENENE", background_color=0xFF0000)
+
+    def _on_init(self) -> None:
+        print("INIT")
     
     def _add_elements(self) -> None:
         #self._tk_object.after(2000, self.test)
@@ -29,6 +32,9 @@ class GUI(ETKMainWindow):
 
         self.checkbox = ETKCheckbox(self._tk_object, "CHECKBOX", vector2d(100, 40))
         self.checkbox.add_event(CheckboxEvents.TOGGLED, self.test6)
+
+        self.add_event(WindowEvents.START, self.teststart)
+        self.add_event(WindowEvents.EXIT, self.testexit)
     
     def test(self):
         self.background_color = 0x00FF00
@@ -51,6 +57,12 @@ class GUI(ETKMainWindow):
     
     def test6(self):
         print(self.checkbox.state)
+
+    def teststart(self):
+        print("START")
+
+    def testexit(self):
+        print("EXIT")
 
         
 

@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from enum import auto
 from tkinter import Event, Tk, EventType
 from typing import Optional
 
@@ -10,9 +11,11 @@ from .ETKBaseObject import Events
 
 
 class WindowEvents(Events):
-    MOUSE_MOVED = "<Motion>"
-    KEY_PRESSED = "<KeyDown>"
-    KEY_RELEASED = "<KeyRelease>"
+    MOUSE_MOVED = ("<Motion>", auto())
+    KEY_PRESSED = ("<KeyDown>", auto())
+    KEY_RELEASED = ("<KeyRelease>", auto())
+    START = ("<Custom>", auto())
+    EXIT = ("<Custom>", auto())
 
 
 class ETKMainWindow(ETKBaseTkObject):
@@ -22,12 +25,21 @@ class ETKMainWindow(ETKBaseTkObject):
         self._pos = pos
         self._size = size
         self._topmost = False
+        self.exit_locked = False
         self.canvas = ETKCanvas(self._tk_object, 0, 0,
                                 int(self.size.x), int(self.size.y))
         ETKBaseTkObject.__init__(self, pos, size, background_color)
-        self._tk_object.protocol("WM_DELETE_WINDOW", self.app_close)
+        self._tk_object.protocol("WM_DELETE_WINDOW", self.exit)
         self._event_lib.update({e: [] for e in WindowEvents})
+
+        self._tk_object.after(0, self._handle_event, WindowEvents.START)
+        self._on_init()
+
         self._add_elements()
+
+    @abstractmethod
+    def _on_init(self) -> None:
+        pass
 
     @property
     def caption(self) -> str:
@@ -81,8 +93,10 @@ class ETKMainWindow(ETKBaseTkObject):
     def _add_elements(self) -> None:
         pass
 
-    def app_close(self) -> None:
-        exit()
+    def exit(self) -> None:
+        self._handle_event(WindowEvents.EXIT)
+        if not self.exit_locked:
+            exit()
 
     def run(self) -> None:
         self._tk_object.mainloop()

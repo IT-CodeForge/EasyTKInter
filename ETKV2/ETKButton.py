@@ -1,3 +1,4 @@
+from enum import auto
 from .ETKBaseObject import Events
 from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .ETKBaseTkWidgetText import ETKBaseTkWidgetText
@@ -6,8 +7,8 @@ from tkinter import Button, Event, Tk, EventType
 
 
 class ButtonEvents(Events):
-    PRESSED = "<ButtonPress>"
-    RELEASED = "<ButtonRelease>"
+    PRESSED = ("<ButtonPress>", auto())
+    RELEASED = ("<ButtonRelease>", auto())
 
 
 class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
