@@ -15,7 +15,7 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
     @ETKBaseWidget.pos.setter
     def pos(self, value: vector2d):
         ETKBaseWidget.pos.fset(self, value) #type:ignore
-        self.__place_object()
+        self._update_pos()
     
     @ETKBaseWidget.size.setter
     def size(self, value: vector2d):
@@ -27,6 +27,9 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
             self.__place_object()
         else:
             self._tk_object.place_forget()
+    
+    def _update_pos(self) -> None:
+        self.__place_object()
     
     def __place_object(self):
         anchor = vector2d()

@@ -50,7 +50,7 @@ class ETKBaseWidget(ETKBaseObject):
     def abs_pos(self) -> vector2d:
         """READ-ONLY"""
         if self._parent != None:
-            return self._parent.abs_pos + self._pos
+            return self._parent._get_childs_abs_pos(self)
         return self._pos
 
     @ETKBaseObject.visibility.setter
@@ -88,11 +88,18 @@ class ETKBaseWidget(ETKBaseObject):
         self._parent.detach_child(self)
     
     @abstractmethod
+    def _update_pos(self) -> None:
+        pass
+    
+    @abstractmethod
     def _update_visibility(self) -> None:
         pass
 
     def _update_enabled(self) -> None:
         pass
+
+    def _get_childs_abs_pos(self, child: ETKBaseWidget) -> vector2d:
+        return self.abs_pos + child.pos
 
     def __validate_pos(self, value: vector2d) -> __VALIDATION_RETURN_TYPES:
         return __VALIDATION_RETURN_TYPES.OK
