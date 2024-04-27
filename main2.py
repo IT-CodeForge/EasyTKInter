@@ -1,5 +1,5 @@
 #from ETKV2.ETKMainWindow import WindowEvents
-#from ETKV2.ETKLabel import ETKLabel
+from ETKV2.ETKLabel import ETKLabel
 from ETKV2.ETKEdit import ETKEdit, EditEvents
 from ETKV2.ETKBaseTkObject import BaseEvents
 from ETKV2.vector2d import vector2d
@@ -19,7 +19,9 @@ class GUI(ETKMainWindow):
         self.button.enabled = True
         #self.add_event(WindowEvents.MOUSE_MOVED, self.test4)
 
-        self.edit = ETKEdit(self._tk_object, "TEXT", vector2d(100, 100))
+        self.label = ETKLabel(self._tk_object, "LABEL", vector2d(100, 0))
+
+        self.edit = ETKEdit(self._tk_object, "TEXT", vector2d(100, 20))
         self.edit.add_event(EditEvents.EV_CHANGED, self.test5)
         self.edit.text += "1"
     
