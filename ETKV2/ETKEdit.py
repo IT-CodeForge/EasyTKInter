@@ -6,7 +6,7 @@ from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 
 
 class EditEvents(Events):
-    EV_CHANGED = "<KeyPress>"
+    CHANGED = "<KeyPress>"
 
 
 class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
@@ -21,7 +21,7 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
         match event.type:
             case EventType.KeyPress:
                 if self._enabled:
-                    self._handle_event(EditEvents.EV_CHANGED,
+                    self._handle_event(EditEvents.CHANGED,
                                        event)  # type:ignore
                     return
             case _:

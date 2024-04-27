@@ -6,8 +6,8 @@ from tkinter import Button, Event, Tk, EventType
 
 
 class ButtonEvents(Events):
-    BUTTON_PRESSED = "<ButtonPress>"
-    BUTTON_RELEASED = "<ButtonRelease>"
+    PRESSED = "<ButtonPress>"
+    RELEASED = "<ButtonRelease>"
 
 
 class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
@@ -23,11 +23,11 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
             case EventType.ButtonPress:
                 if self._enabled:
                     self._handle_event(
-                        ButtonEvents.BUTTON_PRESSED, event)  # type:ignore
+                        ButtonEvents.PRESSED, event)  # type:ignore
             case EventType.ButtonRelease:
                 if self._enabled:
                     self._handle_event(
-                        ButtonEvents.BUTTON_RELEASED, event)  # type:ignore
+                        ButtonEvents.RELEASED, event)  # type:ignore
             case _:
                 pass
         return ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore
