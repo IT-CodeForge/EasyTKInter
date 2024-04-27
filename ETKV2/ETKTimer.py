@@ -10,11 +10,11 @@ class ETKTimer:
         self.__my_Tk.after(self.interval_in_ms, self.trigger)
     
     @property
-    def is_running(self)->bool:
+    def running(self)->bool:
         return self.__is_running
     
-    @is_running.setter
-    def is_running(self, value: bool)->None:
+    @running.setter
+    def running(self, value: bool)->None:
         self.__is_running = value
         if value:
             self.trigger()
