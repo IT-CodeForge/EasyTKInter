@@ -6,7 +6,7 @@ from ETKV2.ETKBitmap import ETKBitmap
 from ETKV2.ETKButton import ETKButton, ETKButtonEvents
 from ETKV2.ETKCanvas import ETKCanvas
 from ETKV2.ETKCanvasCircle import ETKCanvasCircle
-from ETKV2.ETKCanvasItem import ETKCanvasItem  # NOTE
+from ETKV2.ETKCanvasItem import ETKCanvasItem
 from ETKV2.ETKCanvasLine import ETKCanvasLine
 from ETKV2.ETKCanvasOval import ETKCanvasOval
 from ETKV2.ETKCanvasRectangle import ETKCanvasRectangle
