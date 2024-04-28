@@ -90,7 +90,7 @@ class ETKListingContainer(ETKBaseContainer):
             pos[listing_dir_index] = listing_dir_pos
             pos[non_listing_dir_index] = non_listing_dir_pos
             self._element_rel_pos[e] = pos
-            ETKBaseObject.pos.fset(self, pos) #type:ignore
+            ETKBaseObject.pos.fset(e, pos) #type:ignore
             e._update_pos()
             listing_dir_pos += e.size[listing_dir_index] + self.__offset
 

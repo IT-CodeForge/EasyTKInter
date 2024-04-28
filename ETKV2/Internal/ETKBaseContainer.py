@@ -161,14 +161,15 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         ETKBaseWidgetDisableable.__init__(
             self, pos, size.vec, background_color)
-        self._container_size: ETKContainerSize = size
+        self._container_size: ETKContainerSize = ETKContainerSize(0, 0)
+        self.size = size
 
     # region properties
 
     @ETKBaseWidgetDisableable.pos.setter
     def pos(self, value: vector2d) -> None:
         ETKBaseWidgetDisableable.pos.fset(self, value)  # type:ignore
-        self.__background.pos = value
+        self.__background.pos = self.abs_pos
 
     @property
     def size(self) -> ETKContainerSize:  # type:ignore
@@ -178,8 +179,11 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     def size(self, value: ETKContainerSize | vector2d) -> None:
         if type(value) == ETKContainerSize:
             self._container_size = value
+            vec = value.vec
         else:
             self._container_size = ETKContainerSize(int(value.x), int(value.y))
+            vec = value
+        ETKBaseWidgetDisableable.size.fset(self, vec) # type:ignore
         self.__background.size = self.size.vec
 
     @property
@@ -279,6 +283,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     def _update_pos(self) -> None:
         for e in self._element_rel_pos.keys():
             e._update_pos()
+        self.__background.pos = self.abs_pos
 
     def _update_visibility(self) -> None:
         for e in self._element_rel_pos.keys():
