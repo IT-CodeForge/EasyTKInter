@@ -53,7 +53,7 @@ class ETKContainerSize():
         return self.__x
 
     @x.setter
-    def x(self, value: int | float):
+    def x(self, value: int | float) -> None:
         self.__x = int(value)
     
     @property
@@ -61,11 +61,11 @@ class ETKContainerSize():
         return self.__y
 
     @y.setter
-    def y(self, value: int | float):
+    def y(self, value: int | float) -> None:
         self.__y = int(value)
 
     @staticmethod
-    def from_vector2d(vec: vector2d):
+    def from_vector2d(vec: vector2d) -> ETKContainerSize:
         return ETKContainerSize(vec.x, vec.y)
 
     def copy(self) -> ETKContainerSize:
@@ -79,7 +79,7 @@ class ETKContainerSize():
     def __str__(self) -> str:
         return f"<{self.x}, {self.y}, {self.dynamic_x}, {self.dynamic_y}, {self.padding_x_l}, {self.padding_x_r}, {self.padding_y_o}, {self.padding_y_u}>"
 
-    def __setitem__(self, address: int, other: int | bool) -> None:
+    def __setitem__(self, address: int, other: int | bool | float) -> None:
         if address not in range(0, 8):
             raise KeyError("Invalid index")
         match address:
