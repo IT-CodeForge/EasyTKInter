@@ -10,8 +10,6 @@ from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
 from .ETKContainerBackgroundCanvas import ETKContainerBackgroundCanvas
 
-# TODO: Events auf gesamter Fläche; add/remove events when elements added/removed
-
 # region Enums
 
 
@@ -238,7 +236,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         for e in self._element_rel_pos.keys():
             e.remove_event(event_type, self.__event_handler)
     
-    def __event_handler(self, data: tuple[ETKBaseObject, Events, Optional[Any]]):
+    def __event_handler(self, data: tuple[ETKBaseObject, Events, Optional[Any]]) -> None:
         obj = data[0]
         if obj == self.__background:
             obj = self
