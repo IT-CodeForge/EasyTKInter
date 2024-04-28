@@ -39,6 +39,8 @@ class ETKBaseWidget(ETKBaseObject):
     def visibility(self, value: bool) -> None:
         self._visibility = value
         self._update_visibility()
+        if self._parent != None:
+            self._parent._validate_visibility(self)
 
     @property
     def enabled(self) -> bool:
@@ -87,4 +89,7 @@ class ETKBaseWidget(ETKBaseObject):
         pass
 
     def _validate_size(self, element: ETKBaseWidget) -> None:
+        pass
+
+    def _validate_visibility(self, element: ETKBaseWidget) -> None:
         pass

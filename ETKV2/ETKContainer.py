@@ -14,30 +14,21 @@ class ETKContainer(ETKBaseContainer):
             self, tk, pos, size, background_color, outline_color)
         self.__element_alignments: dict[ETKBaseWidget, Alignments] = {}
 
+    # region Properties
+
     @ETKBaseContainer.size.setter
     def size(self, value: ContainerSize | vector2d) -> None:
         ETKBaseContainer.size.fset(self, value)  # type:ignore
         try:
-            self.__update_all_element_pos()
+            self._update_all_element_pos()
         except ValueError:
             raise SizeError(
                 f"size of container {self} is too small\ncontainer: size: {self.size}")
 
-    def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT) -> None:
-        self.__element_alignments.update({element: alignment})
-        ETKBaseContainer.add_element(self, element)
-        self.__update_all_element_pos()
+    # endregion
+    # region Methods
 
-    def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1]) -> float:
-        match self.__element_alignments[element].value[index]:
-            case _SubAlignments.MIN:
-                return element.pos[index]
-            case _SubAlignments.MIDDLE:
-                return 0.5 * self.size[index] - 0.5 * element.size[index] + element.pos[index]
-            case _SubAlignments.MAX:
-                return self.size[index] - element.size[index] + element.pos[index]
-
-    def __update_all_element_pos(self) -> None:
+    def _update_all_element_pos(self) -> None:
         elements = [e for e in self._element_rel_pos.keys() if e.abs_enabled]
 
         max_size = [0, 0]
@@ -66,6 +57,20 @@ class ETKContainer(ETKBaseContainer):
             self._element_rel_pos[e] = self._calculate_rel_element_pos(e)
             self.__validate_size_pos(self._element_rel_pos[e], e.size)
             e._update_pos()
+    
+    def _calculate_rel_element_pos(self, element: ETKBaseWidget) -> vector2d:
+        x = self._calculate_rel_element_pos_part(element, 0)
+        y = self._calculate_rel_element_pos_part(element, 1)
+        return vector2d(x, y)
+
+    def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1]) -> float:
+        match self.__element_alignments[element].value[index]:
+            case _SubAlignments.MIN:
+                return element.pos[index]
+            case _SubAlignments.MIDDLE:
+                return 0.5 * self.size[index] - 0.5 * element.size[index] + element.pos[index]
+            case _SubAlignments.MAX:
+                return self.size[index] - element.size[index] + element.pos[index]
 
     def __validate_size_pos(self, rel_pos: vector2d, size: vector2d) -> None:
         s_size = self.size
@@ -77,11 +82,9 @@ class ETKContainer(ETKBaseContainer):
         if rel_pos.x + size.x > s_size.x or rel_pos.y + size.y > s_size.y or rel_pos.x < 0 or rel_pos.y < 0:
             raise PosError(
                 f"pos is outside of container {self}\nparameter: rel_pos: {rel_pos}, size: {size}; container: size: {self.size}")
+    
+    def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT) -> None:
+        self.__element_alignments.update({element: alignment})
+        ETKBaseContainer.add_element(self, element)
 
-    def _validate_pos(self, element: ETKBaseWidget) -> None:
-        self.__update_all_element_pos()
-        ETKBaseContainer._validate_size(self, element)
-
-    def _validate_size(self, element: ETKBaseWidget) -> None:
-        self.__update_all_element_pos()
-        ETKBaseContainer._validate_size(self, element)
+    # endregion

@@ -2,13 +2,13 @@ from __future__ import annotations
 from abc import abstractmethod
 from enum import Enum, auto
 from tkinter import Tk
-from typing import Literal, Optional
+from typing import Optional
 from .ETKBaseWidget import ETKBaseWidget
 from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
 from .ETKBackgroundCanvas import ETKBackgroundCanvas
 
-# TODO: Events, bg_col, outline, enabled, visible, padding bei dynamic size
+# TODO: Events, enabled, visible, padding bei dynamic size, update when visiblity from child changes
 
 # region Enums
 
@@ -53,7 +53,7 @@ class ContainerSize():
     def __str__(self) -> str:
         return f"<{self.x}, {self.y}, {self.dynamic_x}, {self.dynamic_y}>"
 
-    def __setitem__(self, address: int, other: int|bool) -> None:
+    def __setitem__(self, address: int, other: int | bool) -> None:
         if address not in [0, 1, 2, 3]:
             raise KeyError("Invalid index")
         match address:
@@ -115,9 +115,11 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         self.__background = ETKBackgroundCanvas(
             tk, pos, size.vec, background_color, outline_color)
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
-        self._container_size: ContainerSize = size
         ETKBaseWidgetDisableable.__init__(
             self, pos, size.vec)
+        self._container_size: ContainerSize = size
+
+    # region properties
 
     @ETKBaseWidgetDisableable.pos.setter
     def pos(self, value: vector2d) -> None:
@@ -152,6 +154,14 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     def background_color(self, value: int) -> None:
         self.__background.background_color = value
 
+    # endregion
+
+    # region Methods
+
+    @abstractmethod
+    def _update_all_element_pos(self) -> None:
+        pass
+
     def add_element(self, element: ETKBaseWidget) -> None:
         if element in self._element_rel_pos.keys():
             raise ElementAlreadyAddedError(
@@ -164,6 +174,8 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
 
         self._element_rel_pos.update({element: vector2d()})
 
+        self._update_all_element_pos()
+
     def remove_element(self, element: ETKBaseWidget) -> None:
         if element not in self._element_rel_pos.keys():
             raise ElementNotPartOfContainerError(
@@ -173,6 +185,24 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         element.pos = vector2d(0, 0)
         element._update_pos()
 
+    # region update event methods
+
+    def _update_pos(self) -> None:
+        for e in self._element_rel_pos.keys():
+            e._update_pos()
+
+    def _update_visibility(self) -> None:
+        for e in self._element_rel_pos.keys():
+            e._update_visibility()
+        self.__background.visibility = self.abs_visibility
+
+    def _update_enabled(self) -> None:
+        for e in self._element_rel_pos.keys():
+            e._update_enabled()
+
+    # endregion
+    # region child validation methods
+    
     def _get_childs_abs_pos(self, child: ETKBaseWidget) -> vector2d:
         if child not in self._element_rel_pos.keys():
             raise ElementNotPartOfContainerError(
@@ -180,21 +210,20 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         pos = self._element_rel_pos[child]
         return vector2d(pos.x + self.abs_pos.x, pos.y + self.abs_pos.y)
 
-    def _calculate_rel_element_pos(self, element: ETKBaseWidget) -> vector2d:
-        x = self._calculate_rel_element_pos_part(element, 0)
-        y = self._calculate_rel_element_pos_part(element, 1)
-        return vector2d(x, y)
-
-    @abstractmethod
-    def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1]) -> float:
-        pass
-
-    def _validate_size(self, element: ETKBaseWidget) -> None:
-        element._update_pos()
-
-    def _update_pos(self) -> None:
-        for e in self._element_rel_pos.keys():
-            e._update_pos()
-
     def _detach_child(self, element: ETKBaseWidget) -> None:
         self.remove_element(element)
+
+    def _validate_size(self, element: ETKBaseWidget) -> None:
+        self._update_all_element_pos()
+        element._update_pos()
+
+    def _validate_pos(self, element: ETKBaseWidget) -> None:
+        self._update_all_element_pos()
+        element._update_pos()
+
+    def _validate_visibility(self, element: ETKBaseWidget) -> None:
+        self._update_all_element_pos()
+        element._update_pos()
+
+    # endregion
+    # endregion

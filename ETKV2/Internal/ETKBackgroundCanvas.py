@@ -17,7 +17,8 @@ class ETKBackgroundCanvas(ETKCanvas):
     @ETKCanvas.background_color.setter
     def background_color(self, value: Optional[int]) -> None:
         ETKCanvas.background_color.fset(self, value)  # type:ignore
-        self.__background_and_outline.background_color = value
+        if getattr(self, "__background_and_outline", None) != None:
+            self.__background_and_outline.background_color = value
 
     @property
     def outline_color(self) -> int:

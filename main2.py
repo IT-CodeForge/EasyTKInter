@@ -17,23 +17,27 @@ class GUI(ETKMainWindow):
         pass#print("INIT")
     
     def _add_elements(self) -> None:
+        self.listingcontainer = ETKListingContainer(self._tk_object, vector2d(10, 10), ContainerSize(500, 100, True, True), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT, background_color=0x00FF00)
+        
+        #self.color_label = ETKLabel(self._tk_object, "", self.listingcontainer.abs_pos, self.listingcontainer.size.vec, 0x00FF00)
+
+        self.label1 = ETKEdit(self._tk_object, "LABEL1")
+        self.label2 = ETKLabel(self._tk_object, "LABEL2")
+
+        self.listingcontainer.add_element(self.label1)
+        self.listingcontainer.add_element(self.label2)
+
+        #self.color_label.size = self.listingcontainer.size.vec
+        self.listingcontainer.visibility = True
+
+        return
         self.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED"))
         self.label2 = ETKLabel(self._tk_object, "LABEL2")
         self.label2.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED2"))
 
         return
 
-        self.listingcontainer = ETKListingContainer(self._tk_object, vector2d(10, 10), ContainerSize(500, 100, True, True), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT)
         
-        self.color_label = ETKLabel(self._tk_object, "", self.listingcontainer.abs_pos, self.listingcontainer.size.vec, 0x00FF00)
-
-        self.label1 = ETKLabel(self._tk_object, "LABEL1")
-        self.label2 = ETKLabel(self._tk_object, "LABEL2")
-
-        self.listingcontainer.add_element(self.label1)
-        self.listingcontainer.add_element(self.label2)
-
-        self.color_label.size = self.listingcontainer.size.vec
 
         return
         

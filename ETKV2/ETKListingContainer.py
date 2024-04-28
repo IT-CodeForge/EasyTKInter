@@ -29,12 +29,17 @@ class ETKListingContainer(ETKBaseContainer):
         ETKBaseContainer.__init__(
             self, tk, pos, size, background_color, outline_color)
 
-    def add_element(self, element: ETKBaseWidget) -> None:
-        ETKBaseContainer.add_element(self, element)
-        self.__update_all_element_pos()
-        element._update_pos()
+    # region Properties
 
-    def __update_all_element_pos(self) -> None:
+    @ETKBaseContainer.size.setter
+    def size(self, value: ContainerSize | vector2d) -> None:
+        ETKBaseContainer.size.fset(self, value)  # type:ignore
+        self._update_all_element_pos()
+
+    # endregion
+    # region Methods
+
+    def _update_all_element_pos(self) -> None:
         if self.__listing_type in [ListingTypes.TOP_TO_BOTTOM, ListingTypes.BOTTOM_TO_TOP]:
             listing_dir_index = 1
             non_listing_dir_index = 0
@@ -97,15 +102,11 @@ class ETKListingContainer(ETKBaseContainer):
             case _SubAlignments.MAX:
                 return self.size[index] - size_part
 
-    @ETKBaseContainer.size.setter
-    def size(self, value: ContainerSize | vector2d) -> None:
-        ETKBaseContainer.size.fset(self, value)  # type:ignore
-        self.__update_all_element_pos()
+    # region child validation methods
 
     def _validate_pos(self, element: ETKBaseWidget) -> None:
         raise ElementPosLockedError(
             f"pos of element {element} is locked by ListingContainer {self}")
 
-    def _validate_size(self, element: ETKBaseWidget) -> None:
-        self.__update_all_element_pos()
-        ETKBaseContainer._validate_size(self, element)
+    # endregion
+    # endregion
