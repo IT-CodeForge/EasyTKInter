@@ -11,6 +11,7 @@ class ETKCanvasItem:
         self._tk_object: Canvas = canvas
         self._pointlist: list[vector2d] = pointlist
         self._rotation: float = 0
+        self._isdeleted = False
         self._background_color: str = gen_col_from_int(background_color)
         self._outline_color: str = gen_col_from_int(outline_color)
         tkinter_pointlist: list[tuple[float, float]] = [
@@ -26,6 +27,7 @@ class ETKCanvasItem:
 
     @pos.setter
     def pos(self, value: vector2d) -> None:
+        self.__check_if_deleted()
         move_vec = value - self.pos
         for index, point in enumerate(self._pointlist):
             self._pointlist[index] = point + move_vec
@@ -37,6 +39,7 @@ class ETKCanvasItem:
 
     @rotation.setter
     def rotation(self, value: float) -> None:
+        self.__check_if_deleted()
         for index, point in enumerate(self._pointlist):
             self._pointlist[index] = self.pos + \
                 (point - self.pos).rotate(value - self.rotation)
@@ -51,6 +54,7 @@ class ETKCanvasItem:
 
     @background_color.setter
     def background_color(self, value: Optional[int]) -> None:
+        self.__check_if_deleted()
         self._background_color = gen_col_from_int(value)
         self.__redraw_shape()
 
@@ -60,6 +64,7 @@ class ETKCanvasItem:
 
     @outline_color.setter
     def outline_color(self, value: int) -> None:
+        self.__check_if_deleted()
         self._outline_color = gen_col_from_int(value)
         self.__redraw_shape()
 
@@ -150,5 +155,9 @@ class ETKCanvasItem:
         getx: Callable[[vector2d], float] = lambda vector: vector.x
         gety: Callable[[vector2d], float] = lambda vector: vector.y
         return [f(point) for point in self._pointlist for f in (getx, gety)]
+    
+    def __check_if_deleted(self)->None:
+        if self._isdeleted:
+            raise RuntimeError(f"cannot modify the deleted Canvasitem {self}")
 
     # endregion
