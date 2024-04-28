@@ -10,10 +10,15 @@ class ETKBitmap(ETKBaseTkWidgetDisableable):
         self._tk_object: Label = Label(tk, text="", image=self.__bitmap) #type:ignore
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
     
+    #region Properties
+    
     @ETKBaseTkWidgetDisableable.size.setter
     def size(self, value: vector2d)->None:
         ETKBaseTkWidgetDisableable.size.fset(self, value) #type:ignore
         self.__bitmap.configure(width=int(value.x), height=int(value.y))
+    
+    #endregion
+    #region Methods
     
     def __getitem__(self, index: vector2d | Iterable[int])->int:
         if type(index) not in [vector2d, Iterable]:
@@ -41,3 +46,5 @@ class ETKBitmap(ETKBaseTkWidgetDisableable):
     
     def clear(self)->None:
         self.__bitmap.blank()
+    
+    #endregion
