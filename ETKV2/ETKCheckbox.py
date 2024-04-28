@@ -4,6 +4,7 @@ from .vector2d import vector2d
 from .Internal.ETKBaseObject import Events
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
+from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
 from tkinter import Checkbutton, IntVar, Event, Tk, EventType
 
 

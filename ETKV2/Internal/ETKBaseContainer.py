@@ -192,7 +192,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         self._element_rel_pos.update({element: vector2d()})
 
         self._update_all_element_pos()
-    
+
     def _prepare_element_add(self, element: ETKBaseWidget) -> None:
         if element in self._element_rel_pos.keys():
             raise ElementAlreadyAddedError(
@@ -203,7 +203,8 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
 
         element._parent = self
 
-        events = [ev for ev in self._event_lib.keys() if len(self._event_lib[ev]) != 0]
+        events = [ev for ev in self._event_lib.keys() if len(
+            self._event_lib[ev]) != 0]
         for ev in events:
             element.add_event(ev, self.__event_handler)
 
@@ -216,7 +217,8 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         element.pos = vector2d(0, 0)
 
         print(self._event_lib)
-        events = [ev for ev in self._event_lib.keys() if len(self._event_lib[ev]) != 0]
+        events = [ev for ev in self._event_lib.keys() if len(
+            self._event_lib[ev]) != 0]
         for ev in events:
             element.remove_event(ev, self.__event_handler)
 
@@ -229,13 +231,12 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         for e in self._element_rel_pos.keys():
             e.add_event(event_type, self.__event_handler)
 
-    
     def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         ETKBaseWidgetDisableable.remove_event(self, event_type, eventhandler)
         self.__background.remove_event(event_type, self.__event_handler)
         for e in self._element_rel_pos.keys():
             e.remove_event(event_type, self.__event_handler)
-    
+
     def __event_handler(self, data: tuple[ETKBaseObject, Events, Optional[Any]]) -> None:
         obj = data[0]
         if obj == self.__background:

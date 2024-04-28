@@ -5,6 +5,7 @@ from .Internal.ETKBaseObject import Events
 from .vector2d import vector2d
 from .ETKLabel import ETKLabel
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
+from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
 
 
 class EditEvents(Events):

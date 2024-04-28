@@ -7,6 +7,7 @@ from .ETKCanvas import ETKCanvas
 from .Internal.ETKUtils import gen_col_from_int
 from .vector2d import vector2d
 from .Internal.ETKBaseTkObject import ETKBaseTkObject
+from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
 from .Internal.ETKBaseObject import Events
 
 

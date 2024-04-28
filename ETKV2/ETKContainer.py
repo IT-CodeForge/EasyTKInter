@@ -2,10 +2,12 @@ from __future__ import annotations
 from tkinter import Tk
 from typing import Literal, Optional
 from .Internal.ETKBaseWidget import ETKBaseWidget
+from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
 
 from .vector2d import vector2d
 
-from .Internal.ETKBaseContainer import Alignments, _SubAlignments, ContainerSize, SizeError, PosError, ETKBaseContainer  # type:ignore
+from .Internal.ETKBaseContainer import _SubAlignments  # type:ignore
+from .Internal.ETKBaseContainer import Alignments, ContainerSize, SizeError, PosError, ETKBaseContainer
 
 
 class ETKContainer(ETKBaseContainer):
@@ -90,7 +92,7 @@ class ETKContainer(ETKBaseContainer):
     def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT) -> None:
         self.__element_alignments.update({element: alignment})
         ETKBaseContainer.add_element(self, element)
-    
+
     def remove_element(self, element: ETKBaseWidget) -> None:
         ETKBaseContainer.remove_element(self, element)
         self.__element_alignments.pop(element)

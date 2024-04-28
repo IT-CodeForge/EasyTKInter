@@ -3,6 +3,7 @@ from enum import auto
 from .Internal.ETKBaseObject import Events
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
+from .Internal.ETKBaseTkObject import BaseEvents #type:ignore
 from .vector2d import vector2d
 from tkinter import Button, Event, Tk, EventType
 
