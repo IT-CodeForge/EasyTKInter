@@ -11,6 +11,7 @@ class ETKCanvasOval(ETKCanvasItem):
             center, radius_x, radius_y)
         ETKCanvasItem.__init__(self, canvas, temp_pointlist,
                                background_color, outline_color)
+        self._item_type = "oval"
 
     # region Properties
 

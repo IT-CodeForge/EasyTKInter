@@ -12,7 +12,7 @@ from tkinter import Canvas, Tk
 
 class ETKCanvas(ETKBaseTkWidgetDisableable):
     def __init__(self, tk: Tk, pos: vector2d, size: vector2d, background_color: int = 0xFFFFFF) -> None:
-        self._tk_object: Canvas = Canvas(tk)  # type:ignore
+        self._tk_object: Canvas = Canvas(tk, highlightthickness=0)  # type:ignore
         self.__canvas_items: list[ETKCanvasItem] = []
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
     
@@ -50,8 +50,7 @@ class ETKCanvas(ETKBaseTkWidgetDisableable):
     def draw_line(self, start_point: vector2d, end_point: vector2d, thickness: float = 2, background_color: int = 0x000000, outline_color: int = 0x000000) -> ETKCanvasItem:
         self.__canvas_items.append(ETKCanvasLine(self._tk_object, start_point, end_point, thickness, background_color, outline_color))
         return self.__canvas_items[-1]
-    
-    
+
     def delete_item(self, item: ETKCanvasItem)->None:
         for index, canvas_item in enumerate(self.__canvas_items):
             if canvas_item == item:

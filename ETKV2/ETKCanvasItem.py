@@ -14,6 +14,7 @@ class ETKCanvasItem:
         self._isdeleted = False
         self._background_color: str = gen_col_from_int(background_color)
         self._outline_color: str = gen_col_from_int(outline_color)
+        self._item_type: str = "polygon"
         tkinter_pointlist: list[tuple[float, float]] = [
             (vector.x, vector.y) for vector in self._pointlist]
         self.itemId: int = self._tk_object.create_polygon(
@@ -67,6 +68,11 @@ class ETKCanvasItem:
         self.__check_if_deleted()
         self._outline_color = gen_col_from_int(value)
         self.__redraw_shape()
+    
+    @property
+    def canvasitem_type(self)->str:
+        "READ-ONLY"
+        return self._item_type
 
     # endregion
     # region Methods

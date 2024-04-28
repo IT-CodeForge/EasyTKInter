@@ -14,6 +14,7 @@ class ETKCanvasLine(ETKCanvasItem):
                                           thickness_vector, end_point - thickness_vector, start_point - thickness_vector]
         ETKCanvasItem.__init__(self, canvas, temp_pointlist,
                                background_color, outline_color)
+        self._item_type = "line"
 
     # region Properties
 

@@ -8,7 +8,7 @@ from .ETKBaseObject import ETKEvents, ETKBaseObject
 from .ETKBaseWidget import ETKBaseWidget
 from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
-from .ETKContainerBackgroundCanvas import ETKContainerBackgroundCanvas
+from .ETKBackgroundCanvas import ETKBackgroundCanvas
 
 # region Enums
 
@@ -132,7 +132,7 @@ class PosError(ValueError):
 
 class ETKBaseContainer(ETKBaseWidgetDisableable):
     def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ETKContainerSize = ETKContainerSize(0, 0, True, True), background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
-        self.__background = ETKContainerBackgroundCanvas(
+        self.__background = ETKBackgroundCanvas(
             tk, pos, size.vec, background_color, outline_color)
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         ETKBaseWidgetDisableable.__init__(
@@ -144,7 +144,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     @ETKBaseWidgetDisableable.pos.setter
     def pos(self, value: vector2d) -> None:
         ETKBaseWidgetDisableable.pos.fset(self, value)  # type:ignore
-        ETKContainerBackgroundCanvas.pos = value
+        ETKBackgroundCanvas.pos = value
 
     @property
     def size(self) -> ETKContainerSize:  # type:ignore
@@ -163,12 +163,12 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         return tuple(self._element_rel_pos.keys())
 
     @property
-    def outline_color(self) -> int:
-        return self.__background.background_color
+    def outline_color(self) -> Optional[int]:
+        return self.__background.outline_color
 
     @outline_color.setter
-    def outline_color(self, value: int) -> None:
-        self.__background.background_color = value
+    def outline_color(self, value: Optional[int]) -> None:
+        self.__background.outline_color = value
 
     @property
     def background_color(self) -> int:

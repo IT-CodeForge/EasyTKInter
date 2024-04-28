@@ -9,3 +9,4 @@ class ETKCanvasRectangle(ETKCanvasItem):
             bottom_right.x, top_left.y), bottom_right, vector2d(top_left.x, bottom_right.y)]
         ETKCanvasItem.__init__(self, canvas, temp_pointlist,
                                background_color, outline_color)
+        self._item_type = "rectangle"

@@ -8,3 +8,4 @@ class ETKCanvasSquare(ETKCanvasRectangle):
         bottom_right = top_left + vector2d(side_length, side_length)
         ETKCanvasRectangle.__init__(
             self, canvas, top_left, bottom_right, background_color, outline_color)
+        self._item_type = "square"
