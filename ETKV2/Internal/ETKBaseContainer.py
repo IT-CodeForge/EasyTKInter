@@ -36,15 +36,37 @@ class ETKAlignments(Enum):
 
 
 class ETKContainerSize():
-    def __init__(self, x: int, y: int, dynamic_x: bool = False, dynamic_y: bool = False, paddings_x_l: int = 0, paddings_x_r: int = 0, paddings_y_o: int = 0, paddings_y_u: int = 0) -> None:
-        self.x: int = x
-        self.y: int = y
+    def __init__(self, x: int | float, y: int | float, dynamic_x: bool = False, dynamic_y: bool = False, paddings_x_l: int = 0, paddings_x_r: int = 0, paddings_y_o: int = 0, paddings_y_u: int = 0) -> None:
+        self.__x: int = 0
+        self.__y: int = 0
+        self.x = x
+        self.y = y
         self.dynamic_x: bool = dynamic_x
         self.dynamic_y: bool = dynamic_y
         self.padding_x_l: int = paddings_x_l
         self.padding_x_r: int = paddings_x_r
         self.padding_y_o: int = paddings_y_o
         self.padding_y_u: int = paddings_y_u
+
+    @property
+    def x(self) -> int:
+        return self.__x
+
+    @x.setter
+    def x(self, value: int | float):
+        self.__x = int(value)
+    
+    @property
+    def y(self) -> int:
+        return self.__x
+
+    @y.setter
+    def y(self, value: int | float):
+        self.__y = int(value)
+
+    @staticmethod
+    def from_vector2d(vec: vector2d):
+        return ETKContainerSize(vec.x, vec.y)
 
     def copy(self) -> ETKContainerSize:
         return ETKContainerSize(self.x, self.y, self.dynamic_x, self.dynamic_y, self.padding_x_l, self.padding_x_r, self.padding_y_o, self.padding_y_u)
@@ -62,9 +84,9 @@ class ETKContainerSize():
             raise KeyError("Invalid index")
         match address:
             case 0:
-                self.x = int(other)
+                self.x = other
             case 1:
-                self.y = int(other)
+                self.y = other
             case 2:
                 self.dynamic_x = bool(other)
             case 3:
@@ -171,11 +193,11 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     @outline_color.setter
     def outline_color(self, value: int) -> None:
         self.__background.outline_color = value
-    
+
     @property
     def outline_thickness(self) -> int:
         return self.__background.outline_thickness
-    
+
     @outline_thickness.setter
     def outline_thickness(self, value: int) -> None:
         self.__background.outline_thickness = value
