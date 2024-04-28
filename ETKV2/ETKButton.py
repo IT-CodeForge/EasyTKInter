@@ -1,14 +1,14 @@
 from enum import auto
 
-from .Internal.ETKBaseObject import Events
+from .Internal.ETKBaseObject import ETKEvents
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
-from .Internal.ETKBaseTkObject import BaseEvents #type:ignore
+from .Internal.ETKBaseTkObject import ETKBaseEvents #type:ignore
 from .vector2d import vector2d
 from tkinter import Button, Event, Tk, EventType
 
 
-class ButtonEvents(Events):
+class ETKButtonEvents(ETKEvents):
     PRESSED = ("<ButtonPress>", auto())
     RELEASED = ("<ButtonRelease>", auto())
 
@@ -19,7 +19,7 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
         ETKBaseTkWidgetText.__init__(
             self, text, pos, size, background_color, text_color)
-        self._event_lib.update({e: [] for e in ButtonEvents})
+        self._event_lib.update({e: [] for e in ETKButtonEvents})
 
     # region Methods
 
@@ -28,11 +28,11 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
             case EventType.ButtonPress:
                 if self._enabled:
                     self._handle_event(
-                        ButtonEvents.PRESSED, [event])  # type:ignore
+                        ETKButtonEvents.PRESSED, [event])  # type:ignore
             case EventType.ButtonRelease:
                 if self._enabled:
                     self._handle_event(
-                        ButtonEvents.RELEASED, [event])  # type:ignore
+                        ETKButtonEvents.RELEASED, [event])  # type:ignore
             case _:
                 pass
         return ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore

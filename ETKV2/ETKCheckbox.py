@@ -1,14 +1,14 @@
 from enum import auto
 
 from .vector2d import vector2d
-from .Internal.ETKBaseObject import Events
+from .Internal.ETKBaseObject import ETKEvents
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
-from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
+from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
 from tkinter import Checkbutton, IntVar, Event, Tk, EventType
 
 
-class CheckboxEvents(Events):
+class ETKCheckboxEvents(ETKEvents):
     CHECKED = ("<ButtonPress>", auto())
     UNCHECKED = ("<ButtonPress>", auto())
     TOGGLED = ("<ButtonPress>", auto())
@@ -22,7 +22,7 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
         ETKBaseTkWidgetText.__init__(
             self, text, pos, size, background_color, text_color)
-        self._event_lib.update({e: [] for e in CheckboxEvents})
+        self._event_lib.update({e: [] for e in ETKCheckboxEvents})
 
     # region Properties
 
@@ -42,13 +42,13 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
             case EventType.ButtonPress:
                 if self.enabled:
                     self._handle_event(
-                        CheckboxEvents.TOGGLED, [event])  # type:ignore
+                        ETKCheckboxEvents.TOGGLED, [event])  # type:ignore
                     if self.state:
                         self._handle_event(
-                            CheckboxEvents.CHECKED, [event])  # type:ignore
+                            ETKCheckboxEvents.CHECKED, [event])  # type:ignore
                     else:
                         self._handle_event(
-                            CheckboxEvents.UNCHECKED, [event])  # type:ignore
+                            ETKCheckboxEvents.UNCHECKED, [event])  # type:ignore
             case _:
                 pass
         ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore

@@ -1,7 +1,7 @@
 from tkinter import END, Text, Tk
 from .vector2d import vector2d
 from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
-from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
+from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
 
 
 class ETKLabel(ETKBaseTkWidgetText):

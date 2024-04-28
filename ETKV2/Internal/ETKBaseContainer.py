@@ -3,7 +3,7 @@ from abc import abstractmethod
 from enum import Enum, auto
 from tkinter import Tk
 from typing import Any, Callable, Optional
-from .ETKBaseObject import Events, ETKBaseObject
+from .ETKBaseObject import ETKEvents, ETKBaseObject
 
 from .ETKBaseWidget import ETKBaseWidget
 from ..vector2d import vector2d
@@ -13,29 +13,29 @@ from .ETKContainerBackgroundCanvas import ETKContainerBackgroundCanvas
 # region Enums
 
 
-class _SubAlignments(Enum):
+class _ETKSubAlignments(Enum):
     MIN = auto()
     MIDDLE = auto()
     MAX = auto()
 
 
-class Alignments(Enum):
-    TOP_LEFT = (_SubAlignments.MIN, _SubAlignments.MIN)
-    TOP_CENTER = (_SubAlignments.MIDDLE, _SubAlignments.MIN)
-    TOP_RIGHT = (_SubAlignments.MAX, _SubAlignments.MIN)
-    MIDDLE_LEFT = (_SubAlignments.MIN, _SubAlignments.MIDDLE)
-    MIDDLE_CENTER = (_SubAlignments.MIDDLE, _SubAlignments.MIDDLE)
-    MIDDLE_RIGHT = (_SubAlignments.MAX, _SubAlignments.MIDDLE)
-    BOTTOM_LEFT = (_SubAlignments.MIN, _SubAlignments.MAX)
-    BOTTOM_CENTER = (_SubAlignments.MIDDLE, _SubAlignments.MAX)
-    BOTTOM_RIGHT = (_SubAlignments.MAX, _SubAlignments.MAX)
+class ETKAlignments(Enum):
+    TOP_LEFT = (_ETKSubAlignments.MIN, _ETKSubAlignments.MIN)
+    TOP_CENTER = (_ETKSubAlignments.MIDDLE, _ETKSubAlignments.MIN)
+    TOP_RIGHT = (_ETKSubAlignments.MAX, _ETKSubAlignments.MIN)
+    MIDDLE_LEFT = (_ETKSubAlignments.MIN, _ETKSubAlignments.MIDDLE)
+    MIDDLE_CENTER = (_ETKSubAlignments.MIDDLE, _ETKSubAlignments.MIDDLE)
+    MIDDLE_RIGHT = (_ETKSubAlignments.MAX, _ETKSubAlignments.MIDDLE)
+    BOTTOM_LEFT = (_ETKSubAlignments.MIN, _ETKSubAlignments.MAX)
+    BOTTOM_CENTER = (_ETKSubAlignments.MIDDLE, _ETKSubAlignments.MAX)
+    BOTTOM_RIGHT = (_ETKSubAlignments.MAX, _ETKSubAlignments.MAX)
 
 # endregion
 
 # region Dataclass: ContainerSize
 
 
-class ContainerSize():
+class ETKContainerSize():
     def __init__(self, x: int, y: int, dynamic_x: bool = False, dynamic_y: bool = False, paddings_x_l: int = 0, paddings_x_r: int = 0, paddings_y_o: int = 0, paddings_y_u: int = 0) -> None:
         self.x: int = x
         self.y: int = y
@@ -46,8 +46,8 @@ class ContainerSize():
         self.padding_y_o: int = paddings_y_o
         self.padding_y_u: int = paddings_y_u
 
-    def copy(self) -> ContainerSize:
-        return ContainerSize(self.x, self.y, self.dynamic_x, self.dynamic_y, self.padding_x_l, self.padding_x_r, self.padding_y_o, self.padding_y_u)
+    def copy(self) -> ETKContainerSize:
+        return ETKContainerSize(self.x, self.y, self.dynamic_x, self.dynamic_y, self.padding_x_l, self.padding_x_r, self.padding_y_o, self.padding_y_u)
 
     @property
     def vec(self) -> vector2d:
@@ -131,13 +131,13 @@ class PosError(ValueError):
 
 
 class ETKBaseContainer(ETKBaseWidgetDisableable):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ETKContainerSize = ETKContainerSize(0, 0, True, True), background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
         self.__background = ETKContainerBackgroundCanvas(
             tk, pos, size.vec, background_color, outline_color)
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         ETKBaseWidgetDisableable.__init__(
             self, pos, size.vec)
-        self._container_size: ContainerSize = size
+        self._container_size: ETKContainerSize = size
 
     # region properties
 
@@ -147,15 +147,15 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         ETKContainerBackgroundCanvas.pos = value
 
     @property
-    def size(self) -> ContainerSize:  # type:ignore
+    def size(self) -> ETKContainerSize:  # type:ignore
         return self._container_size.copy()
 
     @size.setter
-    def size(self, value: ContainerSize | vector2d) -> None:
-        if type(value) == ContainerSize:
+    def size(self, value: ETKContainerSize | vector2d) -> None:
+        if type(value) == ETKContainerSize:
             self._container_size = value
         else:
-            self._container_size = ContainerSize(int(value.x), int(value.y))
+            self._container_size = ETKContainerSize(int(value.x), int(value.y))
         self.__background.size = self.size.vec
 
     @property
@@ -224,19 +224,19 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         element._update_pos()
         self._update_all_element_pos()
 
-    def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
+    def add_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
         ETKBaseWidgetDisableable.add_event(self, event_type, eventhandler)
         self.__background.add_event(event_type, self.__event_handler)
         for e in self._element_rel_pos.keys():
             e.add_event(event_type, self.__event_handler)
 
-    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
+    def remove_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
         ETKBaseWidgetDisableable.remove_event(self, event_type, eventhandler)
         self.__background.remove_event(event_type, self.__event_handler)
         for e in self._element_rel_pos.keys():
             e.remove_event(event_type, self.__event_handler)
 
-    def __event_handler(self, data: tuple[ETKBaseObject, Events, Optional[Any]]) -> None:
+    def __event_handler(self, data: tuple[ETKBaseObject, ETKEvents, Optional[Any]]) -> None:
         obj = data[0]
         if obj == self.__background:
             obj = self

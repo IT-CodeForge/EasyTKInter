@@ -7,11 +7,11 @@ from .ETKCanvas import ETKCanvas
 from .Internal.ETKUtils import gen_col_from_int
 from .vector2d import vector2d
 from .Internal.ETKBaseTkObject import ETKBaseTkObject
-from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
-from .Internal.ETKBaseObject import Events
+from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
+from .Internal.ETKBaseObject import ETKEvents
 
 
-class WindowEvents(Events):
+class ETKWindowEvents(ETKEvents):
     KEY_PRESSED = ("<KeyDown>", auto())
     KEY_RELEASED = ("<KeyRelease>", auto())
     FOCUS_IN = ("<FocusIn>", auto())
@@ -29,9 +29,9 @@ class ETKMainWindow(ETKBaseTkObject):
         self.canvas = ETKCanvas(self._tk_object, vector2d(), size)
         ETKBaseTkObject.__init__(self, pos, size, background_color)
         self._tk_object.protocol("WM_DELETE_WINDOW", self.exit)
-        self._event_lib.update({e: [] for e in WindowEvents})
+        self._event_lib.update({e: [] for e in ETKWindowEvents})
 
-        self._tk_object.after(0, self._handle_event, WindowEvents.START)
+        self._tk_object.after(0, self._handle_event, ETKWindowEvents.START)
         self._on_init()
 
         self._add_elements()
@@ -96,7 +96,7 @@ class ETKMainWindow(ETKBaseTkObject):
         self._tk_object.mainloop()
 
     def exit(self) -> None:
-        self._handle_event(WindowEvents.EXIT)
+        self._handle_event(ETKWindowEvents.EXIT)
         if not self.exit_locked:
             exit()
 
@@ -112,19 +112,19 @@ class ETKMainWindow(ETKBaseTkObject):
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
             case EventType.KeyPress:
-                self._handle_event(WindowEvents.KEY_PRESSED,
+                self._handle_event(ETKWindowEvents.KEY_PRESSED,
                                    [event])  # type:ignore
                 return
             case EventType.KeyRelease:
-                self._handle_event(WindowEvents.KEY_RELEASED,
+                self._handle_event(ETKWindowEvents.KEY_RELEASED,
                                    [event])  # type:ignore
                 return
             case EventType.FocusIn:
-                self._handle_event(WindowEvents.FOCUS_IN,
+                self._handle_event(ETKWindowEvents.FOCUS_IN,
                                    [event])  # type:ignore
                 return
             case EventType.FocusOut:
-                self._handle_event(WindowEvents.FOCUS_OUT,
+                self._handle_event(ETKWindowEvents.FOCUS_OUT,
                                    [event])  # type:ignore
                 return
             case _:

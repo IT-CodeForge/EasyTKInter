@@ -2,24 +2,24 @@ from __future__ import annotations
 from tkinter import Tk
 from typing import Literal, Optional
 from .Internal.ETKBaseWidget import ETKBaseWidget
-from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
+from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
 
 from .vector2d import vector2d
 
-from .Internal.ETKBaseContainer import _SubAlignments  # type:ignore
-from .Internal.ETKBaseContainer import Alignments, ContainerSize, SizeError, PosError, ETKBaseContainer
+from .Internal.ETKBaseContainer import _ETKSubAlignments  # type:ignore
+from .Internal.ETKBaseContainer import ETKAlignments, ETKContainerSize, SizeError, PosError, ETKBaseContainer
 
 
 class ETKContainer(ETKBaseContainer):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ETKContainerSize = ETKContainerSize(0, 0, True, True), background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
         ETKBaseContainer.__init__(
             self, tk, pos, size, background_color, outline_color)
-        self.__element_alignments: dict[ETKBaseWidget, Alignments] = {}
+        self.__element_alignments: dict[ETKBaseWidget, ETKAlignments] = {}
 
     # region Properties
 
     @ETKBaseContainer.size.setter
-    def size(self, value: ContainerSize | vector2d) -> None:
+    def size(self, value: ETKContainerSize | vector2d) -> None:
         ETKBaseContainer.size.fset(self, value)  # type:ignore
         try:
             self._update_all_element_pos()
@@ -41,9 +41,9 @@ class ETKContainer(ETKBaseContainer):
         for e in elements:
             alignment = self.__element_alignments[e].value
             for i, sal in enumerate(alignment):
-                if sal == _SubAlignments.MAX:
+                if sal == _ETKSubAlignments.MAX:
                     size = e.size[i] + e.pos[i] * -1
-                elif sal == _SubAlignments.MIDDLE:
+                elif sal == _ETKSubAlignments.MIDDLE:
                     size = e.size[i] + abs(e.pos[i]) * 2
                 else:
                     size = e.size[i] + e.pos[i]
@@ -71,11 +71,11 @@ class ETKContainer(ETKBaseContainer):
 
     def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1], padding_part: float) -> float:
         match self.__element_alignments[element].value[index]:
-            case _SubAlignments.MIN:
+            case _ETKSubAlignments.MIN:
                 return element.pos[index]
-            case _SubAlignments.MIDDLE:
+            case _ETKSubAlignments.MIDDLE:
                 return 0.5 * self.size[index] - 0.5 * element.size[index] + element.pos[index]
-            case _SubAlignments.MAX:
+            case _ETKSubAlignments.MAX:
                 return self.size[index] - element.size[index] + element.pos[index] - padding_part
 
     def __validate_size_pos(self, rel_pos: vector2d, size: vector2d) -> None:
@@ -89,7 +89,7 @@ class ETKContainer(ETKBaseContainer):
             raise PosError(
                 f"pos is outside of container {self}\nparameter: rel_pos: {rel_pos}, size: {size}; container: size: {self.size}")
 
-    def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT) -> None:
+    def add_element(self, element: ETKBaseWidget, alignment: ETKAlignments = ETKAlignments.TOP_LEFT) -> None:
         self.__element_alignments.update({element: alignment})
         ETKBaseContainer.add_element(self, element)
 

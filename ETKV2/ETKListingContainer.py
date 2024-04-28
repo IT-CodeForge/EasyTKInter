@@ -1,18 +1,18 @@
 from enum import Enum, auto
 from tkinter import Tk
 from typing import Optional
-from .Internal.ETKBaseContainer import Alignments
+from .Internal.ETKBaseContainer import ETKAlignments
 from .Internal.ETKBaseWidget import ETKBaseWidget
-from .ETKContainer import ContainerSize
+from .ETKContainer import ETKContainerSize
 from .vector2d import vector2d
-from .Internal.ETKBaseContainer import ETKBaseContainer, _SubAlignments, SizeError  # type:ignore
+from .Internal.ETKBaseContainer import ETKBaseContainer, _ETKSubAlignments, SizeError  # type:ignore
 
 
 class ElementPosLockedError(AttributeError):
     pass
 
 
-class ListingTypes(Enum):
+class ETKListingTypes(Enum):
     TOP_TO_BOTTOM = auto()
     BOTTOM_TO_TOP = auto()
     LEFT_TO_RIGHT = auto()
@@ -20,7 +20,7 @@ class ListingTypes(Enum):
 
 
 class ETKListingContainer(ETKBaseContainer):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), alignment: Alignments = Alignments.TOP_LEFT, listing_type: ListingTypes = ListingTypes.TOP_TO_BOTTOM, offset: int = 10, background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ETKContainerSize = ETKContainerSize(0, 0, True, True), alignment: ETKAlignments = ETKAlignments.TOP_LEFT, listing_type: ETKListingTypes = ETKListingTypes.TOP_TO_BOTTOM, offset: int = 10, background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
         self.__alignment = alignment
         self.__listing_type = listing_type
         self.__offset = offset
@@ -30,7 +30,7 @@ class ETKListingContainer(ETKBaseContainer):
     # region Properties
 
     @ETKBaseContainer.size.setter
-    def size(self, value: ContainerSize | vector2d) -> None:
+    def size(self, value: ETKContainerSize | vector2d) -> None:
         ETKBaseContainer.size.fset(self, value)  # type:ignore
         self._update_all_element_pos()
 
@@ -38,7 +38,7 @@ class ETKListingContainer(ETKBaseContainer):
     # region Methods
 
     def _update_all_element_pos(self) -> None:
-        if self.__listing_type in [ListingTypes.TOP_TO_BOTTOM, ListingTypes.BOTTOM_TO_TOP]:
+        if self.__listing_type in [ETKListingTypes.TOP_TO_BOTTOM, ETKListingTypes.BOTTOM_TO_TOP]:
             listing_dir_index = 1
             non_listing_dir_index = 0
         else:
@@ -79,7 +79,7 @@ class ETKListingContainer(ETKBaseContainer):
         listing_dir_pos = self.__calculate_pos_part(
             listing_dir_index, listing_dir_size, (self.size[4+2*listing_dir_index], self.size[5+2*listing_dir_index]))
 
-        if self.__listing_type in [ListingTypes.BOTTOM_TO_TOP, ListingTypes.RIGHT_TO_LEFT]:
+        if self.__listing_type in [ETKListingTypes.BOTTOM_TO_TOP, ETKListingTypes.RIGHT_TO_LEFT]:
             elements = elements[::-1]
 
         for e in elements:
@@ -95,11 +95,11 @@ class ETKListingContainer(ETKBaseContainer):
 
     def __calculate_pos_part(self, index: int, size_part: float, padding_part: tuple[float, float]) -> float:
         match self.__alignment.value[index]:
-            case _SubAlignments.MIN:
+            case _ETKSubAlignments.MIN:
                 return padding_part[0]
-            case _SubAlignments.MIDDLE:
+            case _ETKSubAlignments.MIDDLE:
                 return 0.5 * (self.size[index] - padding_part[0] - padding_part[1]) - 0.5 * size_part + padding_part[0]
-            case _SubAlignments.MAX:
+            case _ETKSubAlignments.MAX:
                 return self.size[index] - size_part - padding_part[1]
 
     def insert_element(self, element: ETKBaseWidget, index: int) -> None:

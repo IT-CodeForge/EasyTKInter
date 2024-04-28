@@ -1,6 +1,6 @@
 from .vector2d import vector2d
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
-from .Internal.ETKBaseTkObject import BaseEvents #type:ignore
+from .Internal.ETKBaseTkObject import ETKBaseEvents #type:ignore
 from .ETKCanvasItem import ETKCanvasItem
 from .ETKCanvasRectangle import ETKCanvasRectangle
 from .ETKCanvasSquare import ETKCanvasSquare

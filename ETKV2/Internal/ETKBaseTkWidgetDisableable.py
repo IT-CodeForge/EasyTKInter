@@ -1,7 +1,7 @@
 from ..vector2d import vector2d
 from .ETKBaseTkWidget import ETKBaseTkWidget
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
-from .ETKBaseTkObject import BaseEvents  # type:ignore
+from .ETKBaseTkObject import ETKBaseEvents  # type:ignore
 
 
 class ETKBaseTkWidgetDisableable(ETKBaseWidgetDisableable, ETKBaseTkWidget):

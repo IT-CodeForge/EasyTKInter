@@ -5,11 +5,11 @@ from typing import Any, Callable, Optional
 from ..vector2d import vector2d
 
 
-class Events(Enum):
+class ETKEvents(Enum):
     pass
 
 
-class BaseEvents(Events):
+class ETKBaseEvents(ETKEvents):
     MOUSE_DOWN = ("<ButtonPress>", auto())
     MOUSE_UP = ("<ButtonRelease>", auto())
     ENTER = ("<Enter>", auto())
@@ -24,8 +24,8 @@ class ETKBaseObject:
         self.pos = pos
         self.size = size
         self._visibility: bool = True
-        self._event_lib: dict[Events, list[Callable[..., Any]]] = {
-            e: [] for e in BaseEvents}
+        self._event_lib: dict[ETKEvents, list[Callable[..., Any]]] = {
+            e: [] for e in ETKBaseEvents}
 
     # region Properties
 
@@ -67,7 +67,7 @@ class ETKBaseObject:
         return self._visibility
 
     @property
-    def events(self) -> dict[Events, list[Callable[..., Any]]]:
+    def events(self) -> dict[ETKEvents, list[Callable[..., Any]]]:
         """READ-ONLY"""
         return self._event_lib.copy()
 
@@ -75,13 +75,13 @@ class ETKBaseObject:
     # region Methods
     # region Eventhandling Methods
 
-    def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
+    def add_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
         self._event_lib[event_type].append(eventhandler)
 
-    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
+    def remove_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
         self._event_lib[event_type].remove(eventhandler)
 
-    def _handle_event(self, event: Events, event_data: Optional[list[Any]] = None) -> None:
+    def _handle_event(self, event: ETKEvents, event_data: Optional[list[Any]] = None) -> None:
         if event_data == None:
             event_data = []
         for c in self._event_lib[event]:

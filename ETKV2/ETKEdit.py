@@ -1,14 +1,14 @@
 from enum import auto
 from tkinter import Event, Tk, EventType
 
-from .Internal.ETKBaseObject import Events
+from .Internal.ETKBaseObject import ETKEvents
 from .vector2d import vector2d
 from .ETKLabel import ETKLabel
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
-from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
+from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
 
 
-class EditEvents(Events):
+class ETKEditEvents(ETKEvents):
     CHANGED = ("<KeyPress>", auto())
 
 
@@ -18,7 +18,7 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
                           background_color, text_color)
         self._tk_object["state"] = "normal"
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
-        self._event_lib.update({e: [] for e in EditEvents})
+        self._event_lib.update({e: [] for e in ETKEditEvents})
 
     # region Methods
 
@@ -26,7 +26,7 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
         match event.type:
             case EventType.KeyPress:
                 if self._enabled:
-                    self._handle_event(EditEvents.CHANGED,
+                    self._handle_event(ETKEditEvents.CHANGED,
                                        [event])  # type:ignore
                     return
             case _:

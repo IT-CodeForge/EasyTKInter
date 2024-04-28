@@ -1,5 +1,5 @@
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
-from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
+from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
 from .Internal.ETKUtils import gen_col_from_int
 from .vector2d import vector2d
 from tkinter import PhotoImage, Label, Tk
