@@ -8,8 +8,8 @@ class ETKDropdownMenuEvents(ETKEvents):
     CHANGED = ("<Custom>",auto())
 
 class ETKDropdownMenu(ETKBaseTkWidgetDisableable):
-    def __init__(self, tk: Tk, options:list[str], pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), background_color: int = 0xEEEEEE) -> None:
-        self.__selected = StringVar()
+    def __init__(self, tk: Tk, options:list[str], start_value: str = "", pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), background_color: int = 0xEEEEEE) -> None:
+        self.__selected = StringVar(value=start_value)
         self.__selected.trace("w", self.__clicked_changed) #type:ignore
         self._tk_object = OptionMenu(tk, self.__selected, *options)
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
