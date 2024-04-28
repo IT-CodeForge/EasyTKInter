@@ -20,9 +20,20 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
         self._event_lib.update({e: [] for e in ETKEditEvents})
 
+    #region Properties
+        
+    @ETKBaseTkWidgetDisableable.enabled.setter
+    def enabled(self, value: bool) -> None:
+        ETKBaseTkWidgetDisableable.enabled.fset(self, value) #type:ignore
+        if value:
+            self._send_button_event_break = False
+        else:
+            self._send_button_event_break = True
+
+    #endregion
     # region Methods
 
-    def _handle_tk_event(self, event: Event) -> None:  # type:ignore
+    def _handle_tk_event(self, event: Event) -> None|str:  # type:ignore
         match event.type:
             case EventType.KeyPress:
                 if self.abs_enabled:
@@ -31,7 +42,7 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
                     return
             case _:
                 pass
-        ETKBaseTkWidgetDisableable._handle_tk_event(  # type:ignore
+        return ETKLabel._handle_tk_event(  # type:ignore
             self, event)
 
     # endregion
