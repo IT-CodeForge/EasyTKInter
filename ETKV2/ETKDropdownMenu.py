@@ -13,6 +13,7 @@ class ETKDropdownMenu(ETKBaseTkWidgetDisableable):
         self.__selected.trace("w", self.__clicked_changed) #type:ignore
         self._tk_object = OptionMenu(tk, self.__selected, *options)
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
+        self._event_lib.update({e: [] for e in ETKDropdownMenuEvents})
     
     @property
     def selected(self)->str:
