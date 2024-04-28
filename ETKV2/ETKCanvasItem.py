@@ -112,8 +112,6 @@ class ETKCanvasItem:
                 continue
             poly_edge_dir = p2 - p1
             sign = (poly_edge_dir*vector2d(0, 1)).normalize().y
-            if sign not in [-1, 1]:
-                print((poly_edge_dir*vector2d(0, 1)).normalize())  # NOTE
             if sol in [p1, p2]:
                 retval += 0.5 * sign
             else:
