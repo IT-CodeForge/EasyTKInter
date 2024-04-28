@@ -31,7 +31,7 @@ class ETKContainer(ETKBaseContainer):
     # region Methods
 
     def _update_all_element_pos(self) -> None:
-        elements = [e for e in self._element_rel_pos.keys() if e.abs_enabled]
+        elements = [e for e in self._element_rel_pos.keys() if e.abs_visibility]
 
         max_size = [0, 0]
 

@@ -46,7 +46,7 @@ class ETKListingContainer(ETKBaseContainer):
             listing_dir_index = 0
             non_listing_dir_index = 1
 
-        elements = [e for e in self._element_rel_pos.keys() if e.abs_enabled]
+        elements = [e for e in self._element_rel_pos.keys() if e.abs_visibility]
         sizes = [e.size for e in elements]
 
         if len(elements) == 0:
