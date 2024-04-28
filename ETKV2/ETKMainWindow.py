@@ -4,7 +4,6 @@ from tkinter import Event, Tk, EventType
 from typing import Optional
 
 from .ETKCanvas import ETKCanvas
-from .Internal.ETKUtils import gen_col_from_int
 from .vector2d import vector2d
 from .Internal.ETKBaseTkObject import ETKBaseTkObject
 from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
@@ -68,8 +67,6 @@ class ETKMainWindow(ETKBaseTkObject):
     @ETKBaseTkObject.background_color.setter
     def background_color(self, value: Optional[int]) -> None:
         ETKBaseTkObject.background_color.fset(self, value)  # type:ignore
-        self._background_color = gen_col_from_int(value)
-        self._tk_object.configure(background=self._background_color)
         self.canvas.background_color = value
 
     @property

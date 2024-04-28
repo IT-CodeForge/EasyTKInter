@@ -3,8 +3,8 @@ from .ETKBaseWidget import ETKBaseWidget
 
 
 class ETKBaseWidgetDisableable(ETKBaseWidget):
-    def __init__(self, pos: vector2d, size: vector2d) -> None:
-        ETKBaseWidget.__init__(self, pos, size)
+    def __init__(self, pos: vector2d, size: vector2d, background_color: int) -> None:
+        ETKBaseWidget.__init__(self, pos, size, background_color)
 
     # region Properties
 

@@ -1,6 +1,5 @@
 from enum import Enum, auto
 from tkinter import Tk
-from typing import Optional
 from .Internal.ETKBaseContainer import ETKAlignments
 from .Internal.ETKBaseWidget import ETKBaseWidget
 from .ETKContainer import ETKContainerSize
@@ -20,12 +19,12 @@ class ETKListingTypes(Enum):
 
 
 class ETKListingContainer(ETKBaseContainer):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ETKContainerSize = ETKContainerSize(0, 0, True, True), alignment: ETKAlignments = ETKAlignments.TOP_LEFT, listing_type: ETKListingTypes = ETKListingTypes.TOP_TO_BOTTOM, offset: int = 10, background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ETKContainerSize = ETKContainerSize(0, 0, True, True), alignment: ETKAlignments = ETKAlignments.TOP_LEFT, listing_type: ETKListingTypes = ETKListingTypes.TOP_TO_BOTTOM, offset: int = 10, background_color: int = 0xAAAAAA, outline_thickness: int = 0, outline_color: int = 0x0) -> None:
         self.__alignment = alignment
         self.__listing_type = listing_type
         self.__offset = offset
         ETKBaseContainer.__init__(
-            self, tk, pos, size, background_color, outline_color)
+            self, tk, pos, size, background_color, outline_thickness, outline_color)
 
     # region Properties
 

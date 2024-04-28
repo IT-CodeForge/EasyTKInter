@@ -5,7 +5,7 @@ from .ETKBaseTkObject import ETKBaseEvents  # type:ignore
 
 
 class ETKBaseTkWidgetText(ETKBaseTkWidget):
-    def __init__(self, text: str, pos: vector2d, size: vector2d, background_color: int = 0xEEEEEE, text_color: int = 0x0) -> None:
+    def __init__(self, text: str, pos: vector2d, size: vector2d, background_color: int, text_color: int) -> None:
         ETKBaseTkWidget.__init__(self, pos, size, background_color)
         self.text_color = text_color
         self.text = text

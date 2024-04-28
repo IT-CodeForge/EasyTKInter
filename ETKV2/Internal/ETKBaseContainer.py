@@ -8,7 +8,7 @@ from .ETKBaseObject import ETKEvents, ETKBaseObject
 from .ETKBaseWidget import ETKBaseWidget
 from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
-from .ETKBackgroundCanvas import ETKBackgroundCanvas
+from ..ETKCanvas import ETKCanvas
 
 # region Enums
 
@@ -131,12 +131,14 @@ class PosError(ValueError):
 
 
 class ETKBaseContainer(ETKBaseWidgetDisableable):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ETKContainerSize = ETKContainerSize(0, 0, True, True), background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
-        self.__background = ETKBackgroundCanvas(
-            tk, pos, size.vec, background_color, outline_color)
+    def __init__(self, tk: Tk, pos: vector2d, size: ETKContainerSize, background_color: int, outline_thickness: int, outline_color: int) -> None:
+        self.__background = ETKCanvas(
+            tk, pos, size.vec, background_color)
+        self.outline_color = outline_color
+        self.outline_thickness = outline_thickness
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         ETKBaseWidgetDisableable.__init__(
-            self, pos, size.vec)
+            self, pos, size.vec, background_color)
         self._container_size: ETKContainerSize = size
 
     # region properties
@@ -144,7 +146,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     @ETKBaseWidgetDisableable.pos.setter
     def pos(self, value: vector2d) -> None:
         ETKBaseWidgetDisableable.pos.fset(self, value)  # type:ignore
-        ETKBackgroundCanvas.pos = value
+        self.__background.pos = value
 
     @property
     def size(self) -> ETKContainerSize:  # type:ignore
@@ -163,12 +165,20 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         return tuple(self._element_rel_pos.keys())
 
     @property
-    def outline_color(self) -> Optional[int]:
+    def outline_color(self) -> int:
         return self.__background.outline_color
 
     @outline_color.setter
-    def outline_color(self, value: Optional[int]) -> None:
+    def outline_color(self, value: int) -> None:
         self.__background.outline_color = value
+    
+    @property
+    def outline_thickness(self) -> int:
+        return self.__background.outline_thickness
+    
+    @outline_thickness.setter
+    def outline_thickness(self, value: int) -> None:
+        self.__background.outline_thickness = value
 
     @property
     def background_color(self) -> int:

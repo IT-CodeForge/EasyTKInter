@@ -5,9 +5,9 @@ from .ETKBaseTkObject import ETKBaseEvents  # type:ignore
 
 
 class ETKBaseTkWidgetDisableable(ETKBaseWidgetDisableable, ETKBaseTkWidget):
-    def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xEEEEEE) -> None:
+    def __init__(self, pos: vector2d, size: vector2d, background_color: int) -> None:
         ETKBaseTkWidget.__init__(self, pos, size, background_color)
-        ETKBaseWidgetDisableable.__init__(self, pos, size)
+        ETKBaseWidgetDisableable.__init__(self, pos, size, background_color)
 
     # region Methods
     # region update event methods

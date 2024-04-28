@@ -2,6 +2,8 @@ from __future__ import annotations
 from abc import abstractmethod
 from enum import Enum, auto
 from typing import Any, Callable, Optional
+
+from .ETKUtils import gen_col_from_int
 from ..vector2d import vector2d
 
 
@@ -18,9 +20,11 @@ class ETKBaseEvents(ETKEvents):
 
 
 class ETKBaseObject:
-    def __init__(self, pos: vector2d, size: vector2d) -> None:
+    def __init__(self, pos: vector2d, size: vector2d, background_color: int) -> None:
         self._pos: vector2d = vector2d()
         self._size: vector2d = vector2d()
+        self._background_color: str = ""
+        self.background_color = background_color
         self.pos = pos
         self.size = size
         self._visibility: bool = True
@@ -65,6 +69,14 @@ class ETKBaseObject:
     def abs_visibility(self) -> bool:
         """READ-ONLY"""
         return self._visibility
+
+    @property
+    def background_color(self) -> int:
+        return int(self._background_color[1:], 16)
+
+    @background_color.setter
+    def background_color(self, value: int) -> None:
+        self._background_color = gen_col_from_int(value)
 
     @property
     def events(self) -> dict[ETKEvents, list[Callable[..., Any]]]:
