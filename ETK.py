@@ -1,3 +1,6 @@
+"""Diese Datei hat alle vom Endnutzer benötigten Module von ETK importiert. Der Endnutzer kann diese von dieser Datei einzeln oder mit * alle existierenden importieren."""
+
+
 from ETKV2.Internal.ETKBaseObject import BaseEvents
 from ETKV2.ETKBitmap import ETKBitmap
 from ETKV2.ETKButton import ETKButton, ButtonEvents
