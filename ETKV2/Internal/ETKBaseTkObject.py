@@ -12,6 +12,8 @@ class ETKBaseTkObject(ETKBaseObject):
         self._tk_object: Any
         self.background_color = background_color
 
+    # region Properties
+
     @property
     def background_color(self) -> int:
         return int(self._background_color[1:], 16)
@@ -20,6 +22,10 @@ class ETKBaseTkObject(ETKBaseObject):
     def background_color(self, value: Optional[int]) -> None:
         self._background_color = gen_col_from_int(value)
         self._tk_object.configure(background=self._background_color)
+
+    # endregion
+    # region Methods
+    # region Eventhandling Methods
 
     def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         if event_type.value[0] != "<Custom>":
@@ -50,3 +56,6 @@ class ETKBaseTkObject(ETKBaseObject):
                 raise ValueError(f"invalid event {event}")
 
         self._handle_event(event_type, event)  # type:ignore
+
+    # endregion
+    # endregion

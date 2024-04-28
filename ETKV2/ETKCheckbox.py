@@ -22,6 +22,8 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
             self, text, pos, size, background_color, text_color)
         self._event_lib.update({e: [] for e in CheckboxEvents})
 
+    # region Properties
+
     @property
     def state(self) -> bool:
         return bool(self.__state.get())
@@ -29,6 +31,9 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
     @state.setter
     def state(self, value: bool) -> None:
         self.__state.set(value)
+
+    # endregion
+    # region Methods
 
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
@@ -45,3 +50,5 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
             case _:
                 pass
         ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore
+
+    # endregion

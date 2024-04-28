@@ -18,6 +18,8 @@ class ETKCanvasItem:
         self.itemId: int = self._tk_object.create_polygon(
             tkinter_pointlist, fill=self._background_color, outline=self._outline_color)
 
+    # region Properties
+
     @property
     def pos(self) -> vector2d:
         return self._pointlist[0].copy()
@@ -60,6 +62,9 @@ class ETKCanvasItem:
     def outline_color(self, value: int) -> None:
         self._outline_color = gen_col_from_int(value)
         self.__redraw_shape()
+
+    # endregion
+    # region Methods
 
     def find_intersections(self, shape: ETKCanvasItem) -> list[vector2d]:
         solution_list: list[vector2d] = []
@@ -145,3 +150,5 @@ class ETKCanvasItem:
         getx: Callable[[vector2d], float] = lambda vector: vector.x
         gety: Callable[[vector2d], float] = lambda vector: vector.y
         return [f(point) for point in self._pointlist for f in (getx, gety)]
+
+    # endregion

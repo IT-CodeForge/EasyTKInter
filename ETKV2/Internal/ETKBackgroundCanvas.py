@@ -14,6 +14,8 @@ class ETKBackgroundCanvas(ETKCanvas):
         self.__background_and_outline = self.draw_rect(
             vector2d(), size, background_color, my_outline)
 
+    # region Properties
+
     @ETKCanvas.background_color.setter
     def background_color(self, value: Optional[int]) -> None:
         ETKCanvas.background_color.fset(self, value)  # type:ignore
@@ -27,3 +29,5 @@ class ETKBackgroundCanvas(ETKCanvas):
     @outline_color.setter
     def outline_color(self, value: int) -> None:
         self.__background_and_outline.outline_color = value
+
+    # endregion

@@ -12,9 +12,14 @@ class ETKCanvasOval(ETKCanvasItem):
         ETKCanvasItem.__init__(self, canvas, temp_pointlist,
                                background_color, outline_color)
 
+    # region Properties
+
     @ETKCanvasItem.pos.getter
     def pos(self) -> vector2d:
         return self._center.copy()
+
+    # endregion
+    # region Methods
 
     def __poly_oval(self, center: vector2d, radian_x: int, radian_y: int) -> list[vector2d]:
         """generates the cornerpoints, for a polygon which symbolizes the oval"""
@@ -29,3 +34,5 @@ class ETKCanvasOval(ETKCanvasItem):
             point_list.append(my_point)
             theta += (2*math.pi) / steps
         return point_list
+
+    # endregion

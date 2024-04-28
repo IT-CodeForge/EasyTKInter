@@ -37,17 +37,7 @@ class ETKMainWindow(ETKBaseTkObject):
 
         self._add_elements()
 
-    @abstractmethod
-    def _on_init(self) -> None:
-        pass
-
-    @property
-    def caption(self) -> str:
-        return self._tk_object.title()
-
-    @caption.setter
-    def caption(self, value: str) -> None:
-        self._tk_object.title(value)
+    # region Properties
 
     @ETKBaseTkObject.pos.setter
     def pos(self, value: vector2d) -> None:
@@ -58,6 +48,14 @@ class ETKMainWindow(ETKBaseTkObject):
     def size(self, value: vector2d) -> None:
         self._size = value
         self.__place_object()
+
+    @property
+    def caption(self) -> str:
+        return self._tk_object.title()
+
+    @caption.setter
+    def caption(self, value: str) -> None:
+        self._tk_object.title(value)
 
     @ETKBaseTkObject.background_color.setter
     def background_color(self, value: Optional[int]) -> None:
@@ -84,21 +82,33 @@ class ETKMainWindow(ETKBaseTkObject):
         self._topmost = value
         self._tk_object.attributes('-topmost', self._topmost)  # type:ignore
 
-    def __place_object(self) -> None:
-        self._tk_object.geometry(
-            f"{int(self.size.x)}x{int(self.size.y)}+{self.pos.x}+{self.pos.y}")
+    # endregion
+    # region Methods
+
+    @abstractmethod
+    def _on_init(self) -> None:
+        pass
 
     @abstractmethod
     def _add_elements(self) -> None:
         pass
+
+    def run(self) -> None:
+        self._tk_object.mainloop()
 
     def exit(self) -> None:
         self._handle_event(WindowEvents.EXIT)
         if not self.exit_locked:
             exit()
 
-    def run(self) -> None:
-        self._tk_object.mainloop()
+    def force_focus(self) -> None:
+        self._tk_object.attributes('-topmost', 1)  # type:ignore
+        self._tk_object.focus_force()
+        self._tk_object.attributes('-topmost', self._topmost)  # type:ignore
+
+    def __place_object(self) -> None:
+        self._tk_object.geometry(
+            f"{int(self.size.x)}x{int(self.size.y)}+{self.pos.x}+{self.pos.y}")
 
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
@@ -122,7 +132,4 @@ class ETKMainWindow(ETKBaseTkObject):
                 pass
         ETKBaseTkObject._handle_tk_event(self, event)  # type:ignore
 
-    def force_focus(self) -> None:
-        self._tk_object.attributes('-topmost', 1)  # type:ignore
-        self._tk_object.focus_force()
-        self._tk_object.attributes('-topmost', self._topmost)  # type:ignore
+    # endregion

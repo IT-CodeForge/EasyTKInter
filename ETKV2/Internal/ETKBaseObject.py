@@ -27,6 +27,8 @@ class ETKBaseObject:
         self._event_lib: dict[Events, list[Callable[..., Any]]] = {
             e: [] for e in BaseEvents}
 
+    # region Properties
+
     @property
     def pos(self) -> vector2d:
         return self._pos.copy()
@@ -66,8 +68,12 @@ class ETKBaseObject:
 
     @property
     def events(self) -> dict[Events, list[Callable[..., Any]]]:
-        """read-only"""
+        """READ-ONLY"""
         return self._event_lib.copy()
+
+    # endregion
+    #region Methods
+    #region Eventhandling Methods
 
     def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         self._event_lib[event_type].append(eventhandler)
@@ -89,3 +95,6 @@ class ETKBaseObject:
                 name = c.__name__  # type:ignore
                 raise TypeError(
                     f"invalid parametercount for event function ({name}) (can only be 0, 1 (self, cls, etc not included)), parameter: {ret_val}")
+    
+    #endregion
+    #endregion

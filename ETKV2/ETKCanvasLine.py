@@ -15,6 +15,10 @@ class ETKCanvasLine(ETKCanvasItem):
         ETKCanvasItem.__init__(self, canvas, temp_pointlist,
                                background_color, outline_color)
 
+    # region Properties
+
     @ETKCanvasItem.pos.getter
     def pos(self) -> vector2d:
         return self.__start_point.copy()
+
+    # endregion

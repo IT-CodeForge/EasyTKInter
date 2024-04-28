@@ -10,6 +10,8 @@ class ETKLabel(ETKBaseTkWidgetText):
             self, text, pos, size, background_color, text_color)
         self._tk_object["state"] = "disabled"
 
+    # region Properties
+
     @property
     def text(self) -> str:
         return self._tk_object.get("1.0", 'end-1c')
@@ -18,3 +20,5 @@ class ETKLabel(ETKBaseTkWidgetText):
     def text(self, value: str) -> None:
         self._tk_object.delete(1.0, END)
         self._tk_object.insert(1.0, value)
+
+    # endregion

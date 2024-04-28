@@ -19,6 +19,8 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
             self, text, pos, size, background_color, text_color)
         self._event_lib.update({e: [] for e in ButtonEvents})
 
+    # region Methods
+
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
             case EventType.ButtonPress:
@@ -32,3 +34,5 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
             case _:
                 pass
         return ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore
+
+    # endregion

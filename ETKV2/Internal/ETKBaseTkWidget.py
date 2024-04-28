@@ -13,10 +13,22 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
         ETKBaseTkObject.__init__(self, pos, size, background_color)
         self.__place_object()
 
+    # region Properties
+
     @ETKBaseWidget.size.setter
     def size(self, value: vector2d) -> None:
         ETKBaseWidget.size.fset(self, value)  # type:ignore
         self.__place_object()
+
+    # endregion
+    # region Methods
+
+    def __place_object(self) -> None:
+        pos = self.abs_pos
+        self._tk_object.place(
+            x=pos.x, y=pos.y, width=self._size.x, height=self._size.y)
+
+        # region update event methods
 
     def _update_visibility(self) -> None:
         if self.abs_visibility:
@@ -27,7 +39,5 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
     def _update_pos(self) -> None:
         self.__place_object()
 
-    def __place_object(self) -> None:
-        pos = self.abs_pos
-        self._tk_object.place(
-            x=pos.x, y=pos.y, width=self._size.x, height=self._size.y)
+    # endregion
+    # endregion

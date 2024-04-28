@@ -8,7 +8,9 @@ class ETKTimer:
         self.__timer_function: Callable[[], None] = timer_function
         self.interval_in_ms: int = interval_in_ms
         self.__is_running = True
-        self.__my_Tk.after(self.interval_in_ms, self.trigger)
+        self.__my_Tk.after(self.interval_in_ms, self.__trigger)
+
+    # region Properties
 
     @property
     def running(self) -> bool:
@@ -18,9 +20,14 @@ class ETKTimer:
     def running(self, value: bool) -> None:
         self.__is_running = value
         if value:
-            self.trigger()
+            self.__trigger()
 
-    def trigger(self) -> None:
+    # endregion
+    # region Methods
+
+    def __trigger(self) -> None:
         self.__timer_function()
         if self.__is_running:
-            self.__my_Tk.after(self.interval_in_ms, self.trigger)
+            self.__my_Tk.after(self.interval_in_ms, self.__trigger)
+
+    # endregion

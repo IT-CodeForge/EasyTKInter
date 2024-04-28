@@ -11,6 +11,8 @@ class ETKBaseWidget(ETKBaseObject):
         self._enabled: bool = True
         ETKBaseObject.__init__(self, pos, size)
 
+    # region Properties
+
     @property
     def parent(self) -> Optional[ETKBaseWidget]:
         return self._parent
@@ -61,15 +63,15 @@ class ETKBaseWidget(ETKBaseObject):
             return self._enabled and self._parent._enabled
         return self._enabled
 
-    def _detach_child(self, element: ETKBaseWidget) -> None:
-        if element._parent != self:
-            raise ValueError(f"{self} is not the parent of {element}!")
-        element._parent = None
+    # endregion
+    # region Methods
 
     def detach_from_parent(self) -> None:
         if self._parent == None:
             raise ValueError(f"{self} has no parent!")
         self._parent._detach_child(self)
+
+    # region update event methods
 
     @abstractmethod
     def _update_pos(self) -> None:
@@ -82,8 +84,16 @@ class ETKBaseWidget(ETKBaseObject):
     def _update_enabled(self) -> None:
         pass
 
+    # endregion
+    # region child validation methods
+
     def _get_childs_abs_pos(self, child: ETKBaseWidget) -> vector2d:
         return self.abs_pos + child.pos
+
+    def _detach_child(self, element: ETKBaseWidget) -> None:
+        if element._parent != self:
+            raise ValueError(f"{self} is not the parent of {element}!")
+        element._parent = None
 
     def _validate_pos(self, element: ETKBaseWidget) -> None:
         pass
@@ -93,3 +103,6 @@ class ETKBaseWidget(ETKBaseObject):
 
     def _validate_visibility(self, element: ETKBaseWidget) -> None:
         pass
+
+    # endregion
+    # endregion

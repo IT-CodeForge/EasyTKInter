@@ -18,6 +18,8 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
         self._event_lib.update({e: [] for e in EditEvents})
 
+    # region Methods
+
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
             case EventType.KeyPress:
@@ -28,3 +30,5 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
             case _:
                 pass
         ETKBaseTkWidgetDisableable._handle_tk_event(self, event)  # type:ignore
+
+    # endregion

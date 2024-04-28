@@ -9,6 +9,8 @@ class ETKBaseTkWidgetText(ETKBaseTkWidget):
         self.text_color = text_color
         self.text = text
 
+    # region Properties
+
     @property
     def text(self) -> str:
         return self._tk_object.cget("text")
@@ -25,3 +27,5 @@ class ETKBaseTkWidgetText(ETKBaseTkWidget):
     def text_color(self, value: int) -> None:
         self._text_color = gen_col_from_int(value)
         self._tk_object.configure(fg=self._text_color)  # type:ignore
+
+    # endregion

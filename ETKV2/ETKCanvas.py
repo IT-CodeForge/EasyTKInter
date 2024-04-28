@@ -14,6 +14,8 @@ class ETKCanvas(ETKBaseTkWidgetDisableable):
         self._tk_object: Canvas = Canvas(tk)  # type:ignore
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
 
+    # region Methods
+
     def draw_square(self, top_left: vector2d, side_length: int, background_color: int = 0xFF0000, outline_color: int = 0x000000) -> ETKCanvasItem:
         return ETKCanvasSquare(self._tk_object, top_left, side_length, background_color, outline_color)
 
@@ -31,3 +33,5 @@ class ETKCanvas(ETKBaseTkWidgetDisableable):
 
     def draw_line(self, start_point: vector2d, end_point: vector2d, thickness: float = 2, background_color: int = 0x000000, outline_color: int = 0x000000) -> ETKCanvasItem:
         return ETKCanvasLine(self._tk_object, start_point, end_point, thickness, background_color, outline_color)
+
+    # endregion

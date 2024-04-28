@@ -8,8 +8,14 @@ class ETKBaseTkWidgetDisableable(ETKBaseWidgetDisableable, ETKBaseTkWidget):
         ETKBaseTkWidget.__init__(self, pos, size, background_color)
         ETKBaseWidgetDisableable.__init__(self, pos, size)
 
+    # region Methods
+    # region update event methods
+
     def _update_enabled(self) -> None:
         if self.abs_enabled:
             self._tk_object["state"] = "normal"
         else:
             self._tk_object["state"] = "disabled"
+
+    # endregion
+    # endregion
