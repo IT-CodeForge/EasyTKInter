@@ -39,12 +39,12 @@ class ETKMainWindow(ETKBaseTkObject):
 
     @ETKBaseTkObject.pos.setter
     def pos(self, value: vector2d) -> None:
-        self._pos = value
+        ETKBaseTkObject.pos.fset(self, value) #type:ignore
         self.__place_object()
 
     @ETKBaseTkObject.size.setter
     def size(self, value: vector2d) -> None:
-        self._size = value
+        ETKBaseTkObject.size.fset(self, value) #type:ignore
         self.__place_object()
 
     @property
@@ -53,7 +53,7 @@ class ETKMainWindow(ETKBaseTkObject):
 
     @ETKBaseTkObject.visibility.setter
     def visibility(self, value: bool) -> None:
-        self._visibility = value
+        ETKBaseTkObject.visibility.fset(self, value) #type: ignore
         if not value:
             self._tk_object.withdraw()
         else:

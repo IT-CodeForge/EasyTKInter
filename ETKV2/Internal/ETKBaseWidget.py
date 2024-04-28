@@ -15,19 +15,20 @@ class ETKBaseWidget(ETKBaseObject):
 
     @ETKBaseObject.pos.setter
     def pos(self, value: vector2d) -> None:
-        self._pos = value
+        ETKBaseObject.pos.fset(self, value)  # type:ignore
         if self.parent != None:
             self.parent._validate_pos(self)
 
         abspos = self.abs_pos
         if abspos.x < 0 or abspos.y < 0:
-            raise RuntimeError(f"element {self} is outside of window\nelement: pos: {self.pos}")
-                
+            raise RuntimeError(
+                f"element {self} is outside of window\nelement: pos: {self.pos}")
+
         self._update_pos()
 
     @ETKBaseObject.size.setter
     def size(self, value: vector2d) -> None:
-        self._size = value
+        ETKBaseObject.size.fset(self, value)  # type:ignore
         if self.parent != None:
             self.parent._validate_size(self)
 
@@ -36,7 +37,7 @@ class ETKBaseWidget(ETKBaseObject):
         """READ-ONLY"""
         if self._parent != None:
             return self._parent._get_childs_abs_pos(self)
-        return self._pos.copy()
+        return self.pos
 
     @property
     def parent(self) -> Optional[ETKBaseWidget]:
@@ -44,7 +45,7 @@ class ETKBaseWidget(ETKBaseObject):
 
     @ETKBaseObject.visibility.setter
     def visibility(self, value: bool) -> None:
-        self._visibility = value
+        ETKBaseObject.visibility.fset(self, value) #type:ignore
         self._update_visibility()
         if self._parent != None:
             self._parent._validate_visibility(self)
@@ -53,8 +54,8 @@ class ETKBaseWidget(ETKBaseObject):
     def abs_visibility(self) -> bool:
         """READ-ONLY"""
         if self._parent != None:
-            return self._visibility and self._parent.abs_visibility
-        return self._visibility
+            return self.visibility and self._parent.abs_visibility
+        return self.visibility
 
     @property
     def enabled(self) -> bool:

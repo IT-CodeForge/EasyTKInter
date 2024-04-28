@@ -25,7 +25,7 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
             case EventType.KeyPress:
-                if self._enabled:
+                if self.abs_enabled:
                     self._handle_event(ETKEditEvents.CHANGED,
                                        [event])  # type:ignore
                     return

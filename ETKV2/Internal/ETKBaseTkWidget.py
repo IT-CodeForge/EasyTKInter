@@ -47,7 +47,7 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
     def __place_object(self) -> None:
         pos = self.abs_pos
         self._tk_object.place(
-            x=pos.x, y=pos.y, width=self._size.x, height=self._size.y)
+            x=pos.x, y=pos.y, width=self.size.x, height=self.size.y)
 
         # region update event methods
 

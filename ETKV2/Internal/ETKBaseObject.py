@@ -1,9 +1,7 @@
 from __future__ import annotations
-from abc import abstractmethod
 from enum import Enum, auto
 from typing import Any, Callable, Optional
 
-from .ETKUtils import gen_col_from_int
 from ..vector2d import vector2d
 
 
@@ -21,62 +19,61 @@ class ETKBaseEvents(ETKEvents):
 
 class ETKBaseObject:
     def __init__(self, pos: vector2d, size: vector2d, background_color: int) -> None:
-        self._pos: vector2d = vector2d()
-        self._size: vector2d = vector2d()
-        self._background_color: str = ""
+        self.__pos: vector2d = vector2d()
+        self.__size: vector2d = vector2d()
+        self.__background_color: int = 0x0
+        self.__visibility: bool = True
+        self._event_lib: dict[ETKEvents, list[Callable[..., Any]]] = {
+            e: [] for e in ETKBaseEvents}
+
         self.background_color = background_color
         self.pos = pos
         self.size = size
-        self._visibility: bool = True
-        self._event_lib: dict[ETKEvents, list[Callable[..., Any]]] = {
-            e: [] for e in ETKBaseEvents}
+        self.visibility = True
 
     # region Properties
 
     @property
     def pos(self) -> vector2d:
-        return self._pos.copy()
+        return self.__pos.copy()
 
     @pos.setter
-    @abstractmethod
     def pos(self, value: vector2d) -> None:
-        pass
+        self.__pos = value
 
     @property
     def abs_pos(self) -> vector2d:
         """READ-ONLY"""
-        return self._pos.copy()
+        return self.__pos.copy()
 
     @property
     def size(self) -> vector2d:
-        return self._size.copy()
+        return self.__size.copy()
 
     @size.setter
-    @abstractmethod
     def size(self, value: vector2d) -> None:
-        pass
+        self.__size = value
 
     @property
     def visibility(self) -> bool:
-        return self._visibility
+        return self.__visibility
 
     @visibility.setter
-    @abstractmethod
     def visibility(self, value: bool) -> None:
-        pass
+        self.__visibility = value
 
     @property
     def abs_visibility(self) -> bool:
         """READ-ONLY"""
-        return self._visibility
+        return self.__visibility
 
     @property
     def background_color(self) -> int:
-        return int(self._background_color[1:], 16)
+        return self.__background_color
 
     @background_color.setter
     def background_color(self, value: int) -> None:
-        self._background_color = gen_col_from_int(value)
+        self.__background_color = value
 
     @property
     def events(self) -> dict[ETKEvents, list[Callable[..., Any]]]:

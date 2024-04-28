@@ -22,11 +22,10 @@ class ETKBaseTkWidgetText(ETKBaseTkWidget):
 
     @property
     def text_color(self) -> int:
-        return int(self._text_color[1:], 16)
+        return int(self._tk_object["fg"][1:], 16)
 
     @text_color.setter
     def text_color(self, value: int) -> None:
-        self._text_color = gen_col_from_int(value)
-        self._tk_object.configure(fg=self._text_color)  # type:ignore
+        self._tk_object.configure(fg=gen_col_from_int(value))  # type:ignore
 
     # endregion

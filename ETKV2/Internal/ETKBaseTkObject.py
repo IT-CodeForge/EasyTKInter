@@ -1,6 +1,8 @@
 from tkinter import Event, EventType
 from typing import Any, Callable, Optional
 
+from .ETKUtils import gen_col_from_int
+
 from ..vector2d import vector2d
 from .ETKBaseObject import ETKBaseObject, ETKEvents, ETKBaseEvents
 
@@ -16,7 +18,7 @@ class ETKBaseTkObject(ETKBaseObject):
     @ETKBaseObject.background_color.setter
     def background_color(self, value: Optional[int]) -> None:
         ETKBaseObject.background_color.fset(self, value)  # type:ignore
-        self._tk_object.configure(background=self._background_color)
+        self._tk_object.configure(background=gen_col_from_int(value))
 
     # endregion
     # region Methods
