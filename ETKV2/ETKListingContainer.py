@@ -1,13 +1,11 @@
 from enum import Enum, auto
 from tkinter import Tk
 from typing import Optional
-from .Internal.ETKBaseContainer import Alignments
+from .Internal.ETKBaseContainer import AddContainerToItselfError, Alignments, ElementAlreadyAddedError
 from .Internal.ETKBaseWidget import ETKBaseWidget
 from .ETKContainer import ContainerSize
 from .vector2d import vector2d
 from .Internal.ETKBaseContainer import ETKBaseContainer, _SubAlignments, SizeError  # type:ignore
-
-# TODO: insert
 
 
 class ElementPosLockedError(AttributeError):
@@ -103,6 +101,22 @@ class ETKListingContainer(ETKBaseContainer):
                 return 0.5 * (self.size[index] - padding_part[0] - padding_part[1]) - 0.5 * size_part + padding_part[0]
             case _SubAlignments.MAX:
                 return self.size[index] - size_part - padding_part[1]
+
+    def insert_element(self, element: ETKBaseWidget, index: int) -> None:
+        if element in self._element_rel_pos.keys():
+            raise ElementAlreadyAddedError(
+                f"element {element} is already in container {self}")
+        if element == self:
+            raise AddContainerToItselfError(
+                f"cannot add container {self} to itself")
+
+        element._parent = self
+
+        element_list = list(self._element_rel_pos.items())
+        element_list.insert(index, (element, vector2d()))
+        self._element_rel_pos = dict(element_list)
+
+        self._update_all_element_pos()
 
     # region child validation methods
 

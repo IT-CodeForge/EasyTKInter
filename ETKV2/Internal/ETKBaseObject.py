@@ -81,10 +81,12 @@ class ETKBaseObject:
     def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         self._event_lib[event_type].remove(eventhandler)
 
-    def _handle_event(self, event: Events, event_data: Optional[Any] = None) -> None:
+    def _handle_event(self, event: Events, event_data: Optional[Any] = None, event_object: Optional[ETKBaseObject] = None) -> None:
+        if event_object == None:
+            event_object = self
         for c in self._event_lib[event]:
             try:
-                c((self, event, event_data))
+                c((event_object, event, event_data))
                 continue
             except:
                 pass

@@ -3,6 +3,8 @@ from enum import auto
 from tkinter import Event, Tk, EventType
 from typing import Optional
 
+from .Internal.ETKBaseObject import ETKBaseObject
+
 from .ETKCanvas import ETKCanvas
 from .Internal.ETKUtils import gen_col_from_int
 from .vector2d import vector2d
@@ -108,26 +110,26 @@ class ETKMainWindow(ETKBaseTkObject):
         self._tk_object.geometry(
             f"{int(self.size.x)}x{int(self.size.y)}+{self.pos.x}+{self.pos.y}")
 
-    def _handle_tk_event(self, event: Event) -> None:  # type:ignore
+    def _handle_tk_event(self, event: Event, event_object: Optional[ETKBaseObject] = None) -> None:  # type:ignore
         match event.type:
             case EventType.KeyPress:
                 self._handle_event(WindowEvents.KEY_PRESSED,
-                                   event)  # type:ignore
+                                   event, event_object)  # type:ignore
                 return
             case EventType.KeyRelease:
                 self._handle_event(WindowEvents.KEY_RELEASED,
-                                   event)  # type:ignore
+                                   event, event_object)  # type:ignore
                 return
             case EventType.FocusIn:
                 self._handle_event(WindowEvents.FOCUS_IN,
-                                   event)  # type:ignore
+                                   event, event_object)  # type:ignore
                 return
             case EventType.FocusOut:
                 self._handle_event(WindowEvents.FOCUS_OUT,
-                                   event)  # type:ignore
+                                   event, event_object)  # type:ignore
                 return
             case _:
                 pass
-        ETKBaseTkObject._handle_tk_event(self, event)  # type:ignore
+        ETKBaseTkObject._handle_tk_event(self, event, event_object)  # type:ignore
 
     # endregion

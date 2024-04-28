@@ -41,7 +41,7 @@ class ETKBaseTkObject(ETKBaseObject):
                 self._tk_object.unbind(event_type.value[0])
         ETKBaseObject.remove_event(self, event_type, eventhandler)
 
-    def _handle_tk_event(self, event: Event) -> None:  # type:ignore
+    def _handle_tk_event(self, event: Event, event_object: Optional[ETKBaseObject] = None) -> None:  # type:ignore
         match event.type:
             case EventType.ButtonPress:
                 event_type = BaseEvents.MOUSE_DOWN
@@ -56,7 +56,7 @@ class ETKBaseTkObject(ETKBaseObject):
             case _:
                 raise ValueError(f"invalid event {event}")
 
-        self._handle_event(event_type, event)  # type:ignore
+        self._handle_event(event_type, event, event_object)  # type:ignore
 
     # endregion
     # endregion

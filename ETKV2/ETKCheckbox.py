@@ -1,4 +1,7 @@
 from enum import auto
+from typing import Optional
+
+from .Internal.ETKBaseObject import ETKBaseObject
 from .vector2d import vector2d
 from .Internal.ETKBaseObject import Events
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
@@ -35,20 +38,20 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
     # endregion
     # region Methods
 
-    def _handle_tk_event(self, event: Event) -> None:  # type:ignore
+    def _handle_tk_event(self, event: Event, event_object: Optional[ETKBaseObject] = None) -> None:  # type:ignore
         match event.type:
             case EventType.ButtonPress:
                 if self.enabled:
                     self._handle_event(
-                        CheckboxEvents.TOGGLED, event)  # type:ignore
+                        CheckboxEvents.TOGGLED, event, event_object)  # type:ignore
                     if self.state:
                         self._handle_event(
-                            CheckboxEvents.CHECKED, event)  # type:ignore
+                            CheckboxEvents.CHECKED, event, event_object)  # type:ignore
                     else:
                         self._handle_event(
-                            CheckboxEvents.UNCHECKED, event)  # type:ignore
+                            CheckboxEvents.UNCHECKED, event, event_object)  # type:ignore
             case _:
                 pass
-        ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore
+        ETKBaseTkWidgetText._handle_tk_event(self, event, event_object)  # type:ignore
 
     # endregion

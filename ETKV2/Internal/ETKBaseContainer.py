@@ -2,13 +2,15 @@ from __future__ import annotations
 from abc import abstractmethod
 from enum import Enum, auto
 from tkinter import Tk
-from typing import Optional
+from typing import Any, Callable, Optional
+from .ETKBaseObject import Events, ETKBaseObject
+
 from .ETKBaseWidget import ETKBaseWidget
 from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
-from .ETKBackgroundCanvas import ETKBackgroundCanvas
+from .ETKContainerBackgroundCanvas import ETKContainerBackgroundCanvas
 
-# TODO: Events
+# TODO: Events auf gesamter Fläche
 
 # region Enums
 
@@ -132,8 +134,8 @@ class PosError(ValueError):
 
 class ETKBaseContainer(ETKBaseWidgetDisableable):
     def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810, outline_color: Optional[int] = None) -> None:
-        self.__background = ETKBackgroundCanvas(
-            tk, pos, size.vec, background_color, outline_color)
+        self.__background = ETKContainerBackgroundCanvas(
+            tk, self, pos, size.vec, background_color, outline_color)
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         ETKBaseWidgetDisableable.__init__(
             self, pos, size.vec)
@@ -144,7 +146,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     @ETKBaseWidgetDisableable.pos.setter
     def pos(self, value: vector2d) -> None:
         ETKBaseWidgetDisableable.pos.fset(self, value)  # type:ignore
-        ETKBackgroundCanvas.pos = value
+        ETKContainerBackgroundCanvas.pos = value
 
     @property
     def size(self) -> ContainerSize:  # type:ignore
@@ -157,6 +159,10 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         else:
             self._container_size = ContainerSize(int(value.x), int(value.y))
         self.__background.size = self.size.vec
+
+    @property
+    def elements(self) -> tuple[ETKBaseWidget, ...]:
+        return tuple(self._element_rel_pos.keys())
 
     @property
     def outline_color(self) -> int:
@@ -204,6 +210,12 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         element._parent = None
         element.pos = vector2d(0, 0)
         element._update_pos()
+
+    def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
+        self.__background.add_event(event_type, eventhandler)
+    
+    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
+        self.__background.remove_event(event_type, eventhandler)
 
     # region update event methods
 

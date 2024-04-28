@@ -18,6 +18,25 @@ class GUI(ETKMainWindow):
         pass  # print("INIT")
 
     def _add_elements(self) -> None:
+        self.listingcontainer = ETKListingContainer(self._tk_object, vector2d(10, 10), ContainerSize(
+            500, 100, True, True, 50, 30, 100, 100), Alignments.TOP_RIGHT, ListingTypes.LEFT_TO_RIGHT, background_color=0x00FF00)
+
+        # self.color_label = ETKLabel(self._tk_object, "", self.listingcontainer.abs_pos, self.listingcontainer.size.vec, 0x00FF00)
+
+        self.label1 = ETKEdit(self._tk_object, "LABEL1")
+        self.label2 = ETKLabel(self._tk_object, "LABEL2")
+        self.label3 = ETKLabel(self._tk_object, "LABEL3")
+
+        self.listingcontainer.add_element(self.label1)
+        self.listingcontainer.add_element(self.label2)
+        self.listingcontainer.insert_element(self.label3, 0)
+
+        # self.color_label.size = self.listingcontainer.size.vec
+        self.listingcontainer.visibility = True
+
+        print(self.listingcontainer.size)
+        return
+
         self.container = ETKContainer(self._tk_object, vector2d(
             0, 20), ContainerSize(200, 200, True, True, 0, 100, 0, 50), 0x00FF00)
 
@@ -27,23 +46,6 @@ class GUI(ETKMainWindow):
 
         print(self.container.size.x - self.label.size.x - abs(self.label.pos.x))
         print(self.container.size.y - self.label.size.y - abs(self.label.pos.y))
-
-        return
-        self.listingcontainer = ETKListingContainer(self._tk_object, vector2d(10, 10), ContainerSize(
-            500, 100, True, True, 50, 30, 100, 100), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT, background_color=0x00FF00)
-
-        # self.color_label = ETKLabel(self._tk_object, "", self.listingcontainer.abs_pos, self.listingcontainer.size.vec, 0x00FF00)
-
-        self.label1 = ETKEdit(self._tk_object, "LABEL1")
-        self.label2 = ETKLabel(self._tk_object, "LABEL2")
-
-        self.listingcontainer.add_element(self.label1)
-        self.listingcontainer.add_element(self.label2)
-
-        # self.color_label.size = self.listingcontainer.size.vec
-        self.listingcontainer.visibility = True
-
-        print(self.listingcontainer.size)
 
         return
         self.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED"))
