@@ -18,6 +18,11 @@ class ETKBaseWidget(ETKBaseObject):
         self._pos = value
         if self.parent != None:
             self.parent._validate_pos(self)
+
+        abspos = self.abs_pos
+        if abspos.x < 0 or abspos.y < 0:
+            raise RuntimeError(f"element {self} is outside of window\nelement: pos: {self.pos}")
+                
         self._update_pos()
 
     @ETKBaseObject.size.setter
