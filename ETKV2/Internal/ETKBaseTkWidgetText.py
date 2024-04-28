@@ -1,4 +1,4 @@
-from .vector2d import vector2d
+from ..vector2d import vector2d
 from .ETKBaseTkWidget import ETKBaseTkWidget
 from .ETKUtils import gen_col_from_int
 

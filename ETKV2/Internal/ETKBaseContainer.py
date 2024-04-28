@@ -4,7 +4,7 @@ from enum import Enum, auto
 from tkinter import Tk
 from typing import Literal, Optional
 from .ETKBaseWidget import ETKBaseWidget
-from .vector2d import vector2d
+from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
 from .ETKBackgroundCanvas import ETKBackgroundCanvas
 

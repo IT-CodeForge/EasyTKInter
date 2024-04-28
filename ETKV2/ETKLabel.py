@@ -1,6 +1,6 @@
 from tkinter import END, Text, Tk
 from .vector2d import vector2d
-from .ETKBaseTkWidgetText import ETKBaseTkWidgetText
+from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
 
 
 class ETKLabel(ETKBaseTkWidgetText):

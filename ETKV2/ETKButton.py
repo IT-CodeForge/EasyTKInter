@@ -1,7 +1,7 @@
 from enum import auto
-from .ETKBaseObject import Events
-from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
-from .ETKBaseTkWidgetText import ETKBaseTkWidgetText
+from .Internal.ETKBaseObject import Events
+from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
+from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
 from .vector2d import vector2d
 from tkinter import Button, Event, Tk, EventType
 

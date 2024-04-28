@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import abstractmethod
 from typing import Optional
-from .vector2d import vector2d
+from ..vector2d import vector2d
 from .ETKBaseObject import ETKBaseObject
 
 

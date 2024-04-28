@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from enum import Enum, auto
 from typing import Any, Callable, Optional
-from .vector2d import vector2d
+from ..vector2d import vector2d
 
 
 class Events(Enum):

@@ -1,5 +1,5 @@
-from .ETKCanvas import ETKCanvas
-from .vector2d import vector2d
+from ..ETKCanvas import ETKCanvas
+from ..vector2d import vector2d
 from typing import Optional
 from tkinter import Tk
 

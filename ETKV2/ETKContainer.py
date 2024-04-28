@@ -1,11 +1,11 @@
 from __future__ import annotations
 from tkinter import Tk
 from typing import Literal, Optional
-from .ETKBaseWidget import ETKBaseWidget
+from .Internal.ETKBaseWidget import ETKBaseWidget
 
 from .vector2d import vector2d
 
-from .ETKBaseContainer import Alignments, _SubAlignments, ContainerSize, SizeError, PosError, ETKBaseContainer  # type:ignore
+from .Internal.ETKBaseContainer import Alignments, _SubAlignments, ContainerSize, SizeError, PosError, ETKBaseContainer  # type:ignore
 
 
 class ETKContainer(ETKBaseContainer):

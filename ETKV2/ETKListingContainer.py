@@ -1,11 +1,11 @@
 from enum import Enum, auto
 from tkinter import Tk
 from typing import Optional
-from .ETKBaseContainer import Alignments
-from .ETKBaseWidget import ETKBaseWidget
+from .Internal.ETKBaseContainer import Alignments
+from .Internal.ETKBaseWidget import ETKBaseWidget
 from .ETKContainer import ContainerSize
 from .vector2d import vector2d
-from .ETKBaseContainer import ETKBaseContainer, _SubAlignments, SizeError  # type:ignore
+from .Internal.ETKBaseContainer import ETKBaseContainer, _SubAlignments, SizeError  # type:ignore
 
 # TODO: insert, padding
 

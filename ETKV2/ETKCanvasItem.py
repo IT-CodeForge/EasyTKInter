@@ -1,6 +1,6 @@
 from __future__ import annotations
 import math
-from .ETKUtils import gen_col_from_int
+from .Internal.ETKUtils import gen_col_from_int
 from tkinter import Canvas
 from typing import Callable, Optional
 from .vector2d import vector2d

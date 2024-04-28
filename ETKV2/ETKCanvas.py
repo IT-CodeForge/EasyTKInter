@@ -1,5 +1,5 @@
 from .vector2d import vector2d
-from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
+from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .ETKCanvasItem import ETKCanvasItem
 from .ETKCanvasRectangle import ETKCanvasRectangle
 from .ETKCanvasSquare import ETKCanvasSquare

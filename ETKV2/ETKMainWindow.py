@@ -4,10 +4,10 @@ from tkinter import Event, Tk, EventType
 from typing import Optional
 
 from .ETKCanvas import ETKCanvas
-from .ETKUtils import gen_col_from_int
+from .Internal.ETKUtils import gen_col_from_int
 from .vector2d import vector2d
-from .ETKBaseTkObject import ETKBaseTkObject
-from .ETKBaseObject import Events
+from .Internal.ETKBaseTkObject import ETKBaseTkObject
+from .Internal.ETKBaseObject import Events
 
 
 class WindowEvents(Events):

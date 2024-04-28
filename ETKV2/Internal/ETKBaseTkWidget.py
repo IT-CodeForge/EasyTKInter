@@ -1,6 +1,6 @@
 from tkinter import Widget as tk_widget
 
-from .vector2d import vector2d
+from ..vector2d import vector2d
 from .ETKBaseWidget import ETKBaseWidget
 from .ETKBaseTkObject import ETKBaseTkObject
 

@@ -3,7 +3,7 @@ from ETKV2.ETKListingContainer import ETKListingContainer, ListingTypes
 from ETKV2.ETKCheckbox import ETKCheckbox, CheckboxEvents
 from ETKV2.ETKLabel import ETKLabel
 from ETKV2.ETKEdit import ETKEdit, EditEvents
-from ETKV2.ETKBaseTkObject import BaseEvents
+from ETKV2.Internal.ETKBaseTkObject import BaseEvents #TODO
 from ETKV2.vector2d import vector2d
 from ETKV2.ETKButton import ETKButton, ButtonEvents
 from ETKV2.ETKMainWindow import ETKMainWindow, WindowEvents

@@ -1,9 +1,9 @@
 from enum import auto
 from tkinter import Event, Tk, EventType
-from .ETKBaseObject import Events
+from .Internal.ETKBaseObject import Events
 from .vector2d import vector2d
 from .ETKLabel import ETKLabel
-from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
+from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 
 
 class EditEvents(Events):

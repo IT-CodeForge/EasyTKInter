@@ -1,8 +1,8 @@
 from enum import auto
 from .vector2d import vector2d
-from .ETKBaseObject import Events
-from .ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
-from .ETKBaseTkWidgetText import ETKBaseTkWidgetText
+from .Internal.ETKBaseObject import Events
+from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
+from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
 from tkinter import Checkbutton, IntVar, Event, Tk, EventType
 
 

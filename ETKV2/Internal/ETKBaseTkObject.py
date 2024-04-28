@@ -1,7 +1,7 @@
 from tkinter import Event, EventType
 from typing import Any, Callable, Optional
 
-from .vector2d import vector2d
+from ..vector2d import vector2d
 from .ETKBaseObject import ETKBaseObject, Events, BaseEvents
 from .ETKUtils import gen_col_from_int
 
