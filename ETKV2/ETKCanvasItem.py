@@ -113,7 +113,7 @@ class ETKCanvasItem:
             poly_edge_dir = p2 - p1
             sign = (poly_edge_dir*vector2d(0, 1)).normalize().y
             if sign not in [-1, 1]:
-                print((poly_edge_dir*vector2d(0, 1)).normalize())
+                print((poly_edge_dir*vector2d(0, 1)).normalize())  # NOTE
             if sol in [p1, p2]:
                 retval += 0.5 * sign
             else:
@@ -155,8 +155,8 @@ class ETKCanvasItem:
         getx: Callable[[vector2d], float] = lambda vector: vector.x
         gety: Callable[[vector2d], float] = lambda vector: vector.y
         return [f(point) for point in self._pointlist for f in (getx, gety)]
-    
-    def __check_if_deleted(self)->None:
+
+    def __check_if_deleted(self) -> None:
         if self._isdeleted:
             raise RuntimeError(f"cannot modify the deleted Canvasitem {self}")
 

@@ -216,7 +216,6 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         element._parent = None
         element.pos = vector2d(0, 0)
 
-        print(self._event_lib)
         events = [ev for ev in self._event_lib.keys() if len(
             self._event_lib[ev]) != 0]
         for ev in events:
