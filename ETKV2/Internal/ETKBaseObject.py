@@ -72,8 +72,8 @@ class ETKBaseObject:
         return self._event_lib.copy()
 
     # endregion
-    #region Methods
-    #region Eventhandling Methods
+    # region Methods
+    # region Eventhandling Methods
 
     def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         self._event_lib[event_type].append(eventhandler)
@@ -81,12 +81,12 @@ class ETKBaseObject:
     def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         self._event_lib[event_type].remove(eventhandler)
 
-    def _handle_event(self, event: Events, event_data: Optional[Any] = None, event_object: Optional[ETKBaseObject] = None) -> None:
-        if event_object == None:
-            event_object = self
+    def _handle_event(self, event: Events, event_data: Optional[list[Any]] = None) -> None:
+        if event_data == None:
+            event_data = []
         for c in self._event_lib[event]:
             try:
-                c((event_object, event, event_data))
+                c((self, event, *event_data))
                 continue
             except:
                 pass
@@ -97,6 +97,6 @@ class ETKBaseObject:
                 name = c.__name__  # type:ignore
                 raise TypeError(
                     f"invalid parametercount for event function ({name}) (can only be 0, 1 (self, cls, etc not included)), parameter: {ret_val}")
-    
-    #endregion
-    #endregion
+
+    # endregion
+    # endregion

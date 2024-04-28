@@ -10,7 +10,7 @@ from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
 from .ETKContainerBackgroundCanvas import ETKContainerBackgroundCanvas
 
-# TODO: Events auf gesamter Fläche
+# TODO: Events auf gesamter Fläche; add/remove events when elements added/removed
 
 # region Enums
 
@@ -135,7 +135,7 @@ class PosError(ValueError):
 class ETKBaseContainer(ETKBaseWidgetDisableable):
     def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810, outline_color: Optional[int] = None) -> None:
         self.__background = ETKContainerBackgroundCanvas(
-            tk, self, pos, size.vec, background_color, outline_color)
+            tk, pos, size.vec, background_color, outline_color)
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
         ETKBaseWidgetDisableable.__init__(
             self, pos, size.vec)
@@ -189,6 +189,13 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         pass
 
     def add_element(self, element: ETKBaseWidget) -> None:
+        self._prepare_element_add(element)
+
+        self._element_rel_pos.update({element: vector2d()})
+
+        self._update_all_element_pos()
+    
+    def _prepare_element_add(self, element: ETKBaseWidget) -> None:
         if element in self._element_rel_pos.keys():
             raise ElementAlreadyAddedError(
                 f"element {element} is already in container {self}")
@@ -198,9 +205,9 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
 
         element._parent = self
 
-        self._element_rel_pos.update({element: vector2d()})
-
-        self._update_all_element_pos()
+        events = [ev for ev in self._event_lib.keys() if len(self._event_lib[ev]) != 0]
+        for ev in events:
+            element.add_event(ev, self.__event_handler)
 
     def remove_element(self, element: ETKBaseWidget) -> None:
         if element not in self._element_rel_pos.keys():
@@ -209,13 +216,33 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         self._element_rel_pos.pop(element)
         element._parent = None
         element.pos = vector2d(0, 0)
+
+        print(self._event_lib)
+        events = [ev for ev in self._event_lib.keys() if len(self._event_lib[ev]) != 0]
+        for ev in events:
+            element.remove_event(ev, self.__event_handler)
+
         element._update_pos()
+        self._update_all_element_pos()
 
     def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
-        self.__background.add_event(event_type, eventhandler)
+        ETKBaseWidgetDisableable.add_event(self, event_type, eventhandler)
+        self.__background.add_event(event_type, self.__event_handler)
+        for e in self._element_rel_pos.keys():
+            e.add_event(event_type, self.__event_handler)
+
     
     def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
-        self.__background.remove_event(event_type, eventhandler)
+        ETKBaseWidgetDisableable.remove_event(self, event_type, eventhandler)
+        self.__background.remove_event(event_type, self.__event_handler)
+        for e in self._element_rel_pos.keys():
+            e.remove_event(event_type, self.__event_handler)
+    
+    def __event_handler(self, data: tuple[ETKBaseObject, Events, Optional[Any]]):
+        obj = data[0]
+        if obj == self.__background:
+            obj = self
+        self._handle_event(data[1], [data[2], obj])
 
     # region update event methods
 

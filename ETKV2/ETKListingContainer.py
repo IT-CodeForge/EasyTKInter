@@ -1,7 +1,7 @@
 from enum import Enum, auto
 from tkinter import Tk
 from typing import Optional
-from .Internal.ETKBaseContainer import AddContainerToItselfError, Alignments, ElementAlreadyAddedError
+from .Internal.ETKBaseContainer import Alignments
 from .Internal.ETKBaseWidget import ETKBaseWidget
 from .ETKContainer import ContainerSize
 from .vector2d import vector2d
@@ -103,14 +103,7 @@ class ETKListingContainer(ETKBaseContainer):
                 return self.size[index] - size_part - padding_part[1]
 
     def insert_element(self, element: ETKBaseWidget, index: int) -> None:
-        if element in self._element_rel_pos.keys():
-            raise ElementAlreadyAddedError(
-                f"element {element} is already in container {self}")
-        if element == self:
-            raise AddContainerToItselfError(
-                f"cannot add container {self} to itself")
-
-        element._parent = self
+        self._prepare_element_add(element)
 
         element_list = list(self._element_rel_pos.items())
         element_list.insert(index, (element, vector2d()))

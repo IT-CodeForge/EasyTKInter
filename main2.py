@@ -27,9 +27,17 @@ class GUI(ETKMainWindow):
         self.label2 = ETKLabel(self._tk_object, "LABEL2")
         self.label3 = ETKLabel(self._tk_object, "LABEL3")
 
+        self.label1.add_event(BaseEvents.MOUSE_DOWN, lambda x: print(f"LABEL"))
+
         self.listingcontainer.add_element(self.label1)
+
+        self.listingcontainer.add_event(BaseEvents.MOUSE_DOWN, lambda x: print(f"CONTAINER"))
+
         self.listingcontainer.add_element(self.label2)
         self.listingcontainer.insert_element(self.label3, 0)
+        #self.listingcontainer.remove_element(self.label1)
+        #self.label1.detach_from_parent()
+
 
         # self.color_label.size = self.listingcontainer.size.vec
         self.listingcontainer.visibility = True

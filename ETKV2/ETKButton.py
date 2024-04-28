@@ -1,7 +1,5 @@
 from enum import auto
-from typing import Optional
 
-from .Internal.ETKBaseObject import ETKBaseObject
 from .Internal.ETKBaseObject import Events
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
@@ -24,18 +22,18 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
 
     # region Methods
 
-    def _handle_tk_event(self, event: Event, event_object: Optional[ETKBaseObject] = None) -> None:  # type:ignore
+    def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
             case EventType.ButtonPress:
                 if self._enabled:
                     self._handle_event(
-                        ButtonEvents.PRESSED, event, event_object)  # type:ignore
+                        ButtonEvents.PRESSED, [event])  # type:ignore
             case EventType.ButtonRelease:
                 if self._enabled:
                     self._handle_event(
-                        ButtonEvents.RELEASED, event, event_object)  # type:ignore
+                        ButtonEvents.RELEASED, [event])  # type:ignore
             case _:
                 pass
-        return ETKBaseTkWidgetText._handle_tk_event(self, event, event_object)  # type:ignore
+        return ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore
 
     # endregion

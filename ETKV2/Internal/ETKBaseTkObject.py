@@ -36,12 +36,12 @@ class ETKBaseTkObject(ETKBaseObject):
         ETKBaseObject.add_event(self, event_type, eventhandler)
 
     def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
+        ETKBaseObject.remove_event(self, event_type, eventhandler)
         if event_type.value[0] != "<Custom>":
             if len(self._event_lib[event_type]) == 0:
                 self._tk_object.unbind(event_type.value[0])
-        ETKBaseObject.remove_event(self, event_type, eventhandler)
 
-    def _handle_tk_event(self, event: Event, event_object: Optional[ETKBaseObject] = None) -> None:  # type:ignore
+    def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
             case EventType.ButtonPress:
                 event_type = BaseEvents.MOUSE_DOWN
@@ -56,7 +56,7 @@ class ETKBaseTkObject(ETKBaseObject):
             case _:
                 raise ValueError(f"invalid event {event}")
 
-        self._handle_event(event_type, event, event_object)  # type:ignore
+        self._handle_event(event_type, [event])  # type:ignore
 
     # endregion
     # endregion
