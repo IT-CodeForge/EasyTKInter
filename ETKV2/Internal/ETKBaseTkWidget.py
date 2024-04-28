@@ -30,14 +30,14 @@ class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
 
         # region update event methods
 
+    def _update_pos(self) -> None:
+        self.__place_object()
+
     def _update_visibility(self) -> None:
         if self.abs_visibility:
             self.__place_object()
         else:
             self._tk_object.place_forget()
-
-    def _update_pos(self) -> None:
-        self.__place_object()
 
     # endregion
     # endregion

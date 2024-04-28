@@ -23,9 +23,7 @@ class ETKMainWindow(ETKBaseTkObject):
     def __init__(self, pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(2048, 512), caption: str = "Tk", background_color: int = 0xAAAAAA) -> None:
         self._tk_object: Tk = Tk()
         self.caption = caption
-        self._pos = pos
-        self._size = size
-        self._topmost = False
+        self.__topmost = False
         self.exit_locked = False
         self.canvas = ETKCanvas(self._tk_object, vector2d(), size)
         ETKBaseTkObject.__init__(self, pos, size, background_color)
@@ -52,6 +50,15 @@ class ETKMainWindow(ETKBaseTkObject):
     @property
     def caption(self) -> str:
         return self._tk_object.title()
+    
+    @ETKBaseTkObject.visibility.setter
+    def visibility(self, value: bool) -> None:
+        self._visibility = value
+        if not value:
+            self._tk_object.withdraw()
+        else:
+            self._tk_object.deiconify()
+            self.force_focus()
 
     @caption.setter
     def caption(self, value: str) -> None:
@@ -64,23 +71,14 @@ class ETKMainWindow(ETKBaseTkObject):
         self._tk_object.configure(background=self._background_color)
         self.canvas.background_color = value
 
-    @ETKBaseTkObject.visibility.setter
-    def visibility(self, value: bool) -> None:
-        self._visibility = value
-        if not value:
-            self._tk_object.withdraw()
-        else:
-            self._tk_object.deiconify()
-            self.force_focus()
-
     @property
     def topmost(self) -> bool:
-        return self._topmost
+        return self.__topmost
 
     @topmost.setter
     def topmost(self, value: bool) -> None:
-        self._topmost = value
-        self._tk_object.attributes('-topmost', self._topmost)  # type:ignore
+        self.__topmost = value
+        self._tk_object.attributes('-topmost', self.__topmost)  # type:ignore
 
     # endregion
     # region Methods
@@ -104,7 +102,7 @@ class ETKMainWindow(ETKBaseTkObject):
     def force_focus(self) -> None:
         self._tk_object.attributes('-topmost', 1)  # type:ignore
         self._tk_object.focus_force()
-        self._tk_object.attributes('-topmost', self._topmost)  # type:ignore
+        self._tk_object.attributes('-topmost', self.__topmost)  # type:ignore
 
     def __place_object(self) -> None:
         self._tk_object.geometry(

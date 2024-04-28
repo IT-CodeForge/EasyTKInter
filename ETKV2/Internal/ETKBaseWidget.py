@@ -13,10 +13,6 @@ class ETKBaseWidget(ETKBaseObject):
 
     # region Properties
 
-    @property
-    def parent(self) -> Optional[ETKBaseWidget]:
-        return self._parent
-
     @ETKBaseObject.pos.setter
     def pos(self, value: vector2d) -> None:
         self._pos = value
@@ -37,6 +33,10 @@ class ETKBaseWidget(ETKBaseObject):
             return self._parent._get_childs_abs_pos(self)
         return self._pos.copy()
 
+    @property
+    def parent(self) -> Optional[ETKBaseWidget]:
+        return self._parent
+
     @ETKBaseObject.visibility.setter
     def visibility(self, value: bool) -> None:
         self._visibility = value
@@ -45,16 +45,16 @@ class ETKBaseWidget(ETKBaseObject):
             self._parent._validate_visibility(self)
 
     @property
-    def enabled(self) -> bool:
-        """READ-ONLY"""
-        return self._enabled
-
-    @property
     def abs_visibility(self) -> bool:
         """READ-ONLY"""
         if self._parent != None:
             return self._visibility and self._parent.abs_visibility
         return self._visibility
+
+    @property
+    def enabled(self) -> bool:
+        """READ-ONLY"""
+        return self._enabled
 
     @property
     def abs_enabled(self) -> bool:
