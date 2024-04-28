@@ -50,7 +50,7 @@ class ETKMainWindow(ETKBaseTkObject):
     @property
     def caption(self) -> str:
         return self._tk_object.title()
-    
+
     @ETKBaseTkObject.visibility.setter
     def visibility(self, value: bool) -> None:
         self._visibility = value

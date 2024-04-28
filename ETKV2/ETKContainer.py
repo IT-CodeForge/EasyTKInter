@@ -53,16 +53,18 @@ class ETKContainer(ETKBaseContainer):
         if self.size.dynamic_y:
             self._container_size.y = max_size[1] + self.size.padding_y_u
 
-        ETKBaseContainer.size.fset(self, self.size) #type:ignore
+        ETKBaseContainer.size.fset(self, self.size)  # type:ignore
 
         for e in elements:
             self._element_rel_pos[e] = self._calculate_rel_element_pos(e)
             self.__validate_size_pos(self._element_rel_pos[e], e.size)
             e._update_pos()
-    
+
     def _calculate_rel_element_pos(self, element: ETKBaseWidget) -> vector2d:
-        x = self._calculate_rel_element_pos_part(element, 0, self.size.padding_x_r)
-        y = self._calculate_rel_element_pos_part(element, 1, self.size.padding_y_u)
+        x = self._calculate_rel_element_pos_part(
+            element, 0, self.size.padding_x_r)
+        y = self._calculate_rel_element_pos_part(
+            element, 1, self.size.padding_y_u)
         return vector2d(x, y)
 
     def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1], padding_part: float) -> float:
@@ -70,7 +72,7 @@ class ETKContainer(ETKBaseContainer):
             case _SubAlignments.MIN:
                 return element.pos[index]
             case _SubAlignments.MIDDLE:
-                return 0.5 * self.size[index] - 0.5 * element.size[index] + element.pos[index] #NOTE
+                return 0.5 * self.size[index] - 0.5 * element.size[index] + element.pos[index]
             case _SubAlignments.MAX:
                 return self.size[index] - element.size[index] + element.pos[index] - padding_part
 
@@ -84,7 +86,7 @@ class ETKContainer(ETKBaseContainer):
         if rel_pos.x + size.x > s_size.x or rel_pos.y + size.y > s_size.y or rel_pos.x < 0 or rel_pos.y < 0:
             raise PosError(
                 f"pos is outside of container {self}\nparameter: rel_pos: {rel_pos}, size: {size}; container: size: {self.size}")
-    
+
     def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT) -> None:
         self.__element_alignments.update({element: alignment})
         ETKBaseContainer.add_element(self, element)

@@ -62,9 +62,11 @@ class ETKListingContainer(ETKBaseContainer):
         needed_size[non_listing_dir_index] = non_listing_dir_size
 
         if self.size.dynamic_x:
-            self._container_size.x = int(needed_size.x) + self.size.padding_x_l + self.size.padding_x_r
+            self._container_size.x = int(
+                needed_size.x) + self.size.padding_x_l + self.size.padding_x_r
         if self.size.dynamic_y:
-            self._container_size.y = int(needed_size.y) + self.size.padding_y_o + self.size.padding_y_u
+            self._container_size.y = int(
+                needed_size.y) + self.size.padding_y_o + self.size.padding_y_u
 
         # print(needed_size, self.size)
 
@@ -98,7 +100,7 @@ class ETKListingContainer(ETKBaseContainer):
             case _SubAlignments.MIN:
                 return padding_part[0]
             case _SubAlignments.MIDDLE:
-                return 0.5 * (self.size[index] - padding_part[0] - padding_part[1]) - 0.5 * size_part + padding_part[0] #NOTE
+                return 0.5 * (self.size[index] - padding_part[0] - padding_part[1]) - 0.5 * size_part + padding_part[0]
             case _SubAlignments.MAX:
                 return self.size[index] - size_part - padding_part[1]
 

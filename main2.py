@@ -28,7 +28,6 @@ class GUI(ETKMainWindow):
         print(self.container.size.x - self.label.size.x - abs(self.label.pos.x))
         print(self.container.size.y - self.label.size.y - abs(self.label.pos.y))
 
-        
         return
         self.listingcontainer = ETKListingContainer(self._tk_object, vector2d(10, 10), ContainerSize(
             500, 100, True, True, 50, 30, 100, 100), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT, background_color=0x00FF00)
@@ -49,7 +48,7 @@ class GUI(ETKMainWindow):
         return
         self.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED"))
         self.label2 = ETKLabel(self._tk_object, "LABEL2")
-        self.label2.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED2"))     
+        self.label2.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED2"))
 
         return
 

@@ -8,7 +8,7 @@ from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
 from .ETKBackgroundCanvas import ETKBackgroundCanvas
 
-# TODO: Events, padding bei dynamic size
+# TODO: Events
 
 # region Enums
 
@@ -19,7 +19,7 @@ class _SubAlignments(Enum):
     MAX = auto()
 
 
-class Alignments(Enum):  # NOTE
+class Alignments(Enum):
     TOP_LEFT = (_SubAlignments.MIN, _SubAlignments.MIN)
     TOP_CENTER = (_SubAlignments.MIDDLE, _SubAlignments.MIN)
     TOP_RIGHT = (_SubAlignments.MAX, _SubAlignments.MIN)
@@ -80,7 +80,7 @@ class ContainerSize():
             case _:
                 pass
 
-    def __getitem__(self, address: int) -> int:
+    def __getitem__(self, address: int) -> int | bool:
         if address not in range(0, 8):
             raise KeyError("Invalid index")
         match address:
@@ -222,7 +222,7 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
 
     # endregion
     # region child validation methods
-    
+
     def _get_childs_abs_pos(self, child: ETKBaseWidget) -> vector2d:
         if child not in self._element_rel_pos.keys():
             raise ElementNotPartOfContainerError(
