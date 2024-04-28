@@ -8,7 +8,7 @@ from ..vector2d import vector2d
 from .ETKBaseWidgetDisableable import ETKBaseWidgetDisableable
 from .ETKBackgroundCanvas import ETKBackgroundCanvas
 
-# TODO: Events, enabled, visible, padding bei dynamic size, update when visiblity from child changes
+# TODO: Events, padding bei dynamic size
 
 # region Enums
 
@@ -36,14 +36,18 @@ class Alignments(Enum):  # NOTE
 
 
 class ContainerSize():
-    def __init__(self, x: int, y: int, dynamic_x: bool = False, dynamic_y: bool = False) -> None:
-        self.dynamic_x: bool = dynamic_x
-        self.dynamic_y: bool = dynamic_y
+    def __init__(self, x: int, y: int, dynamic_x: bool = False, dynamic_y: bool = False, paddings_x_l: int = 0, paddings_x_r: int = 0, paddings_y_o: int = 0, paddings_y_u: int = 0) -> None:
         self.x: int = x
         self.y: int = y
+        self.dynamic_x: bool = dynamic_x
+        self.dynamic_y: bool = dynamic_y
+        self.padding_x_l: int = paddings_x_l
+        self.padding_x_r: int = paddings_x_r
+        self.padding_y_o: int = paddings_y_o
+        self.padding_y_u: int = paddings_y_u
 
     def copy(self) -> ContainerSize:
-        return ContainerSize(self.x, self.y, self.dynamic_x, self.dynamic_y)
+        return ContainerSize(self.x, self.y, self.dynamic_x, self.dynamic_y, self.padding_x_l, self.padding_x_r, self.padding_y_o, self.padding_y_u)
 
     @property
     def vec(self) -> vector2d:
@@ -51,10 +55,10 @@ class ContainerSize():
         return vector2d(self.x, self.y)
 
     def __str__(self) -> str:
-        return f"<{self.x}, {self.y}, {self.dynamic_x}, {self.dynamic_y}>"
+        return f"<{self.x}, {self.y}, {self.dynamic_x}, {self.dynamic_y}, {self.padding_x_l}, {self.padding_x_r}, {self.padding_y_o}, {self.padding_y_u}>"
 
     def __setitem__(self, address: int, other: int | bool) -> None:
-        if address not in [0, 1, 2, 3]:
+        if address not in range(0, 8):
             raise KeyError("Invalid index")
         match address:
             case 0:
@@ -65,11 +69,19 @@ class ContainerSize():
                 self.dynamic_x = bool(other)
             case 3:
                 self.dynamic_y = bool(other)
+            case 4:
+                self.padding_x_l = other
+            case 5:
+                self.padding_x_r = other
+            case 6:
+                self.padding_y_o = other
+            case 7:
+                self.padding_y_u = other
             case _:
                 pass
 
     def __getitem__(self, address: int) -> int:
-        if address not in [0, 1, 2, 3]:
+        if address not in range(0, 8):
             raise KeyError("Invalid index")
         match address:
             case 0:
@@ -80,6 +92,14 @@ class ContainerSize():
                 return self.dynamic_x
             case 3:
                 return self.dynamic_y
+            case 4:
+                return self.padding_x_l
+            case 5:
+                return self.padding_x_r
+            case 6:
+                return self.padding_y_o
+            case 7:
+                return self.padding_y_u
             case _:
                 raise KeyError
 

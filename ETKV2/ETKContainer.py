@@ -49,9 +49,11 @@ class ETKContainer(ETKBaseContainer):
                     max_size[i] = int(size)
 
         if self.size.dynamic_x:
-            self._container_size.x = max_size[0]
+            self._container_size.x = max_size[0] + self.size.padding_x_r
         if self.size.dynamic_y:
-            self._container_size.y = max_size[1]
+            self._container_size.y = max_size[1] + self.size.padding_y_u
+
+        ETKBaseContainer.size.fset(self, self.size) #type:ignore
 
         for e in elements:
             self._element_rel_pos[e] = self._calculate_rel_element_pos(e)
@@ -59,18 +61,18 @@ class ETKContainer(ETKBaseContainer):
             e._update_pos()
     
     def _calculate_rel_element_pos(self, element: ETKBaseWidget) -> vector2d:
-        x = self._calculate_rel_element_pos_part(element, 0)
-        y = self._calculate_rel_element_pos_part(element, 1)
+        x = self._calculate_rel_element_pos_part(element, 0, self.size.padding_x_r)
+        y = self._calculate_rel_element_pos_part(element, 1, self.size.padding_y_u)
         return vector2d(x, y)
 
-    def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1]) -> float:
+    def _calculate_rel_element_pos_part(self, element: ETKBaseWidget, index: Literal[0, 1], padding_part: float) -> float:
         match self.__element_alignments[element].value[index]:
             case _SubAlignments.MIN:
                 return element.pos[index]
             case _SubAlignments.MIDDLE:
-                return 0.5 * self.size[index] - 0.5 * element.size[index] + element.pos[index]
+                return 0.5 * self.size[index] - 0.5 * element.size[index] + element.pos[index] #NOTE
             case _SubAlignments.MAX:
-                return self.size[index] - element.size[index] + element.pos[index]
+                return self.size[index] - element.size[index] + element.pos[index] - padding_part
 
     def __validate_size_pos(self, rel_pos: vector2d, size: vector2d) -> None:
         s_size = self.size

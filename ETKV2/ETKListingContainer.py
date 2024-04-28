@@ -7,7 +7,7 @@ from .ETKContainer import ContainerSize
 from .vector2d import vector2d
 from .Internal.ETKBaseContainer import ETKBaseContainer, _SubAlignments, SizeError  # type:ignore
 
-# TODO: insert, padding
+# TODO: insert
 
 
 class ElementPosLockedError(AttributeError):
@@ -62,9 +62,9 @@ class ETKListingContainer(ETKBaseContainer):
         needed_size[non_listing_dir_index] = non_listing_dir_size
 
         if self.size.dynamic_x:
-            self._container_size.x = int(needed_size.x)
+            self._container_size.x = int(needed_size.x) + self.size.padding_x_l + self.size.padding_x_r
         if self.size.dynamic_y:
-            self._container_size.y = int(needed_size.y)
+            self._container_size.y = int(needed_size.y) + self.size.padding_y_o + self.size.padding_y_u
 
         # print(needed_size, self.size)
 
@@ -77,14 +77,14 @@ class ETKListingContainer(ETKBaseContainer):
                 f"size of container {self} is too small\ncontainer: size: {self.size}; needed: {needed_size}")
 
         listing_dir_pos = self.__calculate_pos_part(
-            listing_dir_index, listing_dir_size)
+            listing_dir_index, listing_dir_size, (self.size[4+2*listing_dir_index], self.size[5+2*listing_dir_index]))
 
         if self.__listing_type in [ListingTypes.BOTTOM_TO_TOP, ListingTypes.RIGHT_TO_LEFT]:
             elements = elements[::-1]
 
         for e in elements:
             non_listing_dir_pos = self.__calculate_pos_part(
-                non_listing_dir_index, e.size[non_listing_dir_index])
+                non_listing_dir_index, e.size[non_listing_dir_index], (self.size[4+2*non_listing_dir_index], self.size[5+2*non_listing_dir_index]))
             pos = vector2d()
             pos[listing_dir_index] = listing_dir_pos
             pos[non_listing_dir_index] = non_listing_dir_pos
@@ -93,14 +93,14 @@ class ETKListingContainer(ETKBaseContainer):
             e._update_pos()
             listing_dir_pos += e.size[listing_dir_index] + self.__offset
 
-    def __calculate_pos_part(self, index: int, size_part: float) -> float:
+    def __calculate_pos_part(self, index: int, size_part: float, padding_part: tuple[float, float]) -> float:
         match self.__alignment.value[index]:
             case _SubAlignments.MIN:
-                return 0
+                return padding_part[0]
             case _SubAlignments.MIDDLE:
-                return 0.5 * self.size[index] - 0.5 * size_part
+                return 0.5 * (self.size[index] - padding_part[0] - padding_part[1]) - 0.5 * size_part + padding_part[0] #NOTE
             case _SubAlignments.MAX:
-                return self.size[index] - size_part
+                return self.size[index] - size_part - padding_part[1]
 
     # region child validation methods
 

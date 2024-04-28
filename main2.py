@@ -18,8 +18,20 @@ class GUI(ETKMainWindow):
         pass  # print("INIT")
 
     def _add_elements(self) -> None:
+        self.container = ETKContainer(self._tk_object, vector2d(
+            0, 20), ContainerSize(200, 200, True, True, 0, 100, 0, 50), 0x00FF00)
+
+        self.label = ETKLabel(self._tk_object, "LABEL", vector2d(10, 30))
+
+        self.container.add_element(self.label, Alignments.TOP_LEFT)
+
+        print(self.container.size.x - self.label.size.x - abs(self.label.pos.x))
+        print(self.container.size.y - self.label.size.y - abs(self.label.pos.y))
+
+        
+        return
         self.listingcontainer = ETKListingContainer(self._tk_object, vector2d(10, 10), ContainerSize(
-            500, 100, True, True), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT, background_color=0x00FF00)
+            500, 100, True, True, 50, 30, 100, 100), Alignments.TOP_RIGHT, ListingTypes.RIGHT_TO_LEFT, background_color=0x00FF00)
 
         # self.color_label = ETKLabel(self._tk_object, "", self.listingcontainer.abs_pos, self.listingcontainer.size.vec, 0x00FF00)
 
@@ -32,28 +44,12 @@ class GUI(ETKMainWindow):
         # self.color_label.size = self.listingcontainer.size.vec
         self.listingcontainer.visibility = True
 
+        print(self.listingcontainer.size)
+
         return
         self.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED"))
         self.label2 = ETKLabel(self._tk_object, "LABEL2")
-        self.label2.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED2"))
-
-        return
-
-        return
-
-        self.container = ETKContainer(self._tk_object, vector2d(
-            0, 20), ContainerSize(200, 200, True, True))
-
-        self.color_label = ETKLabel(self._tk_object, "", vector2d(
-            0, 20), vector2d(100, 200), 0x00FF00)
-
-        self.label = ETKLabel(self._tk_object, "LABEL", vector2d(-10, 30))
-
-        self.container.add_element(self.label, Alignments.TOP_RIGHT)
-
-        self.label.pos = vector2d(-400, 400)
-
-        self.color_label.size = self.container.size.vec
+        self.label2.add_event(BaseEvents.MOUSE_MOVED, lambda: print("MOVED2"))     
 
         return
 
