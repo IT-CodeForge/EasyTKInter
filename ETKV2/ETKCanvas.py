@@ -31,7 +31,7 @@ class ETKCanvas(ETKBaseTkWidgetDisableable):
         self.__canvas_items.append(ETKCanvasSquare(self._tk_object, top_left, side_length, background_color, outline_color))
         return self.__canvas_items[-1]
 
-    def draw_rect(self, top_left: vector2d, bottom_right: vector2d, background_color: int = 0xFF0000, outline_color: int = 0x000000) -> ETKCanvasItem:
+    def draw_rectangle(self, top_left: vector2d, bottom_right: vector2d, background_color: int = 0xFF0000, outline_color: int = 0x000000) -> ETKCanvasItem:
         self.__canvas_items.append(ETKCanvasRectangle(self._tk_object, top_left, bottom_right, background_color, outline_color))
         return self.__canvas_items[-1]
 

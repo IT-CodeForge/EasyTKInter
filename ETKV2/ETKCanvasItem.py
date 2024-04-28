@@ -32,7 +32,7 @@ class ETKCanvasItem:
         move_vec = value - self.pos
         for index, point in enumerate(self._pointlist):
             self._pointlist[index] = point + move_vec
-        self._transform_shape()
+        self.__transform_shape()
 
     @property
     def rotation(self) -> float:
@@ -47,7 +47,7 @@ class ETKCanvasItem:
         self._rotation = value
         if self._rotation >= 2 * math.pi:
             self.rotation -= 2 * math.pi
-        self._transform_shape()
+        self.__transform_shape()
 
     @property
     def background_color(self) -> int:
@@ -144,7 +144,7 @@ class ETKCanvasItem:
         else:
             return None
 
-    def _transform_shape(self) -> None:
+    def __transform_shape(self) -> None:
         tkinter_pointlist: list[float] = self.__get_tkinter_pointlist()
         self._tk_object.coords(self.itemId, tkinter_pointlist)
 
