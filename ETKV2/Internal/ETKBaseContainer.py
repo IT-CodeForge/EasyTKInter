@@ -58,7 +58,7 @@ class ETKContainerSize():
     
     @property
     def y(self) -> int:
-        return self.__x
+        return self.__y
 
     @y.setter
     def y(self, value: int | float):
