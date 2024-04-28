@@ -21,14 +21,14 @@ class ETKBaseTkObject(ETKBaseObject):
         self._background_color = gen_col_from_int(value)
         self._tk_object.configure(background=self._background_color)
 
-    def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
+    def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         if event_type.value[0] != "<Custom>":
             if len(self._event_lib[event_type]) == 0:
                 self._tk_object.bind(
                     event_type.value[0], self._handle_tk_event)  # type:ignore
         ETKBaseObject.add_event(self, event_type, eventhandler)
 
-    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
+    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         if event_type.value[0] != "<Custom>":
             if len(self._event_lib[event_type]) == 0:
                 self._tk_object.unbind(event_type.value[0])

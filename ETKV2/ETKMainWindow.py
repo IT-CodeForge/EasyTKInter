@@ -46,16 +46,16 @@ class ETKMainWindow(ETKBaseTkObject):
         return self._tk_object.title()
 
     @caption.setter
-    def caption(self, value: str):
+    def caption(self, value: str) -> None:
         self._tk_object.title(value)
 
     @ETKBaseTkObject.pos.setter
-    def pos(self, value: vector2d):
+    def pos(self, value: vector2d) -> None:
         self._pos = value
         self.__place_object()
 
     @ETKBaseTkObject.size.setter
-    def size(self, value: vector2d):
+    def size(self, value: vector2d) -> None:
         self._size = value
         self.__place_object()
 
@@ -80,7 +80,7 @@ class ETKMainWindow(ETKBaseTkObject):
         return self._topmost
 
     @topmost.setter
-    def topmost(self, value: bool):
+    def topmost(self, value: bool) -> None:
         self._topmost = value
         self._tk_object.attributes('-topmost', self._topmost)  # type:ignore
 

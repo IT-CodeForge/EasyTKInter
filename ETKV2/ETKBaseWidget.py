@@ -16,14 +16,14 @@ class ETKBaseWidget(ETKBaseObject):
         return self._parent
 
     @ETKBaseObject.pos.setter
-    def pos(self, value: vector2d):
+    def pos(self, value: vector2d) -> None:
         self._pos = value
         if self.parent != None:
             self.parent._validate_pos(self)
         self._update_pos()
 
     @ETKBaseObject.size.setter
-    def size(self, value: vector2d):
+    def size(self, value: vector2d) -> None:
         self._size = value
         if self.parent != None:
             self.parent._validate_size(self)
@@ -33,7 +33,7 @@ class ETKBaseWidget(ETKBaseObject):
         """READ-ONLY"""
         if self._parent != None:
             return self._parent._get_childs_abs_pos(self)
-        return self._pos
+        return self._pos.copy()
 
     @ETKBaseObject.visibility.setter
     def visibility(self, value: bool) -> None:
@@ -59,20 +59,20 @@ class ETKBaseWidget(ETKBaseObject):
             return self._enabled and self._parent._enabled
         return self._enabled
 
-    def _detach_child(self, element: ETKBaseWidget):
+    def _detach_child(self, element: ETKBaseWidget) -> None:
         if element._parent != self:
             raise ValueError(f"{self} is not the parent of {element}!")
         element._parent = None
 
-    def detach_from_parent(self):
+    def detach_from_parent(self) -> None:
         if self._parent == None:
             raise ValueError(f"{self} has no parent!")
         self._parent._detach_child(self)
-    
+
     @abstractmethod
     def _update_pos(self) -> None:
         pass
-    
+
     @abstractmethod
     def _update_visibility(self) -> None:
         pass
@@ -83,8 +83,8 @@ class ETKBaseWidget(ETKBaseObject):
     def _get_childs_abs_pos(self, child: ETKBaseWidget) -> vector2d:
         return self.abs_pos + child.pos
 
-    def _validate_pos(self, element: ETKBaseWidget):
+    def _validate_pos(self, element: ETKBaseWidget) -> None:
         pass
 
-    def _validate_size(self, element: ETKBaseWidget):
+    def _validate_size(self, element: ETKBaseWidget) -> None:
         pass

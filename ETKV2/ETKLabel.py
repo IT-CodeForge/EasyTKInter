@@ -15,6 +15,6 @@ class ETKLabel(ETKBaseTkWidgetText):
         return self._tk_object.get("1.0", 'end-1c')
 
     @text.setter
-    def text(self, value: str):
+    def text(self, value: str) -> None:
         self._tk_object.delete(1.0, END)
         self._tk_object.insert(1.0, value)

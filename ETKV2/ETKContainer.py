@@ -23,7 +23,7 @@ class ETKContainer(ETKBaseContainer):
             raise SizeError(
                 f"size of container {self} is too small\ncontainer: size: {self.size}")
 
-    def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT):
+    def add_element(self, element: ETKBaseWidget, alignment: Alignments = Alignments.TOP_LEFT) -> None:
         self.__element_alignments.update({element: alignment})
         ETKBaseContainer.add_element(self, element)
         self.__update_all_element_pos()

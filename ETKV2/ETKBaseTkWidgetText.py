@@ -14,7 +14,7 @@ class ETKBaseTkWidgetText(ETKBaseTkWidget):
         return self._tk_object.cget("text")
 
     @text.setter
-    def text(self, value: str):
+    def text(self, value: str) -> None:
         self._tk_object.config(text=value)  # type:ignore
 
     @property

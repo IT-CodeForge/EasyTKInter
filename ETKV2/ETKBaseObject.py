@@ -29,7 +29,7 @@ class ETKBaseObject:
 
     @property
     def pos(self) -> vector2d:
-        return self._pos
+        return self._pos.copy()
 
     @pos.setter
     @abstractmethod
@@ -39,15 +39,15 @@ class ETKBaseObject:
     @property
     def abs_pos(self) -> vector2d:
         """READ-ONLY"""
-        return self._pos
+        return self._pos.copy()
 
     @property
     def size(self) -> vector2d:
-        return self._size
+        return self._size.copy()
 
     @size.setter
     @abstractmethod
-    def size(self, value: vector2d):
+    def size(self, value: vector2d) -> None:
         pass
 
     @property
@@ -69,13 +69,13 @@ class ETKBaseObject:
         """read-only"""
         return self._event_lib.copy()
 
-    def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
+    def add_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         self._event_lib[event_type].append(eventhandler)
 
-    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]):
+    def remove_event(self, event_type: Events, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, Events, Any]], None]) -> None:
         self._event_lib[event_type].remove(eventhandler)
 
-    def _handle_event(self, event: Events, event_data: Optional[Any] = None):
+    def _handle_event(self, event: Events, event_data: Optional[Any] = None) -> None:
         for c in self._event_lib[event]:
             try:
                 c((self, event, event_data))

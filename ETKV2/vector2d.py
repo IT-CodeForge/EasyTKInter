@@ -27,7 +27,7 @@ class vector2d:
             self.x = x
             self.y = y
 
-    def __raise_error(self):
+    def __raise_error(self) -> None:
         raise TypeError(
             "Expected: vector2d(x:float, y:float) or vector2d(*, lenght:float, radians:float)")
 
@@ -36,7 +36,7 @@ class vector2d:
         return self.__get_lenght()
 
     @lenght.setter
-    def lenght(self, value: float):
+    def lenght(self, value: float) -> None:
         self.normalize()
         self *= value
 
@@ -156,17 +156,17 @@ class vector2d:
         elif type(other) == vector2d:
             return self.x >= other.x and self.y >= other.y
         raise ValueError("incompatible compare types")
-    
-    def __setitem__(self, address: int, other: float)->None:
-        if address not in [0,1]:
+
+    def __setitem__(self, address: int, other: float) -> None:
+        if address not in [0, 1]:
             raise KeyError("Invalid index")
         if address == 0:
             self.x = other
         else:
             self.y = other
-    
-    def __getitem__(self, address: int)->float:
-        if address not in [0,1]:
+
+    def __getitem__(self, address: int) -> float:
+        if address not in [0, 1]:
             raise KeyError("Invalid index")
         if address == 0:
             return self.x
@@ -214,3 +214,6 @@ class vector2d:
             return self.x*vector.y - self.y*vector.x
         except:
             raise ValueError("You can only do a crossproduct of two vectors")
+
+    def copy(self) -> vector2d:
+        return vector2d(self.x, self.y)
