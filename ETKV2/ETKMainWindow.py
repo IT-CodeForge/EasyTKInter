@@ -102,7 +102,7 @@ class ETKMainWindow(ETKBaseTkObject):
         self._tk_object.focus_force()
         self._tk_object.attributes('-topmost', self.__topmost)  # type:ignore
     
-    def exec_gui_function(self, function: Callable[..., Any], *args: Any, **kwargs: Any):
+    def exec_gui_function(self, function: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
         self._tk_object.after(0, lambda: function(*args, **kwargs))
 
     def __place_object(self) -> None:
