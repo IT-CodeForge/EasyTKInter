@@ -13,7 +13,7 @@ class EditEvents(Events):
 
 
 class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
-    def __init__(self, tk: Tk, text: str, pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(80, 17), background_color: int = 11184810, text_color: int = 0) -> None:
+    def __init__(self, tk: Tk, text: str = "", pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(80, 17), background_color: int = 0xEEEEEE, text_color: int = 0) -> None:
         ETKLabel.__init__(self, tk, text, pos, size,
                           background_color, text_color)
         self._tk_object["state"] = "normal"

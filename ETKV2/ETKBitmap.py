@@ -7,7 +7,7 @@ from typing import Iterable
 
 
 class ETKBitmap(ETKBaseTkWidgetDisableable):
-    def __init__(self, tk: Tk, pos: vector2d, size: vector2d, background_color: int = 11184810) -> None:
+    def __init__(self, tk: Tk, pos: vector2d, size: vector2d, background_color: int = 0xAAAAAA) -> None:
         self.__bitmap = PhotoImage(width=int(size.x), height=int(size.y))
         self._tk_object: Label = Label(  # type:ignore
             tk, text="", image=self.__bitmap)

@@ -7,7 +7,7 @@ from .ETKBaseTkObject import ETKBaseTkObject
 
 class ETKBaseTkWidget(ETKBaseTkObject, ETKBaseWidget):
 
-    def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xAAAAAA) -> None:
+    def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xEEEEEE) -> None:
         self._tk_object: tk_widget
         ETKBaseWidget.__init__(self, pos, size)
         ETKBaseTkObject.__init__(self, pos, size, background_color)

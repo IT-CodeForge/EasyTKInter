@@ -5,7 +5,7 @@ from .ETKBaseTkObject import BaseEvents  # type:ignore
 
 
 class ETKBaseTkWidgetDisableable(ETKBaseWidgetDisableable, ETKBaseTkWidget):
-    def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xAAAAAA) -> None:
+    def __init__(self, pos: vector2d, size: vector2d, background_color: int = 0xEEEEEE) -> None:
         ETKBaseTkWidget.__init__(self, pos, size, background_color)
         ETKBaseWidgetDisableable.__init__(self, pos, size)
 

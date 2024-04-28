@@ -11,7 +11,7 @@ from .Internal.ETKBaseContainer import Alignments, ContainerSize, SizeError, Pos
 
 
 class ETKContainer(ETKBaseContainer):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810, outline_color: Optional[int] = None) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
         ETKBaseContainer.__init__(
             self, tk, pos, size, background_color, outline_color)
         self.__element_alignments: dict[ETKBaseWidget, Alignments] = {}

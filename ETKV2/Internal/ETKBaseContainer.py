@@ -131,7 +131,7 @@ class PosError(ValueError):
 
 
 class ETKBaseContainer(ETKBaseWidgetDisableable):
-    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 11184810, outline_color: Optional[int] = None) -> None:
+    def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: ContainerSize = ContainerSize(0, 0, True, True), background_color: int = 0xAAAAAA, outline_color: Optional[int] = None) -> None:
         self.__background = ETKContainerBackgroundCanvas(
             tk, pos, size.vec, background_color, outline_color)
         self._element_rel_pos: dict[ETKBaseWidget, vector2d] = {}
