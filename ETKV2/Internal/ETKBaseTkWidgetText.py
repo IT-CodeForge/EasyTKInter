@@ -1,7 +1,7 @@
 from ..vector2d import vector2d
 from .ETKBaseTkWidget import ETKBaseTkWidget
 from .ETKUtils import gen_col_from_int
-from .Internal.ETKBaseTkObject import BaseEvents  # type:ignore
+from .ETKBaseTkObject import BaseEvents  # type:ignore
 
 
 class ETKBaseTkWidgetText(ETKBaseTkWidget):
