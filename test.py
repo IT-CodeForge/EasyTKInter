@@ -17,6 +17,11 @@ class GUI(ETKMainWindow):
         self.label.outline_thickness = 2
         self.label.outline_color = 0xFFFF00
         # self.label.pos = vector2d(-10, 0)
+        
+        def test(a: int) -> None:
+            print(a)
+
+        self.exec_gui_function(test, 3, 3)
 
 
 if __name__ == '__main__':
