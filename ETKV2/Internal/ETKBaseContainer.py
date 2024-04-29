@@ -36,7 +36,7 @@ class ETKAlignments(Enum):
 
 
 class ETKContainerSize():
-    def __init__(self, x: int | float, y: int | float, dynamic_x: bool = False, dynamic_y: bool = False, paddings_x_l: int = 0, paddings_x_r: int = 0, paddings_y_o: int = 0, paddings_y_u: int = 0) -> None:
+    def __init__(self, x: int | float = 0, y: int | float = 0, dynamic_x: bool = False, dynamic_y: bool = False, paddings_x_l: int = 0, paddings_x_r: int = 0, paddings_y_o: int = 0, paddings_y_u: int = 0) -> None:
         self.__x: int = 0
         self.__y: int = 0
         self.x = x
