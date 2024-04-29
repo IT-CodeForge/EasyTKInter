@@ -92,13 +92,13 @@ class ETKContainerSize():
             case 3:
                 self.dynamic_y = bool(other)
             case 4:
-                self.padding_x_l = other
+                self.padding_x_l = int(other)
             case 5:
-                self.padding_x_r = other
+                self.padding_x_r = int(other)
             case 6:
-                self.padding_y_o = other
+                self.padding_y_o = int(other)
             case 7:
-                self.padding_y_u = other
+                self.padding_y_u = int(other)
             case _:
                 pass
 
