@@ -9,15 +9,12 @@ class GUI(ETKMainWindow):
         pass
 
     def _add_elements(self) -> None:
-        self.container = ETKContainer(
-            self._tk_object, size=ETKContainerSize(100, 100), outline_thickness=3, outline_color=0x0000FF, background_color=0x00FF00)
-        self.container.outline_color = 0x0000FF
-        self.label = ETKLabel(self._tk_object, "LABEL")
-        #self.label.enabled = False
-        self.container.add_element(self.label, ETKAlignments.TOP_RIGHT)
-        self.label.outline_thickness = 2
-        self.label.outline_color = 0xFFFF00
-        # self.label.pos = vector2d(-10, 0)
+        self.label = ETKButton(self._tk_object, "test")
+        self.label.outline_thickness = 3
+        self.label.outline_color = 0x0
+        print(self.label.text)
+        self.label.text = "test123"
+        print(self.label.text)
 
 
 if __name__ == '__main__':
