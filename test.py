@@ -3,7 +3,7 @@ from ETK import *
 
 class GUI(ETKMainWindow):
     def __init__(self) -> None:
-        super().__init__(caption="NENENE", background_color=0xFF0000, size=None)
+        super().__init__(caption="NENENE", background_color=0xFF0000, size=None, fullscreen=True)
 
     def _on_init(self) -> None:
         pass
