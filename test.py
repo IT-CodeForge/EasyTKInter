@@ -9,12 +9,14 @@ class GUI(ETKMainWindow):
         pass
 
     def _add_elements(self) -> None:
-        self.label = ETKButton(self._tk_object, "test")
-        self.label.outline_thickness = 3
-        self.label.outline_color = 0x0
-        print(self.label.text)
-        self.label.text = "test123"
-        print(self.label.text)
+        self.checkbox = ETKCheckbox(self._tk_object, "Test")
+        self.button = ETKButton(self._tk_object, pos=vector2d(0, 100))
+        def x() -> None:
+            self.checkbox.state = not self.checkbox.state
+        self.button.add_event(ETKButtonEvents.PRESSED, x)
+        self.checkbox.add_event(ETKCheckboxEvents.TOGGLED, lambda: print("TOGGLED"))
+        self.checkbox.add_event(ETKCheckboxEvents.CHECKED, lambda: print("CHECKED"))
+        self.checkbox.add_event(ETKCheckboxEvents.UNCHECKED, lambda: print("UNCHECKED"))
 
 
 if __name__ == '__main__':
