@@ -9,14 +9,16 @@ class GUI(ETKMainWindow):
         pass
 
     def _add_elements(self) -> None:
-        self.checkbox = ETKCheckbox(self._tk_object, "Test")
-        self.button = ETKButton(self._tk_object, pos=vector2d(0, 100))
+        self.checkbox = ETKCheckbox(self._tk_object, "Test", vector2d(0, 40))
+        self.edit = ETKEdit(self._tk_object, "Test", vector2d(0, 0))
+        self.edit2 = ETKEdit(self._tk_object, "Test2", vector2d(0, 20))
+        self.edit.add_event(ETKEditEvents.CHANGED, lambda: print(f"CHANGED {self.edit.text}"))
+        self.edit.add_event(ETKEditEvents.CHANGED_DELAYED, lambda: print(f"CHANGED_DELAYED {self.edit.text}"))
+        self.button = ETKButton(self._tk_object, pos=vector2d(0, 60))
+        
         def x() -> None:
-            self.checkbox.state = not self.checkbox.state
+            self.edit.text += "1"
         self.button.add_event(ETKButtonEvents.PRESSED, x)
-        self.checkbox.add_event(ETKCheckboxEvents.TOGGLED, lambda: print("TOGGLED"))
-        self.checkbox.add_event(ETKCheckboxEvents.CHECKED, lambda: print("CHECKED"))
-        self.checkbox.add_event(ETKCheckboxEvents.UNCHECKED, lambda: print("UNCHECKED"))
 
 
 if __name__ == '__main__':
