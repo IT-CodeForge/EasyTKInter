@@ -1,45 +1,26 @@
-Log standardmäßig auf true
+TODO:
 
-outlines
-hintergrundfarben (Container)
+Button, checkbox: outline 
+(https://stackoverflow.com/a/58352991)
 
-parent system (alle objekte bekommen einen "_parent" (mit public read only) und fragen, wenn sie einen parent haben, diese ob sie eine aktion (bsp. move, visible))
+update_visibility, etc. performanter machen!!!: multithreading, multiple init from multiple inheritance!!, pause exec for multiple  changes, GUI startet bevor run()
 
+Event_START
 
-Container:
--done for now except clean up and docu
+DESTRUKTOREN
 
-ListingContainer:
--done for now except clean up and docu
+__str__, __repr__
 
-Bitmap:
--line func?
--curve func??
+NTH:
 
-Canvas:
--Sprites as Subclass (Programm a generator?)
--curve func?
+Containter Hinter, etc: z-Index
+(Sprite)
 
-Events:
--fully add the "<Custom>" Event
-    -multiple types
+logging
+tests
 
-ObservableTypes:
--add wrapper to natively get the setter, getter methods
--more Observable types
-    -int
-    -float
-    -str
-    -...
-
--clean up Code
-
--eliminate Errors
-
--documentation and explanition of usage
-
--deal with user idiocy
-    -adding multiple of same Event without removing
-
-maybe:
--clean up dicts
+Beobachten:
+super() weg
+abs. import weg
+#regions
+#TODO, #NOTE
