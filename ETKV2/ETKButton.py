@@ -14,7 +14,7 @@ class ETKButtonEvents(ETKEvents):
 
 
 class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
-    def __init__(self, tk: Tk, text: str = "", pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), background_color: int = 0xEEEEEE, text_color: int = 0x0) -> None:
+    def __init__(self, tk: Tk, text: str = "Button", pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), background_color: int = 0xEEEEEE, text_color: int = 0x0) -> None:
         self._tk_object: Button = Button(tk)  # type:ignore
         ETKBaseTkWidgetDisableable.__init__(self, pos, size, background_color)
         ETKBaseTkWidgetText.__init__(

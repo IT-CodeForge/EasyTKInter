@@ -15,7 +15,7 @@ class ETKCheckboxEvents(ETKEvents):
 
 
 class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
-    def __init__(self, tk: Tk, text: str = "", pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), state: bool = False, background_color: int = 0xEEEEEE, text_color: int = 0x0) -> None:
+    def __init__(self, tk: Tk, text: str = "Checkbox", pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), state: bool = False, background_color: int = 0xEEEEEE, text_color: int = 0x0) -> None:
         self.__state = IntVar()
         self.__ignore_next_change_event: bool = False
         self._tk_object: Checkbutton = Checkbutton(  # type:ignore
