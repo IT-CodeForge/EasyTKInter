@@ -1,5 +1,7 @@
 from enum import auto
 
+from .Internal.ETKUtils import gen_col_from_int
+
 from .vector2d import vector2d
 from .Internal.ETKBaseObject import ETKEvents
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
@@ -38,9 +40,14 @@ class ETKCheckbox(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
         self.__ignore_next_change_event = True
         self.__state.set(value)
 
+    @ETKBaseTkWidgetText.text_color.setter
+    def text_color(self, value: int) -> None:
+        ETKBaseTkWidgetText.text_color.fset(self, value)  # type:ignore
+        self._tk_object.configure(disabledforeground=gen_col_from_int(value))  # type:ignore
+
     # endregion
     # region Methods
-        
+
     def __checkbox_event_handler(self, *args: str) -> None:
         if self.__ignore_next_change_event:
             self.__ignore_next_change_event = False

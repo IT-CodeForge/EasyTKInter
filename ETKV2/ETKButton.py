@@ -1,9 +1,10 @@
 from enum import auto
 
+from .Internal.ETKUtils import gen_col_from_int
 from .Internal.ETKBaseObject import ETKEvents
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .Internal.ETKBaseTkWidgetText import ETKBaseTkWidgetText
-from .Internal.ETKBaseTkObject import ETKBaseEvents #type:ignore
+from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
 from .vector2d import vector2d
 from tkinter import Button, Event, Tk, EventType
 
@@ -21,6 +22,14 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
             self, text, pos, size, background_color, text_color)
         self._event_lib.update({e: [] for e in ETKButtonEvents})
 
+    # region Properties
+
+    @ETKBaseTkWidgetText.text_color.setter
+    def text_color(self, value: int) -> None:
+        ETKBaseTkWidgetText.text_color.fset(self, value)  # type:ignore
+        self._tk_object.configure(disabledforeground=gen_col_from_int(value))  # type:ignore
+
+    # endregion
     # region Methods
 
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
