@@ -3,11 +3,11 @@ TODO:
 Button, checkbox: outline 
 (https://stackoverflow.com/a/58352991)
 
-update_visibility, etc. performanter machen!!!: multithreading, multiple init from multiple inheritance!!, pause exec for multiple  changes, GUI startet bevor run()
+DESTRUKTOREN
+
+update_visibility, etc. performanter machen!!!: multithreading, pause exec for multiple  changes, GUI startet bevor run()
 
 Event_START
-
-DESTRUKTOREN
 
 __str__, __repr__
 
