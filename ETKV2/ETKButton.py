@@ -43,6 +43,6 @@ class ETKButton(ETKBaseTkWidgetDisableable, ETKBaseTkWidgetText):
                         ETKButtonEvents.RELEASED, [event])  # type:ignore
             case _:
                 pass
-        return ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore
+        return super()._handle_tk_event(event)  # type:ignore
 
     # endregion

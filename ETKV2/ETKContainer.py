@@ -90,10 +90,10 @@ class ETKContainer(ETKBaseContainer):
 
     def add_element(self, element: ETKBaseWidget, alignment: ETKAlignments = ETKAlignments.TOP_LEFT) -> None:
         self.__element_alignments.update({element: alignment})
-        ETKBaseContainer.add_element(self, element)
+        super().add_element(element)
 
     def remove_element(self, element: ETKBaseWidget) -> None:
-        ETKBaseContainer.remove_element(self, element)
+        super().remove_element(element)
         self.__element_alignments.pop(element)
 
     # endregion

@@ -32,10 +32,10 @@ class ETKBaseTkObject(ETKBaseObject):
             if len(self._event_lib[event_type]) == 0:
                 self._tk_object.bind(
                     event_type.value[0], self._handle_tk_event)  # type:ignore
-        ETKBaseObject.add_event(self, event_type, eventhandler)
+        super().add_event(event_type, eventhandler)
 
     def remove_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
-        ETKBaseObject.remove_event(self, event_type, eventhandler)
+        super().remove_event(event_type, eventhandler)
         if event_type.value[0] != "<Custom>":
             if len(self._event_lib[event_type]) == 0:
                 self._tk_object.unbind(event_type.value[0])

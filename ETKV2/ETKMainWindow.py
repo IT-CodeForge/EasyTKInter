@@ -170,6 +170,6 @@ class ETKMainWindow(ETKBaseTkObject):
                 return
             case _:
                 pass
-        ETKBaseTkObject._handle_tk_event(self, event)  # type:ignore
+        super()._handle_tk_event(event)  # type:ignore
 
     # endregion

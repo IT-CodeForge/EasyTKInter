@@ -63,7 +63,6 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
                 return
             case _:
                 pass
-        return ETKLabel._handle_tk_event(  # type:ignore
-            self, event)
+        return super()._handle_tk_event(event)  # type:ignore
 
     # endregion

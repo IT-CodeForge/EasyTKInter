@@ -261,13 +261,13 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         self._update_all_element_pos()
 
     def add_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
-        ETKBaseWidgetDisableable.add_event(self, event_type, eventhandler)
+        super().add_event(event_type, eventhandler)
         self.__background.add_event(event_type, self.__event_handler)
         for e in self._element_rel_pos.keys():
             e.add_event(event_type, self.__event_handler)
 
     def remove_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
-        ETKBaseWidgetDisableable.remove_event(self, event_type, eventhandler)
+        super().remove_event(event_type, eventhandler)
         self.__background.remove_event(event_type, self.__event_handler)
         for e in self._element_rel_pos.keys():
             e.remove_event(event_type, self.__event_handler)

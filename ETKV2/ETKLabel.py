@@ -31,7 +31,7 @@ class ETKLabel(ETKBaseTkWidgetText):
         self._tk_object["state"] = state
 
     def _handle_tk_event(self, event: Event) -> str | None:  # type:ignore
-        ETKBaseTkWidgetText._handle_tk_event(self, event)  # type:ignore
+        super()._handle_tk_event(event)  # type:ignore
         match event.type:
             case EventType.ButtonPress:
                 if self._send_button_event_break:
