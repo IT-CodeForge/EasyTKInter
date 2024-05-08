@@ -8,11 +8,13 @@ from .ETKBaseObject import ETKBaseObject, ETKEvents, ETKBaseEvents
 
 
 class ETKBaseTkObject(ETKBaseObject):
-    def __init__(self, pos: vector2d, size: vector2d, background_color: int) -> None:
-        ETKBaseObject.__init__(self, pos, size, background_color)
+    def __init__(self, pos: vector2d, size: vector2d, background_color: int, **kwargs: Any) -> None:
         self._tk_object: Any
-        self._tk_object.configure(borderwidth=0)
         self._outline_color: str = ""
+
+        super().__init__(pos=pos, size=size, background_color=background_color, **kwargs)
+
+        self._tk_object.configure(borderwidth=0)
 
     # region Properties
 
