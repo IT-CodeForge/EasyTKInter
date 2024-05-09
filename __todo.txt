@@ -1,8 +1,5 @@
 TODO:
 
-Button, checkbox: outline 
-(https://stackoverflow.com/a/58352991)
-
 DESTRUKTOREN
 
 alle ATTR. in Konstruktor
