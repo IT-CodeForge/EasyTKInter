@@ -24,6 +24,10 @@ class ETKBaseTkObject(ETKBaseObject):
 
     # endregion
     # region Methods
+
+    def __del__(self) -> None:
+        self.visibility = False
+
     # region Eventhandling Methods
 
     def add_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
