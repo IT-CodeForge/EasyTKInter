@@ -3,7 +3,7 @@ from typing import Any
 
 from .vector2d import vector2d
 from .Internal.ETKBaseObject import ETKEvents
-from .Internal.ETKBaseTkButton import ETKBaseTkButton
+from .Internal.ETKBaseTkWidgetButton import ETKBaseTkWidgetButton
 from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
 from tkinter import Checkbutton, IntVar, Tk
 
@@ -14,7 +14,7 @@ class ETKCheckboxEvents(ETKEvents):
     TOGGLED = ("<Custom>", auto())
 
 
-class ETKCheckbox(ETKBaseTkButton):
+class ETKCheckbox(ETKBaseTkWidgetButton):
     def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), text: str = "Checkbox", state: bool = False, *, visibility: bool = True, enabled: bool = True, background_color: int = 0xEEEEEE, text_color: int = 0x0, outline_color: int = 0x0, outline_thickness: int = 0, **kwargs: Any) -> None:
         self.__state = IntVar()
         self.__ignore_next_change_event: bool = False

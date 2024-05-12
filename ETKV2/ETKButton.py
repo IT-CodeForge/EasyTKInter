@@ -2,7 +2,7 @@ from enum import auto
 from typing import Any
 
 from .Internal.ETKBaseObject import ETKEvents
-from .Internal.ETKBaseTkButton import ETKBaseTkButton
+from .Internal.ETKBaseTkWidgetButton import ETKBaseTkWidgetButton
 from .Internal.ETKBaseTkObject import ETKBaseEvents  # type:ignore
 from .vector2d import vector2d
 from tkinter import FLAT, Button, Event, Tk, EventType
@@ -13,7 +13,7 @@ class ETKButtonEvents(ETKEvents):
     RELEASED = ("<ButtonRelease>", auto())
 
 
-class ETKButton(ETKBaseTkButton):
+class ETKButton(ETKBaseTkWidgetButton):
     def __init__(self, tk: Tk, pos: vector2d = vector2d(0, 0), size: vector2d = vector2d(70, 18), text: str = "Button", *, visibility: bool = True, enabled: bool = True, background_color: int = 0xEEEEEE, text_color: int = 0x0, outline_color: int = 0x0, outline_thickness: int = 0, **kwargs: Any) -> None:
         super()._create_outline(tk)
         self._tk_object: Button = Button(self._outline, relief=FLAT)  # type:ignore
