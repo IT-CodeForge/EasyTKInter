@@ -1,7 +1,5 @@
 TODO:
 
-alle ATTR. in Konstruktor
-
 update_visibility, etc. performanter machen!!!: multithreading, pause exec for multiple  changes, GUI startet bevor run()
 
 auto height: Text, etc.
