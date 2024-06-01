@@ -1,6 +1,12 @@
 TODO:
 
+Scheduler: paint()
 update_visibility, etc. performanter machen!!!: multithreading, pause exec for multiple  changes, GUI startet bevor run()
+resolution, scaler, etc. Problem
+ETK Event data verbessern
+EV mouse_moved in alle Elements
+_validate_... methoden umbenennen?
+MULTILINE: https://www.tutorialspoint.com/how-to-force-tkinter-text-widget-to-stay-on-one-line²
 
 auto height: Text, etc.
 
@@ -10,8 +16,8 @@ __str__, __repr__
 
 NTH:
 
-Containter Hinter, etc: z-Index
-(Sprite)
+Containter Hintergrund, etc: z-Index
+(Canvas: Sprite)
 
 logging
 tests
