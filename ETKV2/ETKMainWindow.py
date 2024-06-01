@@ -4,6 +4,8 @@ import sys
 from tkinter import Event, Tk, EventType
 from typing import Any, Callable, Optional
 
+from .Internal.ETKScheduler import ETKScheduler
+
 from .ETKCanvas import ETKCanvas
 from .Vector2d import Vector2d
 from .Internal.ETKBaseTkObject import ETKBaseTkObject
@@ -22,8 +24,24 @@ class ETKWindowEvents(ETKEvents):
 
 
 class ETKMainWindow(ETKBaseTkObject):
+    class ETKMain:
+        def __init__(self, root_tk_object: Tk, scheduler: ETKScheduler) -> None:
+            self.__root_tk_object: Tk = root_tk_object
+            self.__scheduler: ETKScheduler = scheduler
+        
+        @property
+        def root_tk_object(self) -> Tk:
+            """READ-ONLY"""
+            return self.__root_tk_object
+
+        @property
+        def scheduler(self) -> ETKScheduler:
+            """READ-ONLY"""
+            return self.__scheduler
+    
     def __init__(self, pos: Vector2d = Vector2d(0, 0), size: Optional[Vector2d] = None, caption: str = "Window-Title", fullscreen: bool = True, *, visibility: bool = True, background_color: int = 0xAAAAAA, **kwargs: Any) -> None:
         self._tk_object: Tk = Tk()
+        self._main = ETKMainWindow.ETKMain(self._tk_object, ETKScheduler())
         self.__topmost = False
         self.exit_locked = False
         self.exit_ignore_next = False
@@ -128,6 +146,7 @@ class ETKMainWindow(ETKBaseTkObject):
     def exit(self) -> None:
         self._handle_event(ETKWindowEvents.EXIT)
         if not self.exit_locked and not self.exit_ignore_next:
+            self._main.scheduler.exit()
             sys.exit()
         if self.exit_ignore_next:
             self.exit_ignore_next = False
