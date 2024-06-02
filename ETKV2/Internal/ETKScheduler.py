@@ -36,7 +36,7 @@ class ETKScheduler:
         self.__exit = True
         if not self.__thread.is_alive():
             sys.exit()
-    
+
     def handle_event_actions(self):
         while len(self.__scheduled_event_actions.keys()) != 0 and not self.__exit:
             c2 = tuple(self.__scheduled_event_actions.keys())[0]
@@ -64,4 +64,3 @@ class ETKScheduler:
         if threading.main_thread().is_alive():
             self.__tk.after(0, sys.exit)
             sys.exit()
-
