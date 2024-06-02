@@ -7,7 +7,6 @@ ETK Event data verbessern
 EV mouse_moved in alle Elements
 _validate_... methoden umbenennen?
 MULTILINE: https://www.tutorialspoint.com/how-to-force-tkinter-text-widget-to-stay-on-one-line
-Timer fixen: lautzeit rausrechnen -> neue threads
 
 auto height: Text, etc.
 
