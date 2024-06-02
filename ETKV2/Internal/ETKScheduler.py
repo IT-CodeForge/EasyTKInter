@@ -55,8 +55,7 @@ class ETKScheduler:
                 c1, data = self.__scheduled_events[0]
                 self.__scheduled_events.pop(0)
                 exec_event_callback(c1, data)
-
-                self.handle_event_actions()
+            self.handle_event_actions()
 
             sleep_duration = 0.1
             duration = (time.time_ns() - begin_ns) / 10**9
