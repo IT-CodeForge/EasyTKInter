@@ -60,7 +60,6 @@ class ETKScheduler:
     def __handler(self):
         while not self.__exit and threading.main_thread().is_alive():
             begin_ns = time.time_ns()
-            print("alive")
 
             if len(self.__scheduled_event_actions) != 0 and not self._ignore_err: #NOTE
                 raise RuntimeError
