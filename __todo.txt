@@ -1,5 +1,6 @@
 TODO:
 
+make Scheduler disableble
 validate pos, size, etc. not in update_... but in setter directly!!! -> reenable ElementPosLockedError
 Scheduler: paint()
 update_visibility, etc. performanter machen!!!: multithreading, pause exec for multiple  changes, GUI startet bevor run()
