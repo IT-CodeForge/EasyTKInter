@@ -1,8 +1,7 @@
 TODO:
 
 make Scheduler disableble
-validate pos, size, etc. not in update_... but in setter directly!!! -> reenable ElementPosLockedError
-Scheduler: paint()
+Scheduler: window_changes, lower implementation (like Checkbox::state), paint()
 update_visibility, etc. performanter machen!!!: multithreading, pause exec for multiple  changes, GUI startet bevor run()
 resolution, scaler, etc. Problem
 ETK Event data verbessern
@@ -25,7 +24,6 @@ logging
 tests
 
 Beobachten:
-super() weg
 abs. import weg
 #regions
 #TODO, #NOTE
