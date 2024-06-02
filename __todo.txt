@@ -1,5 +1,7 @@
 TODO:
 
+fast moving element, button outside, optimiere scheduler für container
+
 Scheduler: window_changes, lower implementation (like Checkbox::state)
 GUI startet bevor run()
 resolution, scaler, etc. Problem
