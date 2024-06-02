@@ -3,7 +3,7 @@ from ETK import *
 
 class GUI(ETKMainWindow):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(scheduler_disabled=True)
 
     def _on_init(self) -> None:
         pass
