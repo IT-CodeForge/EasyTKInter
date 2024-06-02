@@ -1,7 +1,7 @@
 TODO:
 
 Scheduler: window_changes, lower implementation (like Checkbox::state)
-update_visibility, etc. performanter machen!!!: multithreading, pause exec for multiple  changes, GUI startet bevor run()
+GUI startet bevor run()
 resolution, scaler, etc. Problem
 ETK Event data verbessern
 EV mouse_moved in alle Elements
