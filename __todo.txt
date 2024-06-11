@@ -1,7 +1,5 @@
 TODO:
 
-fast moving element???
-
 Scheduler: window_changes, lower implementation (like Checkbox::state)
 GUI startet bevor run()
 resolution, scaler, etc. Problem
