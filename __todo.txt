@@ -1,6 +1,6 @@
 TODO:
 
-fast moving element, button outside, optimiere scheduler für container
+fast moving element???
 
 Scheduler: window_changes, lower implementation (like Checkbox::state)
 GUI startet bevor run()
