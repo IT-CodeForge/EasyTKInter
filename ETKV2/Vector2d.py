@@ -177,6 +177,9 @@ class Vector2d:
 
     def __str__(self) -> str:
         return f"<{self.x}, {self.y}>"
+    
+    def __repr__(self) -> str:
+        return self.__str__()
 
     def __get_lenght(self) -> float:
         return math.sqrt(self.x**2 + self.y**2)
