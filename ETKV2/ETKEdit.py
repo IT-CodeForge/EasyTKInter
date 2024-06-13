@@ -49,7 +49,7 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
 
     def __send_delayed_changed_event(self, event: Event) -> None:  # type:ignore
         if self.__delay_cycles == 0:
-            self._handle_event(ETKEventData(self, ETKEditEvents.CHANGED_DELAYED))
+            self._handle_event(ETKEventData(self, ETKEditEvents.CHANGED_DELAYED, tk_event=event))
         self.__delay_cycles -= 1
 
     def _handle_tk_event(self, event: Event) -> None | str:  # type:ignore
@@ -59,7 +59,7 @@ class ETKEdit(ETKBaseTkWidgetDisableable, ETKLabel):
                     if not self.multiline:
                         self.text = self.text
                     self.__delay_cycles += 1
-                    self._handle_event(ETKEventData(self, ETKEditEvents.CHANGED))
+                    self._handle_event(ETKEventData(self, ETKEditEvents.CHANGED, tk_event=event))
                     self._tk_object.after(1000, self.__send_delayed_changed_event, event)  # type:ignore
                     self.__old_text = self.text
                 return

@@ -176,16 +176,16 @@ class ETKMainWindow(ETKBaseTkObject):
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
             case EventType.KeyPress:
-                self._handle_event(ETKEventData(self, ETKWindowEvents.KEY_PRESSED, state=event.state, keysym=event.keysym, keycode=event.keycode, keychar=event.char, rel_pos=get_rel_event_pos(event), abs_pos=get_abs_event_pos(event, self._main.root_tk_object)))
+                self._handle_event(ETKEventData(self, ETKWindowEvents.KEY_PRESSED, tk_event=event, state=event.state, keysym=event.keysym, keycode=event.keycode, keychar=event.char, rel_pos=get_rel_event_pos(event), abs_pos=get_abs_event_pos(event, self._main.root_tk_object)))
                 return
             case EventType.KeyRelease:
-                self._handle_event(ETKEventData(self, ETKWindowEvents.KEY_RELEASED, state=event.state, keysym=event.keysym, keycode=event.keycode, keychar=event.char, rel_pos=get_rel_event_pos(event), abs_pos=get_abs_event_pos(event, self._main.root_tk_object)))
+                self._handle_event(ETKEventData(self, ETKWindowEvents.KEY_RELEASED, tk_event=event, state=event.state, keysym=event.keysym, keycode=event.keycode, keychar=event.char, rel_pos=get_rel_event_pos(event), abs_pos=get_abs_event_pos(event, self._main.root_tk_object)))
                 return
             case EventType.FocusIn:
-                self._handle_event(ETKEventData(self, ETKWindowEvents.FOCUS_IN))
+                self._handle_event(ETKEventData(self, ETKWindowEvents.FOCUS_IN, tk_event=event))
                 return
             case EventType.FocusOut:
-                self._handle_event(ETKEventData(self, ETKWindowEvents.FOCUS_OUT))
+                self._handle_event(ETKEventData(self, ETKWindowEvents.FOCUS_OUT, tk_event=event))
                 return
             case _:
                 pass
