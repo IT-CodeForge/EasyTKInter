@@ -2,11 +2,13 @@ TODO:
 
 Scheduler: window_changes, lower implementation (like Checkbox::state)
 scaler: text scale resets sometimes -> Windows Problem
+UML-Diagramm aktualisieren
 
-auto height: Text, etc.
 
 NTH:
 
+imports sortieren
+auto height: Text, etc.
 Containter Hintergrund, etc: z-Index
 (Canvas: Sprite)
 
