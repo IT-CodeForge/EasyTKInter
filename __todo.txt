@@ -1,7 +1,7 @@
 TODO:
 
 Scheduler: window_changes, lower implementation (like Checkbox::state)
-resolution, scaler, etc. Problem
+scaler: text scale resets sometimes -> Windows Problem
 
 auto height: Text, etc.
 
