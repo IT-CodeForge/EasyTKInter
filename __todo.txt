@@ -2,19 +2,15 @@ TODO:
 
 Scheduler: window_changes, lower implementation (like Checkbox::state)
 resolution, scaler, etc. Problem
-_validate_... methoden umbenennen?
 
 auto height: Text, etc.
-
-Event_START
-
-__str__, __repr__
 
 NTH:
 
 Containter Hintergrund, etc: z-Index
 (Canvas: Sprite)
 
+__str__, __repr__
 logging
 tests
 

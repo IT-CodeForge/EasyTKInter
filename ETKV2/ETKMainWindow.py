@@ -65,7 +65,7 @@ class ETKMainWindow(ETKBaseTkObject):
             INTERNAL_EVENT: ETKEvents
             _values = {"INTERNAL_EVENT": "<Custom>"}
 
-        self._main.scheduler.schedule_event(self._add_elements, ETKEventData(self, InternalEvents.INTERNAL_EVENT))
+        self._main.scheduler.schedule_event(lambda: self._add_elements(), ETKEventData(self, InternalEvents.INTERNAL_EVENT))
         self._main.scheduler.schedule_event(lambda: self._handle_event(ETKEventData(self, ETKWindowEvents.START)), ETKEventData(self, InternalEvents.INTERNAL_EVENT))
 
     # region Properties
