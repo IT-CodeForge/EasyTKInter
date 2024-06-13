@@ -288,7 +288,8 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
     def __event_handler(self, data: ETKEventData) -> None:
         if not isinstance(data.sender, ETKBaseWidget):
             raise TypeError
-        data.child_sender = data.sender
+        if data.sender != self._background:
+            data.child_sender = data.sender
         data.sender = self
         self._handle_event(data)
 
