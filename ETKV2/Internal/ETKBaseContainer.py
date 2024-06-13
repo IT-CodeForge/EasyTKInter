@@ -1,10 +1,11 @@
 from __future__ import annotations
 from abc import abstractmethod
 from enum import Enum, auto
-from typing import Any, Callable, Unpack
+from typing import Any, Callable
 
 from ..ETKMainWindow import ETKMain
-from .ETKBaseObject import ETKEvents, ETKBaseObject
+from .ETKBaseObject import ETKEvents
+from .ETKEventData import ETKEventData
 
 from .ETKBaseWidget import ETKBaseWidget
 from ..Vector2d import Vector2d
@@ -272,23 +273,24 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         self._main.scheduler.schedule_action(element._update_pos)
         self._main.scheduler.schedule_action(self._update_all_element_pos)
 
-    def add_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
+    def add_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[ETKEventData], None]) -> None:
         super().add_event(event_type, eventhandler)
         self._background.add_event(event_type, self.__event_handler)
         for e in self._element_rel_pos.keys():
             e.add_event(event_type, self.__event_handler)
 
-    def remove_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
+    def remove_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[ETKEventData], None]) -> None:
         super().remove_event(event_type, eventhandler)
         self._background.remove_event(event_type, self.__event_handler)
         for e in self._element_rel_pos.keys():
             e.remove_event(event_type, self.__event_handler)
 
-    def __event_handler(self, data: tuple[ETKBaseObject, ETKEvents, Unpack[tuple[Any, ...]]]) -> None:
-        obj = data[0]
-        if obj == self._background:
-            obj = self
-        self._handle_event(data[1], data[2], obj)
+    def __event_handler(self, data: ETKEventData) -> None:
+        if not isinstance(data.sender, ETKBaseWidget):
+            raise TypeError
+        data.child_sender = data.sender
+        data.sender = self
+        self._handle_event(data)
 
     # region update event methods
 

@@ -1,7 +1,9 @@
 from __future__ import annotations
 from typing import Any
 
-from .Internal.ETKUtils import get_abs_event_pos  # type:ignore
+from .Internal.ETKEventData import ETKEventData
+
+from .Internal.ETKUtils import get_abs_event_pos, get_rel_event_pos  # type:ignore
 
 from .ETKMainWindow import ETKMain
 
@@ -30,12 +32,10 @@ class ETKButton(ETKBaseTkWidgetButton):
         match event.type:
             case EventType.ButtonPress:
                 if self.abs_enabled:
-                    self._handle_event(
-                        ETKButtonEvents.PRESSED, get_abs_event_pos(event, self._main.root_tk_object))
+                    self._handle_event(ETKEventData(self, ETKButtonEvents.PRESSED, state=event.state, btn_num=event.num, rel_pos=get_rel_event_pos(event), abs_pos=get_abs_event_pos(event, self._main.root_tk_object)))
             case EventType.ButtonRelease:
                 if self.abs_enabled:
-                    self._handle_event(
-                        ETKButtonEvents.RELEASED, get_abs_event_pos(event, self._main.root_tk_object))
+                    self._handle_event(ETKEventData(self, ETKButtonEvents.RELEASED, state=event.state, btn_num=event.num, rel_pos=get_rel_event_pos(event), abs_pos=get_abs_event_pos(event, self._main.root_tk_object)))
             case _:
                 pass
         return super()._handle_tk_event(event)  # type:ignore

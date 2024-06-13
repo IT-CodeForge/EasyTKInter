@@ -3,14 +3,14 @@ from abc import abstractmethod
 from tkinter import Event, Tk, EventType
 from typing import Any, Callable, Optional
 
-from .Internal.ETKUtils import get_abs_event_pos  # type:ignore
+from .Internal.ETKUtils import get_abs_event_pos, get_rel_event_pos #type:ignore
 
 from .Internal.ETKScheduler import ETKScheduler
 
 from .Vector2d import Vector2d
 from .Internal.ETKBaseTkObject import ETKBaseTkObject
 from .Internal.ETKBaseObject import ETKEvents
-
+from .Internal.ETKEventData import ETKEventData
 
 class ETKWindowEvents(ETKEvents):
     KEY_PRESSED: ETKWindowEvents
@@ -61,8 +61,12 @@ class ETKMainWindow(ETKBaseTkObject):
         self._tk_object.bind(
             "<Configure>", self.__resize_event_handler)  # type:ignore
 
-        self._main.scheduler.schedule_event(self._add_elements, tuple())
-        self._main.scheduler.schedule_event(lambda: self._handle_event(ETKWindowEvents.START), tuple())
+        class InternalEvents(ETKEvents):
+            INTERNAL_EVENT: ETKEvents
+            _values = {"INTERNAL_EVENT": "<Custom>"}
+
+        self._main.scheduler.schedule_event(self._add_elements, ETKEventData(self, InternalEvents.INTERNAL_EVENT))
+        self._main.scheduler.schedule_event(lambda: self._handle_event(ETKEventData(self, ETKWindowEvents.START)), ETKEventData(self, InternalEvents.INTERNAL_EVENT))
 
     # region Properties
 
@@ -140,12 +144,12 @@ class ETKMainWindow(ETKBaseTkObject):
         self._tk_object.mainloop()
 
     def exit(self) -> None:
-        self._handle_event(ETKWindowEvents.EXIT, ignore_scheduler=True)
+        self._handle_event(ETKEventData(self, ETKWindowEvents.EXIT), ignore_scheduler=True)
         if not self.exit_locked and not self.exit_ignore_next:
             self._main.scheduler.exit()
         if self.exit_ignore_next:
             self.exit_ignore_next = False
-
+    
     def update_gui(self) -> None:
         self._main.scheduler.handle_actions()
 
@@ -172,22 +176,21 @@ class ETKMainWindow(ETKBaseTkObject):
     def _handle_tk_event(self, event: Event) -> None:  # type:ignore
         match event.type:
             case EventType.KeyPress:
-                self._handle_event(ETKWindowEvents.KEY_PRESSED, event.state, event.keysym, event.keycode, event.char, get_abs_event_pos(event, self._main.root_tk_object))
+                self._handle_event(ETKEventData(self, ETKWindowEvents.KEY_PRESSED, state=event.state, keysym=event.keysym, keycode=event.keycode, keychar=event.char, rel_pos=get_rel_event_pos(event), abs_pos=get_abs_event_pos(event, self._main.root_tk_object)))
                 return
             case EventType.KeyRelease:
-                self._handle_event(ETKWindowEvents.KEY_RELEASED, event.state, event.keysym, event.keycode, event.char, get_abs_event_pos(event, self._main.root_tk_object))
+                self._handle_event(ETKEventData(self, ETKWindowEvents.KEY_RELEASED, state=event.state, keysym=event.keysym, keycode=event.keycode, keychar=event.char, rel_pos=get_rel_event_pos(event), abs_pos=get_abs_event_pos(event, self._main.root_tk_object)))
                 return
             case EventType.FocusIn:
-                self._handle_event(ETKWindowEvents.FOCUS_IN)
+                self._handle_event(ETKEventData(self, ETKWindowEvents.FOCUS_IN))
                 return
             case EventType.FocusOut:
-                self._handle_event(ETKWindowEvents.FOCUS_OUT)
+                self._handle_event(ETKEventData(self, ETKWindowEvents.FOCUS_OUT))
                 return
             case _:
                 pass
         super()._handle_tk_event(event)  # type:ignore
 
     # endregion
-
 
 ETKMain = ETKMainWindow.ETKMain

@@ -10,6 +10,7 @@ from ..Vector2d import Vector2d
 
 if TYPE_CHECKING:
     from ..ETKMainWindow import ETKMain
+    from .ETKEventData import ETKEventData
 
 
 class ETKEvents(SubclassableEnum):
@@ -28,7 +29,7 @@ class ETKBaseObject:
         self.__background_color: int = 0 if background_color != 0 else 1
         self.__visibility: bool = not visibility
         self._main = main
-        self._event_lib: dict[ETKEvents, list[Callable[..., Any]]] = {e: [] for e in ETKEvents}
+        self._event_lib: dict[ETKEvents, list[Callable[[], Any] | Callable[[ETKEventData], Any]]] = {e: [] for e in ETKEvents}
 
         self.background_color = background_color
         self.pos = pos
@@ -118,18 +119,18 @@ class ETKBaseObject:
 
     # region Eventhandling Methods
 
-    def add_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
+    def add_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[ETKEventData], None]) -> None:
         self._event_lib[event_type].append(eventhandler)
 
-    def remove_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[tuple[ETKBaseObject, ETKEvents, Any]], None]) -> None:
+    def remove_event(self, event_type: ETKEvents, eventhandler: Callable[[], None] | Callable[[ETKEventData], None]) -> None:
         self._event_lib[event_type].remove(eventhandler)
 
-    def _handle_event(self, event: ETKEvents, *event_data: Any, ignore_scheduler: bool = False) -> None:
-        for c in self._event_lib[event]:
+    def _handle_event(self, event_data: ETKEventData, ignore_scheduler: bool = False) -> None:
+        for c in self._event_lib[event_data.event]:
             if ignore_scheduler:
-                exec_event_callback(c, (self, event, *event_data))
+                exec_event_callback(c, event_data)
                 continue
-            self._main.scheduler.schedule_event(c, (self, event, *event_data))
+            self._main.scheduler.schedule_event(c, event_data)
 
     # endregion
     # endregion
