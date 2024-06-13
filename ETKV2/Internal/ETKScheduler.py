@@ -5,7 +5,7 @@ import time
 from tkinter import Tk
 from typing import Any, Callable
 
-from ETKV2.Internal.ETKBaseTkObject import ETKBaseTkObject
+from .ETKBaseTkObject import ETKBaseTkObject
 
 from .ETKUtils import exec_event_callback
 

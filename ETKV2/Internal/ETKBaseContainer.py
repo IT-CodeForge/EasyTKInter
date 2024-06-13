@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import abstractmethod
 from enum import Enum, auto
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Unpack
 
 from ..ETKMainWindow import ETKMain
 from .ETKBaseObject import ETKEvents, ETKBaseObject
@@ -284,11 +284,11 @@ class ETKBaseContainer(ETKBaseWidgetDisableable):
         for e in self._element_rel_pos.keys():
             e.remove_event(event_type, self.__event_handler)
 
-    def __event_handler(self, data: tuple[ETKBaseObject, ETKEvents, Optional[Any]]) -> None:
+    def __event_handler(self, data: tuple[ETKBaseObject, ETKEvents, Unpack[tuple[Any, ...]]]) -> None:
         obj = data[0]
         if obj == self._background:
             obj = self
-        self._handle_event(data[1], [data[2], obj])
+        self._handle_event(data[1], data[2], obj)
 
     # region update event methods
 

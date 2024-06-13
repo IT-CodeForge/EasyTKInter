@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ETKV2.ETKMainWindow import ETKMain
+from .ETKMainWindow import ETKMain
 from .Vector2d import Vector2d
 from .Internal.ETKBaseTkWidgetDisableable import ETKBaseTkWidgetDisableable
 from .Internal.ETKBaseObject import ETKEvents

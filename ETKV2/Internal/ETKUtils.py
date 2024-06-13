@@ -1,6 +1,9 @@
 import sys
+from tkinter import Event, Tk
 import traceback
 from typing import Any, Callable, Optional
+
+from ..Vector2d import Vector2d
 
 
 def gen_col_from_int(col: Optional[int]) -> str:
@@ -31,3 +34,6 @@ def exec_event_callback(callback_function: Callable[..., Any], event_data: tuple
         print(traceback.format_exc(), file=sys.stderr)
         raise TypeError(
             f"invalid parametercount for event function ({name}) (can only be 0, 1 (self, cls, etc not included)), parameter: {ret_val}")
+
+def get_abs_event_pos(event: Event, root_tk: Tk) -> Vector2d: #type:ignore
+    return Vector2d(event.x_root, event.y_root) - Vector2d(root_tk.winfo_rootx(), root_tk.winfo_rooty())
