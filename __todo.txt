@@ -1,7 +1,6 @@
 TODO:
 
 Scheduler: window_changes, lower implementation (like Checkbox::state)
-scaler: text scale resets sometimes -> Windows Problem
 UML-Diagramm aktualisieren
 
 
