@@ -1,12 +1,12 @@
 TODO:
 
-Scheduler: window_changes, lower implementation (like Checkbox::state)
 UML-Diagramm aktualisieren
 
 
 NTH:
 
 imports sortieren
+Testcases bauen
 auto height: Text, etc.
 Containter Hintergrund, etc: z-Index
 (Canvas: Sprite)
