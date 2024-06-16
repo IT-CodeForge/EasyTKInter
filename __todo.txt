@@ -1,6 +1,6 @@
 TODO:
 
-UML-Diagramm aktualisieren
+UML-Diagramm aktualisieren: ETKEventData
 
 
 NTH:
@@ -9,6 +9,7 @@ imports sortieren
 Testcases bauen
 auto height: Text, etc.
 Containter Hintergrund, etc: z-Index
+ETKCanvas & ETKBitmap in ETKScheduler einbinden
 (Canvas: Sprite)
 
 __str__, __repr__
@@ -16,6 +17,7 @@ logging
 tests
 
 Beobachten:
+UML-Diagramm aktuell halten
 abs. import weg
 imports sortieren
 #regions
