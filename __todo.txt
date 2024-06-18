@@ -1,6 +1,6 @@
 TODO:
 
-UML-Diagramm aktualisieren: ETKEventData
+fix: bug: windows resets text size
 
 
 NTH:
